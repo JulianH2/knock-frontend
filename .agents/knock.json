@@ -1,0 +1,24 @@
+{
+  "repo": "knock-frontend",
+  "layer_scope": "app móvil Flutter (clientes y técnicos) y panel web Angular (moderación, verificación y métricas) con sus pruebas",
+  "code_dirs": ["app/lib/**", "panel/src/**"],
+  "generated": ["app/packages/knock_api/**", "panel/src/app/api/**"],
+  "protected": ["app/packages/knock_api/**", "panel/src/app/api/**", "contracts/**"],
+  "test_globs": ["app/test/**/*.dart", "app/integration_test/**/*.dart", "panel/src/**/*.spec.ts", "panel/e2e/**/*.ts"],
+  "test_types": ["UM", "W", "ACC", "CON", "MUT", "E2E", "USA", "A11Y"],
+  "layers": {"Mobile": "flutter-builder", "Panel": "panel-builder"},
+  "default_skills": ["flutter-clean-architecture", "angular-panel", "testing-strategy-frontend", "security-core"],
+  "scopes": ["identity", "catalog", "requests", "messaging", "reputation", "trust", "notifications", "assistant", "app", "panel", "ci", "infra", "docs"],
+  "technical_tasks": ["TT-REPO-01", "TT-REPO-02", "TT-REPO-03", "TT-STD-01", "TT-SDD-01", "TT-MOB-01", "TT-MOB-02", "TT-MOB-03",
+                      "TT-MOB-04", "TT-CI-01", "TT-FB-01", "TT-CD-01", "TT-CD-03", "TT-SEC-01", "TT-SEC-02", "TT-OBS-01",
+                      "TT-TIE-01", "TT-TIE-02", "TT-TIE-03", "TT-TIE-04", "TT-QA-01", "TT-QA-03", "TT-QA-04", "TT-QA-05",
+                      "TT-PRU-02", "TT-PRU-03", "TT-PRU-04"],
+  "stop_checks": [
+    {"name": "flutter analyze", "when": "^app/.*\\.dart$", "cmd": ["flutter", "analyze", "--no-pub", "--fatal-infos"], "cwd": "app", "requires": "app/pubspec.yaml"},
+    {"name": "dart format", "when": "^app/.*\\.dart$", "cmd": ["dart", "format", "--set-exit-if-changed", "--output=none", "lib", "test"], "cwd": "app", "requires": "app/pubspec.yaml"},
+    {"name": "flutter test", "when": "^app/.*\\.dart$", "cmd": ["flutter", "test", "--no-pub"], "cwd": "app", "requires": "app/pubspec.yaml", "mode": "full"},
+    {"name": "ng lint", "when": "^panel/.*\\.(ts|html|scss)$", "cmd": ["npx", "ng", "lint"], "cwd": "panel", "requires": "panel/angular.json"},
+    {"name": "tsc", "when": "^panel/.*\\.ts$", "cmd": ["npx", "tsc", "-p", "tsconfig.app.json", "--noEmit"], "cwd": "panel", "requires": "panel/tsconfig.app.json"},
+    {"name": "ng test", "when": "^panel/.*\\.ts$", "cmd": ["npx", "ng", "test", "--watch=false"], "cwd": "panel", "requires": "panel/angular.json", "mode": "full"}
+  ]
+}
