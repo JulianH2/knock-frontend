@@ -49,3 +49,14 @@ app/mutation-test-report/
 app/android/key.properties
 app/android/*.jks
 app/ios/Runner/GoogleService-Info.plist
+
+# Python y herramientas locales
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.orig
+*.rej
+
+# Configuracion local de agentes (cada persona la suya)
+.claude/settings.local.json
