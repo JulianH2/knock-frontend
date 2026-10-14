@@ -7,7 +7,7 @@
 > **Estado:** Borrador
 
 ## 1. Objetivo
-Crear en `panel/` el proyecto inicial Angular del panel de administración y una pantalla de entrada accesible en el navegador, cuyo encabezado visible sea exactamente **“Knock — Panel de administración”**. Para este ejercicio, el proyecto no incorpora inicio de sesión ni consume la API de Knock; debe compilar y poder abrirse localmente en un navegador.
+Crear en `panel/` el proyecto inicial Angular del panel de administración y una pantalla de entrada accesible en el navegador, cuyo encabezado visible sea exactamente **“Panel Knock”**. Para este ejercicio, el proyecto no incorpora inicio de sesión ni consume la API de Knock; debe compilar y poder abrirse localmente en un navegador.
 
 La solución se limita al arranque del proyecto y a la pantalla estática solicitada. Se ajustará a las decisiones documentadas para el panel (Angular, componentes standalone, signals y Angular Material) sin anticipar funciones administrativas que no están en los requisitos de esta tarea.
 
@@ -19,7 +19,7 @@ La solución se limita al arranque del proyecto y a la pantalla estática solici
 | Caso | Criterio (Dado / Cuando / Entonces) | Verificación |
 |---|---|---|
 | TC-TT-PRU-03-01 | Dado el proyecto Angular y sus dependencias declaradas, cuando se instalan desde el lockfile, se ejecuta el build y se auditan las dependencias, entonces la compilación termina correctamente, la auditoría no reporta vulnerabilidades altas o críticas y la evaluación de dependencias directas (necesidad, mantenimiento y licencia declarada) queda documentada en el PR. | `cd panel && npm ci && npx ng build && npm audit --audit-level=high`; revisión documentada de dependencias directas en el PR. |
-| TC-TT-PRU-03-02 | Dado el proyecto compilado, cuando se inicia la aplicación en la ruta inicial y se abre un navegador, entonces la pantalla muestra el encabezado visible exacto “Knock — Panel de administración”. | Prueba de componente del componente raíz con el nombre `TC-TT-PRU-03-02 …`; humo manual en navegador con `cd panel && npx ng serve --open`. |
+| TC-TT-PRU-03-02 | Dado el proyecto compilado, cuando se inicia la aplicación en la ruta inicial y se abre un navegador, entonces la pantalla muestra el encabezado visible exacto “Panel Knock”. | Prueba de componente del componente raíz con el nombre `TC-TT-PRU-03-02 …`; humo manual en navegador con `cd panel && npx ng serve --open`. |
 | TC-TT-PRU-03-03 | Dada una sesión nueva sin autenticación, cuando se abre la ruta inicial, entonces no se presenta un login ni una redirección de autenticación, y la pantalla no necesita ni realiza solicitudes de red a servicios remotos para mostrarse. | Prueba de navegador `TC-TT-PRU-03-03 …` (si se aprueba automatizar el humo con Playwright) o comprobación manual de la ruta y de Network: no debe haber solicitudes a Knock, Firebase ni a otros hosts remotos; solo se permiten los recursos locales del servidor de desarrollo. |
 
 ## 3. Alcance / No-alcance
@@ -52,7 +52,7 @@ El alcance no maneja identidad, datos personales ni acciones sensibles; controle
 
 ## 7. Pantallas
 - **Pantalla inicial del panel** en la ruta inicial:
-  - Muestra el encabezado **“Knock — Panel de administración”**.
+  - Muestra el encabezado **“Panel Knock”**.
   - No requiere sesión, llamadas de red ni datos externos.
   - No tiene estados de carga, error o vacío dependientes de servicios. Cualquier contenido adicional, estilo visual, idioma alternativo o navegación fuera de la ruta inicial queda fuera de esta tarea hasta que se acuerde.
   - Debe usar semántica HTML accesible para el encabezado y conservar el comportamiento seguro de Angular para texto.
