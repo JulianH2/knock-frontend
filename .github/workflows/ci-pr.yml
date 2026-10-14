@@ -233,7 +233,17 @@ jobs:
           fail-on-severity: high
           deny-licenses: AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0
       - name: OSV-Scanner (pub, npm, GitHub Actions)
-        run: docker run --rm -v "$PWD":/src ghcr.io/google/osv-scanner:latest scan source -r /src
+        run: |
+          # Sin archivos de dependencias OSV-Scanner sale con 128 («No package sources found»): no hay nada que analizar.
+          # Cualquier otro error, o hallazgos, siguen fallando el job.
+          code=0
+          out=$(docker run --rm -v "$PWD":/src ghcr.io/google/osv-scanner:latest scan source -r /src 2>&1) || code=$?
+          echo "$out"
+          if [ "$code" -eq 128 ] && grep -q "No package sources found" <<<"$out"; then
+            echo "::notice::OSV-Scanner: el repositorio aún no tiene archivos de dependencias."
+            exit 0
+          fi
+          exit "$code"
 
   secrets:
     name: Secretos (Gitleaks)
