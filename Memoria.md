@@ -52,3 +52,13 @@
 - Decisión: `codemap.py --check` ya no escribe; compara el mapa de `docs/architecture/` con el código sin contar fecha ni ruta y falla si está desactualizado, hay violaciones o clones nuevos. Sin `--check`, solo reescribe lo que cambió (LF). Porqué: el paso «Mapa de código actualizado» del CI fallaba siempre porque `--check` reescribía la fecha y la ruta local. El hook `pre-commit` ahora regenera y luego valida.
 - A evitar: aprobar o firmar specs desde un agente; la aprobación (Estado, revisor y fecha) la escribe una persona.
 - Pendiente: la condición de repos privados (dependency-review y SARIF) y el salto de `ai-review` sin secreto van en KNOCK-26.
+
+## 2026-10-14 — KNOCK-26: CI de cada PR
+- Hecho: workflows `ci-pr`, `_governance` y `ai-review` con su configuración (`.gitleaks.toml`, `.semgrep/`, `.semgrepignore`), `pin_actions.py`, `check_coverage.py` y `docs/QA_DEVSECOPS.md`.
+- Decisión: `ai-review` se omite (skipped) si falta el secreto `ANTHROPIC_API_KEY` o la variable `AI_REVIEW=true`; no falla ni afecta a `gate`. Dónde crearlos: CONTRIBUTING §8 (secreto y variable de repositorio, en cada repo). La cuenta está pendiente (unas 72 h).
+- Decisión: en repos privados sin GitHub Advanced Security, `dependency-review` y la subida de SARIF se omiten; la variable `GHAS_ENABLED=true` las activa. Los escáneres no se quitan.
+- Decisión: `codemap.py --check` ya no escribe (KNOCK-19), por eso el paso «Mapa de código actualizado» del CI deja de fallar siempre.
+- Excepción EXC-001 (Semgrep, `scripts/hooks/knock_guard.py`): falso positivo de `dangerous-subprocess-use-tainted-env-args`; vence el 2027-01-12 y el plan es validar los nombres con `re.fullmatch` o importar `codemap`.
+- Riesgo: la protección de ramas con `gate` como check requerido no se puede aplicar en repos privados de una cuenta gratuita (GitHub pide Pro o repo público).
+- Riesgo (no verificado): OSV-Scanner puede devolver error en un repositorio sin archivos de dependencias; se confirma en la primera ejecución real.
+- A evitar: dar por válido un workflow sin correrlo en GitHub; `actionlint` y `jscpd` locales no sustituyen la primera ejecución.
