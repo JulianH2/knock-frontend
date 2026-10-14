@@ -4,7 +4,7 @@
 > **Repositorio:** knock-frontend · **Otra parte en:** —
 > **Fuentes:** Requisitos del usuario en esta conversación; `Product_Backlog_Knock.docx` (HU-046, referencia funcional relacionada); `README.md` §Primeros pasos; `docs/DECISION_TECNICA.md` §9; `AGENTS.md` §§6, 8; `docs/templates/README.md`. El documento proporcionado no incluye la tarea técnica TT-PRU-03 ni KNOCK-31.
 > **Skills:** spec-first-writing, story-workflow, angular-panel, testing-strategy-frontend, security-core, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 ## 1. Objetivo
 Crear en `panel/` el proyecto inicial Angular del panel de administración y una pantalla de entrada accesible en el navegador, cuyo encabezado visible sea exactamente **“Panel Knock”**. Para este ejercicio, el proyecto no incorpora inicio de sesión ni consume la API de Knock; debe compilar y poder abrirse localmente en un navegador.
@@ -83,6 +83,6 @@ El alcance no maneja identidad, datos personales ni acciones sensibles; controle
 - La constitución `.specify/memory/constitution.md` no se pudo leer: el guardián del repositorio bloqueó su acceso por protección. La spec queda en Borrador y la persona revisora debe confirmar compatibilidad con la constitución antes de aprobarla.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-10-14
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
