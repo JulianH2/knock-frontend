@@ -1,5 +1,19 @@
 graph LR
+  actividad["actividad"]
+  app["app"]
+  cuenta["cuenta"]
+  explorar["explorar"]
   home["home"]
+  inicio["inicio"]
   layout["layout"]
   panel["panel"]
+  router["router"]
+  sesion["sesion"]
+  trabajo["trabajo"]
+  widgets["widgets"]
   panel -->|1| home
+  router -->|1| actividad
+  router -->|1| cuenta
+  router -->|1| explorar
+  router -->|1| inicio
+  router -->|1| trabajo
