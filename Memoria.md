@@ -62,3 +62,10 @@
 - Riesgo: la protección de ramas con `gate` como check requerido no se puede aplicar en repos privados de una cuenta gratuita (GitHub pide Pro o repo público).
 - Riesgo (no verificado): OSV-Scanner puede devolver error en un repositorio sin archivos de dependencias; se confirma en la primera ejecución real.
 - A evitar: dar por válido un workflow sin correrlo en GitHub; `actionlint` y `jscpd` locales no sustituyen la primera ejecución.
+
+## 2026-10-13 — KNOCK-31 (TT-PRU-03), borrador de spec
+- Hecho: borrador para crear el proyecto Angular del panel con pantalla inicial titulada “Knock — Panel de administración”; el requisito recibido excluye login y consumo de API y exige build y apertura en navegador.
+- Fuente: el Product Backlog compartido incluye HU-046 «Acceso de administrador por permisos» (Alta, Sprint 1), pero no la tarea técnica TT-PRU-03 ni KNOCK-31; se registra solo como contexto relacionado, sin ampliar el alcance a login o permisos.
+- Decisión: responsable Ángel Alexis Blas Castillo, Sprint S0 y área Prueba de roles se toman de los requisitos del usuario. Título oficial, épica, puntos y elecciones de versión/herramientas quedan por confirmar en fuente autorizada.
+- Pendiente: el guardián bloqueó la lectura de `.specify/memory/constitution.md`; la persona revisora debe confirmar compatibilidad antes de aprobar.
+- A evitar: interpretar este borrador como autorización para crear el proyecto o implementar funciones; el estado permanece Borrador.
