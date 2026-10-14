@@ -10,12 +10,12 @@
 ## T2 — Crear la pantalla inicial del Panel [Panel]
 - **Crear:** proyecto Angular en `panel/` y pantalla raíz con el encabezado “Knock — Panel de administración”.
 - **Modificar:** solo los archivos necesarios para el scaffold y el renderizado estático acordados.
-- **Verificar:** TC-TT-PRU-03-01 y TC-TT-PRU-03-02.
+- **Verificar:** TC-TT-PRU-03-01 y TC-TT-PRU-03-02; incluir `npm audit --audit-level=high` y documentar en el PR la necesidad, el mantenimiento y la licencia declarada de las dependencias directas.
 - **No hacer:** agregar login, Firebase Auth, llamadas API, datos reales o funciones administrativas.
 - **Agente:** panel-builder después de que la spec esté Aprobada.
 
 ## T3 — Comprobar ausencia de autenticación y API [Pruebas]
-- **Crear:** pruebas de navegador según la herramienta confirmada; mientras no se confirme automatización, comprobación manual documentada.
+- **Crear:** pruebas de navegador según la herramienta confirmada; mientras no se confirme automatización, comprobación manual documentada de que no hay solicitudes a hosts remotos, aparte de recursos servidos localmente.
 - **Modificar:** configuración de pruebas solo si se aprueba como parte del alcance.
 - **Verificar:** TC-TT-PRU-03-03 y los gates aplicables de Panel.
 - **No hacer:** afirmar que los gates o pruebas se ejecutaron antes de implementarlos.
