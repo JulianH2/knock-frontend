@@ -9,6 +9,8 @@
 ## 2. Riesgos y efectos secundarios
 - El título oficial, épica y puntos de KNOCK-31 no aparecen en el Product Backlog recibido; responsable Ángel Alexis Blas Castillo, Sprint S0 y área Prueba de roles fueron indicados por el usuario. Confirmar los metadatos restantes desde la fuente Jira/ficha autorizada.
 - La versión de Angular/Node/npm y las opciones de generación condicionan el build reproducible; confirmarlas con el equipo antes de ejecutar `ng new`.
+- El criterio de ausencia de red remota incluye Knock, Firebase y cualquier otro host externo; los únicos recursos permitidos durante el humo manual son los servidos localmente por el servidor de desarrollo.
+- La evaluación de dependencias cubre auditoría automática de vulnerabilidades y revisión documentada de necesidad, mantenimiento y licencia declarada de las dependencias directas.
 - No se encontraron los archivos de configuración de Panel que `docs/templates/README.md` dice que deben copiarse. Confirmar fuente y alcance antes de añadir configuración o dependencias.
 - La pantalla debe permanecer estática y no introducir dependencias de autenticación o de la API. Evitar que el scaffolding genere o conserve pantallas de ejemplo como experiencia inicial.
 - No se ejecuta ninguna implementación como parte de este borrador.
@@ -16,9 +18,9 @@
 ## 3. Pruebas por caso
 | Caso | Prueba | Suite |
 |---|---|---|
-| TC-TT-PRU-03-01 | Instalación reproducible y build de producción. | `cd panel && npm ci && npx ng build` |
+| TC-TT-PRU-03-01 | Instalación reproducible, build de producción, auditoría sin vulnerabilidades altas/críticas y evaluación documentada de dependencias directas. | `cd panel && npm ci && npx ng build && npm audit --audit-level=high`; revisión de necesidad, mantenimiento y licencia declarada en el PR. |
 | TC-TT-PRU-03-02 | La pantalla raíz muestra el encabezado exacto; abrir también la ruta en navegador. | Prueba de componente nombrada con `TC-TT-PRU-03-02`; humo manual `npx ng serve --open`. |
-| TC-TT-PRU-03-03 | Abrir ruta raíz sin sesión; confirmar que no hay login/redirección ni solicitudes a API/Firebase necesarias para renderizar. | Comprobación de navegador/red; automatización Playwright pendiente de decisión. |
+| TC-TT-PRU-03-03 | Abrir ruta raíz sin sesión; confirmar que no hay login/redirección ni solicitudes a hosts remotos necesarias para renderizar. | Comprobación manual de navegador/Network (solo recursos locales); automatización Playwright pendiente de decisión. |
 
 ## 4. Secuencia
 1. Confirmar los metadatos pendientes de KNOCK-31 y las decisiones de versión Angular/Node y herramientas indicadas como abiertas en `spec.md`.
@@ -30,6 +32,7 @@
 ```bash
 cd panel && npm ci
 cd panel && npx ng build
+cd panel && npm audit --audit-level=high
 cd panel && npx ng serve --open
 python scripts/sdd_lint.py
 python scripts/sdd_lint.py --trace TT-PRU-03
