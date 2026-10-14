@@ -70,3 +70,5 @@
 - Pendiente: el guardián bloqueó la lectura de `.specify/memory/constitution.md`; la persona revisora debe confirmar compatibilidad antes de aprobar.
 - A evitar: interpretar este borrador como autorización para crear el proyecto o implementar funciones; el estado permanece Borrador.
 - Revisión previa al PR: security-reviewer marcó como brechas de baja severidad la falta de verificación contra cualquier host remoto y la falta de un control verificable para dependencias/licencias. Atendidas en la spec: TC-TT-PRU-03-03 comprueba que no haya solicitudes remotas; TC-TT-PRU-03-01 exige `npm audit --audit-level=high` y documentar necesidad, mantenimiento y licencia de dependencias directas. Revalidar lint y obtener nueva trazabilidad antes de abrir PR.
+
+- 2026-10-14: el encabezado de la pantalla inicial pasa a «Panel Knock», como dice la ficha TT-PRU-03 (antes «Knock — Panel de administración»). Sigue pendiente alinear con la ficha el menú lateral vacío (Verificaciones, Reportes y Métricas), Angular Material, el cliente generado, la prueba unitaria del menú, 1 punto y la épica EP-13.
