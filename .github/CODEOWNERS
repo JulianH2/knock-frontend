@@ -1,0 +1,13 @@
+# Revisores por área. GitHub los solicita en cada PR; solo bloquea el merge si se activa «Require review from Code Owners» (hoy no aplicable en repos privados gratuitos).
+*                     @JulianH2 @Erciksssj
+/app/                 @Erciksssj
+/panel/               @AlexisBBY @JulianH2
+/contracts/           @GuillermoRH19 @Erciksssj
+# Gobierno, seguridad y CI: solo el Tech Lead
+/.github/             @JulianH2
+/scripts/             @JulianH2
+/.agents/             @JulianH2
+/.specify/            @JulianH2
+/.semgrep/            @JulianH2
+/security/            @JulianH2
+/AGENTS.md            @JulianH2
