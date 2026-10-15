@@ -123,3 +123,5 @@
 - Decisión: TC-TT-MOB-01-03 lleva el marcador «(comando)», que `sdd_lint.py --trace` ya acepta (KNOCK-19).
 - Pendiente: las fichas `docs/backlog/TT-FB-01.md` y `TT-MOB-04.md` todavía dicen `mx.knock.app`; corregirlas en sus issues.
 - A evitar: compilar para Android con poco espacio en disco; Gradle descarga el NDK (unos 2.5 GB) y la primera compilación falla con «Espacio en disco insuficiente».
+- Verificación (2026-10-15): `flutter test integration_test` en emulador Android (Medium Phone API 35) → TC-TT-MOB-01-01 «All tests passed!»; video de TC-01 adjunto al PR. PR en draft hacia `sprint-00`: CI con 9 checks en verde y 3 omitidos esperados (ai-review sin secreto, contrato y panel sin cambios).
+- A evitar: si el emulador muestra la mitad inferior en negro, es un fallo de dibujo del emulador en Windows, no de la app; se corrige girándolo o cambiando el renderizador de OpenGL.
