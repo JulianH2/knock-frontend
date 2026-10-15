@@ -175,9 +175,9 @@ jobs:
       - name: Tipos (TypeScript strict)
         run: npx tsc -p tsconfig.app.json --noEmit
       - name: Unitarias y componentes (con cobertura)
-        run: npx ng test --watch=false --code-coverage
+        run: npx ng test --watch=false --coverage --coverage-reporters=json-summary --coverage-reporters=text-summary
       - name: Umbral de cobertura (líneas y ramas)
-        run: python3 ../scripts/check_coverage.py --istanbul coverage/coverage-summary.json --min 60 --min-branch 50
+        run: python3 ../scripts/check_coverage.py --istanbul coverage/panel/coverage-summary.json --min 60 --min-branch 50
       - name: Build de producción
         run: npx ng build --configuration production
       - name: npm audit (altas y críticas de producción)
