@@ -61,6 +61,6 @@
 Firebase (apps Android/iOS registradas, números de prueba) · Google Play y Apple Developer · Azure Static Web Apps para el panel · protección de ramas y environments · `ANTHROPIC_API_KEY` (opcional).
 
 ## 7. Limitaciones conocidas
-- Hasta TT-MOB-01 (app) y TT-PRU-03 (panel) no hay proyectos: sus jobs se saltan. Las configuraciones de lint, mutación y E2E están listas en `docs/templates/`.
+- Hasta TT-MOB-01 (app) y TT-PRU-03 (panel) no hay proyectos: sus jobs se saltan. En el panel, el paso de E2E (Playwright + axe) se omite con un aviso mientras no exista `panel/playwright.config.*` (llega con TT-QA-01, KNOCK-41) y corre solo cuando se agregue. Las configuraciones de lint, mutación y E2E están listas en `docs/templates/`.
 - CodeQL no analiza Dart; la app se cubre con Semgrep, los analizadores de Dart y pruebas.
 - La usabilidad (SUS) es manual por naturaleza.
