@@ -1,7 +1,7 @@
 # TT-MOB-01 — tareas
 
 ## T1 — Proyecto y estructura [Mobile]
-- **Crear:** `app/` con `flutter create --org mx.knock --platforms android,ios app`; `lib/core/router/`, `lib/core/sesion/`, `lib/core/widgets/pantalla_titulada.dart`; `lib/core/{tema,errores,red}/.gitkeep`; `lib/features/{inicio,explorar,actividad,trabajo,cuenta}/{presentation,domain,data}` (`domain/` y `data/` con `.gitkeep`).
+- **Crear:** `app/` con `flutter create --org mx.knock --platforms android,ios app` e identificador `app.knock.mobile` en Android e iOS; `lib/core/router/`, `lib/core/sesion/`, `lib/core/widgets/pantalla_titulada.dart`; `lib/core/{tema,errores,red}/.gitkeep`; `lib/features/{inicio,explorar,actividad,trabajo,cuenta}/{presentation,domain,data}` (`domain/` y `data/` con `.gitkeep`).
 - **Modificar:** `app/analysis_options.yaml` (copia de `docs/templates/app/analysis_options.yaml`).
 - **Verificar:** TC-TT-MOB-01-03
 - **No hacer:** tema, ARB, cliente de API, Firebase; versionar `google-services.json`, `GoogleService-Info.plist`, `key.properties` o `*.jks`.

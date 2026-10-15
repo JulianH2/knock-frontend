@@ -3,7 +3,7 @@
 ## 1. Mapeo de archivos
 - **Reutilizar (buscado con `codemap.py --query`):** no hay código de producto todavía (`app/` no existe). Reutilizar `docs/templates/app/analysis_options.yaml` (spec §8, decisión 6) y las entradas existentes de `.gitignore` para Flutter, Firebase y firma.
 - **Crear:**
-  - `app/` con `flutter create --org mx.knock --platforms android,ios app` (paquete `app`, `applicationId` `mx.knock.app`; decisión 9).
+  - `app/` con `flutter create --org mx.knock --platforms android,ios app` (paquete `app`; el identificador queda en `app.knock.mobile`, como está registrado en Firebase; decisión 9).
   - `app/lib/main.dart` (arranque con `ProviderScope`).
   - `app/lib/core/router/` — `GoRouter` con `StatefulShellRoute`, barra inferior y `redirect` de `/trabajo` a `/inicio` si no es técnico; lee el indicador «es técnico».
   - `app/lib/core/sesion/` — `esTecnicoProvider` (`Notifier<bool>`, inicia en falso; decisión 1) e `interruptorDePruebaProvider` (`!kReleaseMode`).

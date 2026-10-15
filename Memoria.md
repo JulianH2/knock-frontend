@@ -116,3 +116,10 @@
 - Decisión: el interruptor de prueba se lee de `interruptorDePruebaProvider` (`!kReleaseMode` por defecto) para poder probar el caso release (traceability-clerk: era la única línea sin cubrir y de ella depende la amenaza de §6).
 - Desviación de la spec aprobada (se declara en el PR, la spec no se edita): `rutas_test.dart` agrega pruebas unitarias aunque §8 dice «Unitarias: No». El nombre visible de la app sigue siendo «app» (plantilla); se cambia a «Knock» en TT-MOB-02.
 - Pendiente (security-reviewer, hallazgos bajos, no bloquean): el build release de Android firma con la llave debug (plantilla de `flutter create`, `app/android/app/build.gradle.kts`): cargar `key.properties` y fallar si no existe, en la tarea de firma; `android:allowBackup="false"` o reglas de exclusión en el manifiesto antes de guardar la sesión (TT-MOB-03 o la historia de sesión); validar el wrapper de Gradle (`distributionSha256Sum` o `wrapper-validation` en TT-CI-01); `codemap.py` debería escribir `root` relativo para no versionar la ruta local.
+
+## 2026-10-15 — KNOCK-24: revisión del PR
+- Hecho: rebase sobre `origin/sprint-00`; en `Memoria.md` se conservan las entradas de KNOCK-26 y KNOCK-31 y las de KNOCK-24.
+- Decisión: el identificador de la app pasa de `mx.knock.app` a `app.knock.mobile` (`namespace` y `applicationId` en `app/android/app/build.gradle.kts`, `PRODUCT_BUNDLE_IDENTIFIER` de Runner y RunnerTests en iOS, `MainActivity` movida a `kotlin/app/knock/mobile`). Porqué: en Firebase las apps Android e iOS se registraron como `app.knock.mobile`. Spec §8 decisión 9 actualizada. El paquete Dart sigue siendo `app`.
+- Decisión: TC-TT-MOB-01-03 lleva el marcador «(comando)», que `sdd_lint.py --trace` ya acepta (KNOCK-19).
+- Pendiente: las fichas `docs/backlog/TT-FB-01.md` y `TT-MOB-04.md` todavía dicen `mx.knock.app`; corregirlas en sus issues.
+- A evitar: compilar para Android con poco espacio en disco; Gradle descarga el NDK (unos 2.5 GB) y la primera compilación falla con «Espacio en disco insuficiente».
