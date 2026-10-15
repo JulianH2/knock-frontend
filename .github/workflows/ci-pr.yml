@@ -182,10 +182,17 @@ jobs:
         run: npx ng build --configuration production
       - name: npm audit (altas y críticas de producción)
         run: npm audit --omit=dev --audit-level=high
+      # La configuración de Playwright + axe llega con TT-QA-01 (KNOCK-41). Mientras no exista
+      # panel/playwright.config.*, el paso se omite con un aviso; en cuanto se agregue, corre solo.
       - name: E2E de humo + accesibilidad (Playwright + axe, chromium)
+        if: hashFiles('panel/playwright.config.*') != ''
         run: |
           npx playwright install --with-deps chromium
           npx playwright test --project=chromium --grep @smoke
+      - name: E2E omitido (aún no hay configuración de Playwright)
+        if: hashFiles('panel/playwright.config.*') == ''
+        run: |
+          echo "::notice::E2E de humo omitido, no existe panel/playwright.config.* (llega con TT-QA-01, KNOCK-41)."
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
         if: always()
         with:
