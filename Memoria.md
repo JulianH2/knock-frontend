@@ -87,3 +87,8 @@
 - No se cambió `.github/`: el comando actual del CI `ng test --watch=false --code-coverage` falla en Angular 22 con `Unknown argument: code-coverage`; requiere alinear el workflow a `--coverage`. `sdd_lint --trace TT-PRU-03` sigue marcando TC-01 FALTA; se conserva la evidencia por comandos y no se altera la forma de verificación.
 - Actualización: con autorización explícita, `python3 scripts/codemap.py` regeneró los cuatro mapas oficiales; `python3 scripts/codemap.py --check` pasa sin violaciones ni duplicados. Tras corregir el entorno, Node 22.23.3 es la versión activa y `ng lint` pasa también mediante `knock_guard stop`. No se tocó `.github/` ni el método de evidencia de TC-01; informar a Julián del ajuste pendiente del workflow y pedir cómo registrar TC-01.
 - Antes del PR: `npx prettier --check "src/**/*.{ts,html,scss}" "*.json" "*.js"` detectó cuatro archivos de scaffold sin formato; se formatearon con Prettier y luego el check pasó. Se repitieron build, tests con cobertura, lint, TypeScript, audit, trazabilidad y gates. El guard final requiere esta nota de Memoria en cambios de código; mantenerla actualizada junto a cambios de formato.
+
+### Actualización de trazabilidad — 2026-10-15
+- Hecho: la verificación de TC-TT-PRU-03-01 quedó marcada `(comando)` en su fila, sin cambiar el resto de la spec ni su estado o firma.
+- Verificado desde `panel/`: `npm ci`, `npx ng build` y `npm audit --audit-level=high` completan correctamente; la auditoría reporta 0 vulnerabilidades.
+- Verificado: `python3 scripts/sdd_lint.py --trace TT-PRU-03` muestra TC-01 como `COMANDO (evidencia en el PR)` y todos los casos como OK.
