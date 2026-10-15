@@ -1,4 +1,4 @@
-package mx.knock.app
+package app.knock.mobile
 
 import io.flutter.embedding.android.FlutterActivity
 
