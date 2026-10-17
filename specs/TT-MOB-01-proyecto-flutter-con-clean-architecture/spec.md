@@ -104,6 +104,6 @@ Riesgo bajo: sin red, sin sesión, sin datos personales. STRIDE breve sobre lo q
 13. **iOS:** se generan los archivos de iOS sin verificarlos (sin macOS; la ficha solo exige Android). Queda anotado como límite.
 
 ## Aprobación
-- [x] Revisor 1 — nombre: Erick Trejo Reséndiz fecha: 2026-10-13
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-10-16
 - [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
