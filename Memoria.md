@@ -129,3 +129,9 @@
 ## 2026-10-17 — KNOCK-24: revisión de Alexis y Julian (PR #13)
 - Hecho: spec firmada por el revisor (commit `1f39688`). `analysis_options.yaml` explicado arriba (Flutter repone los `exclude`); checklist de cobertura marcado (77/78 líneas, 98.7 %, mínimo 50 %; mutación no aplica porque `domain/` está vacío, spec §8; sin supresiones); nota «reemplazado por `app.knock.mobile`» donde se mencionaba `mx.knock.app`; imports de las pantallas con `package:flutter` primero y luego `package:app`.
 - A evitar: dar por hecho que un archivo quedó como la plantilla sin volver a correr `flutter pub get`; la herramienta puede reescribirlo.
+
+## 2026-10-19 — KNOCK-33: decisión de roles y revisión de pares
+- Decisión (retrospectiva de la semana de prueba): los roles **se mantienen**. José Julián: SM, PO y Tech Lead (aprueba y fusiona); Guillermo: backend; Erick: app Flutter; Alexis: base de datos y ML, y el panel Angular.
+- Decisión: la **revisión de pares es obligatoria**. Cada PR recibe antes al menos un comentario de revisión de otra persona (tabla «Quién revisa a quién» en `docs/FLUJO_EQUIPO.md`); la aprobación final y el merge siguen siendo del Tech Lead.
+- Porqué: que no revise solo una persona, y que el Tech Lead reciba el PR con una primera lectura hecha.
+- A evitar: fusionar un PR sin ningún comentario de revisión de pares; que el autor revise su propio PR.
