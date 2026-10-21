@@ -143,3 +143,9 @@
 - Porqué: el docente espera microservicios y bases NoSQL, y pide caché, CDN, moderación, landing y publicación en Google Play antes del 2 de diciembre.
 - Pendiente: el spike TT-BD-05 confirma DocumentDB (disponibilidad, polígonos, transacciones, texto y conexiones); hasta entonces nada se migra. Los archivos protegidos (`AGENTS.md`, `constitution.md`) que mencionan el monolito, PostgreSQL y EF Core los actualiza el Tech Lead.
 - A evitar: empezar a separar servicios antes de fusionar los PR abiertos de Sprint 1 y del spike; dejar sin dueño las tareas con fecha dura; escribir en el repositorio (público) claves, cadenas de conexión o códigos de prueba.
+
+## 2026-10-20 — TT-REPO-06 (KNOCK-136): override de vite en el panel
+- Hecho: `panel/package.json` fija `overrides: { "vite": "8.3.4" }`. `@angular/build` 22.2.x depende de `vite` 8.3.0 exacto, que tiene tres avisos (GHSA-587h-7wmj-h5pm, alto 7.5; GHSA-698v-4r3x-3vcv y GHSA-r825-w8mm-5pxw), corregidos desde 8.3.3. Los avisos llegan a través de `launch-editor`, incluido en `vite` 8.3.0 a 8.3.2.
+- Porqué: el SCA (OSV-Scanner) fallaba en todos los PR del frontend aunque solo tocaran documentación.
+- Cuándo quitarlo: cuando exista una versión estable de `@angular/build` y `@angular/cli` cuyo `dependencies.vite` sea ≥ 8.3.3 (`npm view @angular/build@<versión> dependencies.vite`). Hoy solo la `22.3.0-next.2` lo cumple; la `22.2.3` sigue con 8.3.0. Pasos: subir los dos paquetes en una rama nueva, borrar `overrides`, `npm install`, comprobar con `npm ls vite` que queda una sola copia ≥ 8.3.3, y correr `npm audit`, `npm ci`, `npm run build`, `ng test --watch=false` y `ng lint`. Si Dependabot propone la subida de Angular, revisar que el lockfile no conserve una copia anidada vieja antes de quitar el override.
+- A evitar: excluir el aviso del escáner o bajar el umbral del SCA para que pase el CI.
