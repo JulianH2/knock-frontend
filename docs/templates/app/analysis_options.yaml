@@ -13,6 +13,9 @@ analyzer:
     - "packages/knock_api/**"
     - "**/*.g.dart"
     - "**/*.freezed.dart"
+    - build/**
+    - android/**
+    - ios/**
 
 linter:
   rules:
