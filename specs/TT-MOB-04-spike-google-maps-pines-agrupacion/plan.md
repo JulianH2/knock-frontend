@@ -25,18 +25,18 @@
   - `app/pubspec.yaml` / `pubspec.lock` — `google_maps_flutter`, `geolocator`; `flutter_driver` (SDK) en `dev_dependencies`.
   - `app/android/app/build.gradle.kts` — leer `MAPS_API_KEY` (local.properties → env → `""`) y `manifestPlaceholders`.
   - `app/android/app/src/main/AndroidManifest.xml` — `meta-data com.google.android.geo.API_KEY` = `${mapsApiKey}` y `ACCESS_COARSE_LOCATION`.
-  - `app/ios/Flutter/Debug.xcconfig`, `Release.xcconfig` (`#include? "Secrets.xcconfig"`), `app/ios/Runner/Info.plist` (`GMSApiKey`, `NSLocationWhenInUseUsageDescription`), `app/ios/Runner/AppDelegate.swift` (`GMSServices.provideAPIKey`). Sin verificar (sin macOS).
-  - `.gitignore` — `app/ios/Flutter/Secrets.xcconfig` y `app/android/local.properties`.
+  - `.gitignore` — `app/android/local.properties` (defensa en la raíz; ya lo ignora `app/android/.gitignore`).
   - `app/README.md` — clave local y cómo correr el spike.
   - `Memoria.md` — evaluación de dependencias, decisiones y resultado.
-- **No tocar:** `app/lib/core/router/*`, `app/lib/app.dart`, `app/lib/main.dart`, pantallas de las pestañas y sus pruebas (TT-MOB-01 Firmada); `contracts/`, `app/packages/knock_api/`, `panel/`, `.github/`, scripts de gobierno; `docs/referencia/*` (lo actualiza docs-keeper).
+- **No tocar:** `app/ios/` (iOS fuera de alcance por decisión del líder, spec §8 resuelto 5; los plugins no lo exigen para compilar el APK); `app/lib/core/router/*`, `app/lib/app.dart`, `app/lib/main.dart`, pantallas de las pestañas y sus pruebas (TT-MOB-01 Firmada); `contracts/`, `app/packages/knock_api/`, `panel/`, `.github/`, scripts de gobierno; `docs/referencia/*` (lo actualiza docs-keeper).
 
 ## 2. Riesgos y efectos secundarios
 - **Secreto:** el error típico es pegar la clave en `AndroidManifest.xml` o en Dart; revisar `git diff` antes de cada commit y que gitleaks pase. La clave queda dentro del APK (inherente): la restricción es el control.
 - **Build del CI:** los plugins nativos nuevos (Play services Maps y Location) aumentan el tiempo de `flutter build apk --debug` y pueden exigir `minSdk` mayor; si `flutter.minSdkVersion` no alcanza, fijar el mínimo que pidan los plugins y anotarlo.
 - **Emulador:** Maps necesita imagen con Google Play services («Google APIs» o «Google Play»); con otra imagen el mapa no carga y parece un fallo de la clave.
-- **Medición:** *profile* no corre en emulador; sin dispositivo físico TC-01 queda sin medición (spec §8 duda 1).
-- **Dependencias:** `geolocator` arrastra paquetes de plataforma (Android, Apple, web, Windows); evaluar transitivas y OSV.
+- **Medición:** *profile* no corre en emulador; si el 2026-10-23 no hay dispositivo físico, TC-01 queda sin medición y se declara en el PR (spec §8 resuelto 1).
+- **Clave bloqueada por facturación:** no se crea ninguna clave hasta que el plan Blaze esté activo (TT-FB-02, lo hace el líder). Mientras tanto se avanza con todo lo que no necesita el mapa pintado (dominio, marcadores, «Mi ubicación», build sin clave); TC-02 y la parte visual de TC-01/TC-03 esperan a la clave.
+- **Dependencias:** `geolocator` arrastra paquetes federados de otras plataformas (se instalan aunque solo se compile Android); evaluar transitivas y OSV.
 - **Arquitectura:** `domain/` sin `flutter`/`geolocator`; `presentation/spike/` no se importa desde `main.dart` ni desde el router. `codemap.py --check` debe quedar sin violaciones; regenerar el mapa (`PYTHONIOENCODING=utf-8`).
 - **Cobertura:** el widget `GoogleMap`, la implementación con `geolocator` y `main_spike_mapa.dart` no los carga ninguna prueba unitaria; el umbral es global (50 %) y hoy está en 98.7 %, debería seguir sobrado.
 
@@ -52,9 +52,9 @@
 | TC-TT-MOB-04-07 | `git check-ignore -v …`, `git ls-files app \| grep -i -E "local.properties\|secrets"` vacío, gitleaks, `flutter build apk --debug` sin `MAPS_API_KEY` | comando |
 
 ## 4. Secuencia
-1. Spec aprobada y dudas de §8 resueltas; claves creadas y restringidas en Google Cloud (fuera del repo), cuota y alerta de presupuesto.
+1. Spec aprobada (dudas de §8 ya resueltas por el líder el 2026-10-21); cuando el plan Blaze esté activo, José Julián crea la clave de Android restringida (paquete + SHA-1 de Erick, solo Maps SDK for Android) en el proyecto de Firebase, con cuota diaria de 1 000 cargas y alerta de 1 USD, y la pasa por canal privado (fuera del repo).
 2. Evaluar `google_maps_flutter`, `geolocator` (y transitivas) y registrar en `Memoria.md`; agregarlas.
-3. Configuración nativa de la clave (Android, iOS) y `.gitignore`; comprobar build sin clave (TC-07).
+3. Configuración nativa de la clave (solo Android) y `.gitignore`; comprobar build sin clave (TC-07).
 4. Dominio (`PuntoMapa`, `ResultadoUbicacion`, `UbicacionRepository`) y generador de pines + unitarias (TC-06).
 5. Marcadores con agrupación + unitaria (TC-03); controlador y botón «Mi ubicación» + unitarias y widget (TC-04, TC-05, A11Y).
 6. Implementación con `geolocator`, widget de mapa, pantalla y punto de entrada del spike; prueba en emulador (agrupación y permisos).
@@ -72,7 +72,7 @@ flutter build apk --debug                         # sin MAPS_API_KEY (como el CI
 flutter run -t lib/main_spike_mapa.dart           # emulador con Google Play services, clave en local.properties
 flutter drive --profile --driver=test_driver/perf_driver.dart --target=integration_test/mapa_rendimiento_test.dart   # Android físico
 adb logcat -s Google_Maps_Android_API             # TC-02
-cd .. && git check-ignore -v app/android/local.properties app/ios/Flutter/Secrets.xcconfig
+cd .. && git check-ignore -v app/android/local.properties
 PYTHONIOENCODING=utf-8 python scripts/codemap.py && PYTHONIOENCODING=utf-8 python scripts/codemap.py --check
 python scripts/sdd_lint.py && python scripts/sdd_lint.py --trace TT-MOB-04
 python scripts/ci/check_exceptions.py && python scripts/sync_agents.py --check

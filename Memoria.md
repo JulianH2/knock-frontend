@@ -161,3 +161,10 @@
 - Precio: la página oficial de precios de Google Maps Platform (consultada el 2026-10-20) muestra la SKU «Maps SDK» con uso gratuito ilimitado en Essentials; se vuelve a verificar con captura en la implementación. Las evaluaciones de dependencias (licencia, mantenimiento, OSV) quedan para la implementación.
 - Pendiente (persona): dispositivo Android físico para medir en *profile* (no corre en emulador); proyecto de Google Cloud y custodio de las claves; corregir `mx.knock.app` en la ficha; los documentos de referencia de este repo aún dicen Pachuca.
 - A evitar: pegar la clave de Maps en el manifiesto, en Dart, en el PR o en un prompt; dar V1 por cumplida con mediciones en emulador o en modo debug.
+
+## 2026-10-21 — KNOCK-39 (TT-MOB-04): revisión del líder (PR #28)
+- Decisión (José Julián): una sola clave de Maps, de Android, en el proyecto de Firebase; la crea y custodia él y la pasa por canal privado. No se crea hasta que el plan Blaze esté activo (TT-FB-02). Restricción obligatoria por paquete `app.knock.mobile` + SHA-1 (primero el de Erick) y solo Maps SDK for Android; cuota de 1 000 cargas al día y alerta de presupuesto de 1 USD. Porqué: la clave viaja en el APK y Maps exige facturación.
+- Decisión: iOS fuera de alcance (el curso solo evalúa Google Play); no se toca `app/ios/`.
+- Decisión: si el 2026-10-23 no hay Android físico, TC-01 queda sin medición y se declara en el PR. Se confirman la evidencia por comando de TC-02, `ACCESS_COARSE_LOCATION` y los textos literales hasta TT-MOB-02.
+- Hecho: ficha `docs/backlog/TT-MOB-04.md` con `app.knock.mobile` (edición mínima; el .docx lo corrige el líder).
+- A evitar: crear o pedir la clave antes de activar Blaze; reintroducir configuración de iOS «por si acaso».
