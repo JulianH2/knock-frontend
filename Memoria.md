@@ -173,3 +173,8 @@
 - Decisiones propuestas (§8, a confirmar al aprobar): idioma inicial español fijo (HU-052 §8; además `flutter_test` usa `en_US` y las pruebas de TT-MOB-01 buscan textos en español); preferencias solo en memoria (guardado en HU-052); menú de prueba en Mi cuenta con `interruptorDePruebaProvider`; fuente empaquetada como asset, sin `google_fonts`; claves ARB en camelCase (`tabInicio`), porque `gen-l10n` no admite puntos; carpeta `core/tema` (no `core/theme`); nombre visible «Knock» aquí; archivos de `gen-l10n` versionados.
 - Nota: `intl` (0.20.3) y `flutter_localizations` ya están en `pubspec.lock` como transitivas de `go_router`; igual se evalúan al declararlas.
 - Pendiente (persona): resolver las dudas de §8 y aprobar la spec.
+
+## 2026-10-21 — KNOCK-25 (TT-MOB-02): riesgo de accesibilidad conocido en la paleta
+- Riesgo conocido: con la paleta de la maqueta, estos pares no llegan a 4.5:1 (WCAG 2.x). Claro: `amber` #E9682D como texto sobre crema (2.98) y sobre blanco (3.24); blanco sobre `amber` (3.24). Oscuro: `mut` sobre `navybg` (3.44), `navy` sobre `navybg` (4.25), `amber` sobre `navybg` (2.50) y `amber` sobre `navy-soft` (4.01).
+- Decisión (líder, PR #16): la spec se firma con la paleta tal cual; esos pares **no se usan para texto ni para botones**; los roles de color de la spec §8 decisión 1 los evitan. El ajuste de los tokens, sin salir de la identidad visual, es una tarea aparte (Sprint 3 o 4).
+- A evitar: usar `amber` como color de texto o el blanco sobre `amber` en un botón; para texto naranja, `amber-ink` #8F3510.
