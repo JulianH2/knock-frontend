@@ -10,8 +10,9 @@
 - [ ] `Memoria.md` actualizado · informe final en el PR
 - [ ] Dependencias nuevas (`google_maps_flutter`, `geolocator`, `flutter_driver` del SDK) evaluadas y registradas en `Memoria.md`
 - [ ] Ninguna clave de Maps versionada ni en el PR, logs o prompts; gitleaks limpio
-- [ ] Claves restringidas por app (`app.knock.mobile` + SHA-1 / bundle) y por API; captura con la clave tapada
-- [ ] Cuota diaria y alerta de presupuesto configuradas (captura sin datos de facturación)
+- [ ] Una sola clave (Android), creada con el plan Blaze ya activo y restringida por app (`app.knock.mobile` + SHA-1) y por API (solo Maps SDK for Android); captura con la clave tapada
+- [ ] Cuota diaria de 1 000 cargas y alerta de presupuesto de 1 USD configuradas (captura sin datos de facturación)
+- [ ] Sin cambios en `app/ios/` (iOS fuera de alcance)
 - [ ] Video y resumen de frames de TC-01 (o declaración honesta de que no hubo dispositivo físico)
 - [ ] `docs/spikes/TT-MOB-04-google-maps.md` con precio vigente (fecha y URL) y recomendación para HU-011
 - [ ] La pantalla de prueba no se alcanza desde `lib/main.dart`
