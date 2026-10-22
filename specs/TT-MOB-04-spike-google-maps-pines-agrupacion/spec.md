@@ -6,7 +6,7 @@
 > **Ficha:** `docs/backlog/TT-MOB-04.md` (TT-MOB-04_SpikeGoogleMapsFlutter_Knock.docx)
 > **Fuentes:** DECISIONES.md #22 y «Pendientes que siguen abiertos» #2 (precio de Google Maps) y #6 (paquete para el mapa con pines y capas) · DECISION_TECNICA.md §11 (pendientes 2 y 4) · PLAN_ADAPTACION.md §D (TT-MOB-04: «Mantener») · constitución §6 («ubicación del dispositivo convertida en colonia y descartada») · ficha HU-011 · knock-backend `db/sepomex/README.md` y spec TT-BD-02 (ciudad piloto Tula de Allende)
 > **Skills:** story-workflow, flutter-clean-architecture, testing-strategy-frontend, security-core, reuse-before-create
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 ## 1. Objetivo
 Comprobar, antes de HU-011 (mapa de expertos en Inicio), que Google Maps en Flutter aguanta los pines de expertos con fluidez, que la agrupación de marcadores y el botón «Mi ubicación» funcionan, y conocer el costo vigente del SDK de mapas para móviles (pendiente #2 de DECISIONES). **Es un spike: el entregable principal es conocimiento** (medición, costo y recomendación escritos en un documento de resultados). El código que se escribe se divide en dos: lo que HU-011 reutiliza (configuración de la clave, dependencias, widget de mapa con agrupación y lógica de «Mi ubicación») y lo desechable (pantalla de prueba, punto de entrada propio y generador de pines ficticios), que se borra cuando HU-011 tenga datos reales.
@@ -125,6 +125,6 @@ Riesgo medio: introduce un secreto operativo (clave de Maps), un permiso sensibl
 8. **Textos sin ARB.** De acuerdo: literales en español hasta que se fusione TT-MOB-02; se migran en TT-MOB-02 o HU-011.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-10-22
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
