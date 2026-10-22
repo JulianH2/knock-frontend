@@ -5,7 +5,7 @@
 > **Ficha:** TT-MOB-02_TemaClaroOscuroPaleta_Knock.docx (`docs/backlog/TT-MOB-02.md`)
 > **Fuentes:** DECISIONES.md #14 («Textos en archivos de traducción desde el día uno… y tema claro/oscuro (Alta). La traducción completa al inglés queda en Media») · FUNCIONES_Y_FLUJOS.md (Mi cuenta → Configuración: «Idioma (Español/English), apariencia (claro/oscuro/automático)») · ficha HU-052 (§8 «Idioma por defecto: español») · maqueta `css/knock.css` y `js/i18n/` (no están en este repositorio)
 > **Skills:** story-workflow, flutter-clean-architecture, testing-strategy-frontend, security-core, reuse-before-create
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 ## 1. Objetivo
 Que la app nazca con el tema claro y oscuro de la maqueta y con todos sus textos visibles en archivos de traducción (ARB es/en con `gen-l10n`), para que ninguna historia posterior tenga que rehacer pantallas. Terminada cuando (ficha): **cambiar tema e idioma funciona sin reiniciar**. La pantalla de Configuración y el guardado de la preferencia son de HU-052; aquí solo hay un menú de prueba.
@@ -114,6 +114,6 @@ Riesgo bajo: cambio de estilo y textos, sin red, sin sesión, sin datos personal
 10. **TC-01. Resuelto:** la prueba de widget corre en cada PR y las capturas en emulador (claro, oscuro, español, inglés) son la evidencia de la ficha §10.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-10-22
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
