@@ -8,6 +8,10 @@ Falla si:
     [SuppressMessage], @ts-ignore, NOSONAR, gitleaks:allow) sin citar un EXC-NNN registrado y vigente
   - .trivyignore contiene un CVE sin comentario «# EXC-NNN»
 
+Única excepción al escaneo: en los archivos .dart de GENERATED_DIRS (código que escribe flutter gen-l10n) se aceptan las
+líneas «// ignore:» e «// ignore_for_file:» que la herramienta agrega sola. Cualquier otro patrón de supresión
+(nosemgrep, gitleaks:allow, etc.) o cualquier otro tipo de archivo en esa carpeta se sigue revisando.
+
 Uso: python scripts/ci/check_exceptions.py [--warn-days 7]
 """
 from __future__ import annotations
@@ -27,6 +31,7 @@ CODE_EXT = {".cs", ".dart", ".ts", ".js", ".yml", ".yaml", ".props", ".editorcon
 # Código que escribe una herramienta con sus propios encabezados «ignore» y que no se edita a mano (ruta exacta, sin comodines):
 # gen-l10n escribe `// ignore_for_file: type=lint` en cada archivo y no tiene opción para quitarlo.
 GENERATED_DIRS = ("app/lib/l10n/generado/",)
+GENERATOR_IGNORE = re.compile(r"^\s*//\s*ignore(?:_for_file)?:")
 
 
 def parse_registry(text: str) -> list[dict]:
@@ -79,11 +84,12 @@ def main() -> int:
         if not path.is_file() or set(path.relative_to(ROOT).parts) & SKIP or path.suffix not in CODE_EXT:
             continue
         rel = path.relative_to(ROOT).as_posix()
-        if rel.startswith(GENERATED_DIRS):
-            continue
+        generated = rel.startswith(GENERATED_DIRS) and path.suffix == ".dart"
         if rel.startswith(("scripts/", "security/", ".github/", ".semgrep/", ".claude/", ".opencode/", ".codex/", ".gemini/", ".cursor/")):
             continue
         for n, line in enumerate(path.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
+            if generated and GENERATOR_IGNORE.match(line):
+                continue
             if SUPPRESSION.search(line):
                 ids = re.findall(r"EXC-\d{3}", line)
                 if not ids:
