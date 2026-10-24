@@ -24,6 +24,9 @@ REQUIRED = ("id", "herramienta", "regla", "alcance", "justificacion", "responsab
 SUPPRESSION = re.compile(r"nosemgrep|eslint-disable|#pragma\s+warning\s+disable|//\s*ignore(?:_for_file)?:|\[SuppressMessage|@ts-ignore|@ts-expect-error|NOSONAR|gitleaks:allow")
 SKIP = {".git", "node_modules", "bin", "obj", ".dart_tool", "build", "dist", ".angular", "coverage", "reports"}
 CODE_EXT = {".cs", ".dart", ".ts", ".js", ".yml", ".yaml", ".props", ".editorconfig"}
+# Código que escribe una herramienta con sus propios encabezados «ignore» y que no se edita a mano (ruta exacta, sin comodines):
+# gen-l10n escribe `// ignore_for_file: type=lint` en cada archivo y no tiene opción para quitarlo.
+GENERATED_DIRS = ("app/lib/l10n/generado/",)
 
 
 def parse_registry(text: str) -> list[dict]:
@@ -76,6 +79,8 @@ def main() -> int:
         if not path.is_file() or set(path.relative_to(ROOT).parts) & SKIP or path.suffix not in CODE_EXT:
             continue
         rel = path.relative_to(ROOT).as_posix()
+        if rel.startswith(GENERATED_DIRS):
+            continue
         if rel.startswith(("scripts/", "security/", ".github/", ".semgrep/", ".claude/", ".opencode/", ".codex/", ".gemini/", ".cursor/")):
             continue
         for n, line in enumerate(path.read_text(encoding="utf-8", errors="ignore").splitlines(), 1):
