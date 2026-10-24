@@ -180,4 +180,3 @@
 - Decisión (líder): el job `app` de `ci-pr.yml` corre `flutter gen-l10n` después de `pub get` y falla si `app/lib/l10n/generado/` cambia o tiene archivos sin versionar. Si todavía no existe `app/l10n.yaml` (antes de TT-MOB-02) el paso solo avisa. Porqué: los `.dart` de `gen-l10n` se versionan y no se editan a mano (TT-MOB-02, §8 decisión 8), y el escaneo de supresiones ya no los revisa (frontend #33); este paso es lo que evita que alguien edite a mano un archivo de esa carpeta o cambie un ARB sin regenerar.
 - Verificado en una copia aparte con `l10n.yaml`, dos ARB y `generate: true`: falla con generados sin versionar, pasa con generados al día, falla con un ARB cambiado sin regenerar y pasa con aviso sin `l10n.yaml`.
 - A evitar: quitar el `git status --porcelain` por un `git diff` (no ve archivos nuevos); correr el paso antes de `pub get`; suprimir el error en lugar de regenerar y versionar los archivos.
-
