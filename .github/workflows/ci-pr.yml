@@ -141,6 +141,18 @@ jobs:
           channel: stable
           cache: true
       - run: flutter pub get --enforce-lockfile
+      - name: Traducciones generadas (gen-l10n) al día
+        run: |
+          if [ ! -f l10n.yaml ]; then
+            echo "::notice::Aún no hay l10n.yaml (TT-MOB-02): no hay traducciones generadas que comprobar."
+            exit 0
+          fi
+          flutter gen-l10n
+          if [ -n "$(git status --porcelain -- lib/l10n/generado)" ]; then
+            git status --short -- lib/l10n/generado
+            echo "::error::Los archivos de lib/l10n/generado no coinciden con los ARB. Corre «flutter gen-l10n» en app/ y sube el resultado."
+            exit 1
+          fi
       - name: Formato
         run: dart format --set-exit-if-changed --output=none lib test integration_test
       - name: Análisis estático (lints estrictos, tipos)
