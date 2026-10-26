@@ -5,7 +5,7 @@
 > **Rama:** `feature/KNOCK-30-oficios-screen` → PR a `sprint-01` (la ficha cita `feature/KNOCK-30-pantalla-oficios` → `sprint-00`; la rama real es la de este encabezado)
 > **Fuentes:** ficha `TT-PRU-02` (`docs/backlog/TT-PRU-02.md` de knock-backend, generada del backlog) · spec firmada de TT-PRU-01 (`specs/TT-PRU-01-endpoint-get-api-v1-oficios/spec.md` en el PR #31 de knock-backend, §4 y §8 D2, D8 y D9) · spec de TT-MOB-01 (estructura `core/` y `features/`, router y pestañas) · `.specify/memory/constitution.md` · `AGENTS.md` §§0, 1, 4 y 5 · skills `flutter-clean-architecture`, `testing-strategy-frontend`, `api-client-contract` y `security-core`
 > **Skills:** spec-first-writing, story-workflow, flutter-clean-architecture, testing-strategy-frontend, api-client-contract, security-core, reuse-before-create, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 **Cómo leer esta spec.** Es un ejercicio de 1 punto para ver qué tan cómodo se siente Guillermo en el frontend. Por decisión del líder (2026-10-24) la pantalla se construye **contra el contrato firmado de TT-PRU-01 y con datos de prueba**: no hay llamada HTTP real todavía, porque en este repositorio no existen `contracts/openapi.v1.json` ni el cliente generado y `dio` no está evaluado. Va en la misma línea del flujo nuevo del equipo (la app avanza contra el contrato publicado, con una API simulada, sin esperar al backend). Lo que no está decidido queda como duda numerada con recomendación (§8).
 
@@ -135,6 +135,6 @@ Cobertura mínima de la app: 50 % (AGENTS.md §5); no se bajan umbrales.
 5. **Texto de los mensajes** («No pudimos cargar los oficios», «Todavía no hay oficios disponibles», «A domicilio», «En taller»): son propuesta de redacción; los confirma quien tenga la maqueta, porque el diseño final está fuera de alcance.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-10-25
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
