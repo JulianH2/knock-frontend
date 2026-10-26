@@ -44,7 +44,7 @@ Comprobar antes de HU-011 que Google Maps en Flutter aguanta los pines de expert
 
 ## 5. Pasos
 
-1. Crear en Google Cloud la clave de Maps SDK for Android e iOS restringida al paquete app.knock.mobile y a sus huellas.
+1. Crear en Google Cloud la clave de Maps SDK for Android restringida al paquete app.knock.mobile y a sus huellas.
 1. Agregar google_maps_flutter y un paquete de agrupación de marcadores.
 1. Pantalla de prueba con 50 pines alrededor de la ciudad piloto, agrupación al alejar y botón para centrar.
 1. Medir fluidez en un Android de gama media.

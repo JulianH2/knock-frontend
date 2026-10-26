@@ -25,6 +25,23 @@ flutter test --coverage                         # unitarias y widget; cobertura 
 flutter test integration_test                   # E2E de humo; requiere un emulador o dispositivo Android encendido
 ```
 
+## Spike de Google Maps (TT-MOB-04, desechable)
+Pantalla de prueba con 50 pines ficticios alrededor de Tula de Allende, agrupación nativa y botón «Mi ubicación». No está en el router ni en `main.dart`: tiene su propio punto de entrada.
+
+1. **Clave (solo Android).** La crea y custodia el líder en el proyecto de Firebase (restringida a `app.knock.mobile` + tu SHA-1 de depuración y solo a Maps SDK for Android) y te la pasa por un canal privado. Agrégala a `app/android/local.properties` (ignorado por git) en una línea `MAPS_API_KEY=<tu clave>`, o expórtala como variable de entorno `MAPS_API_KEY`. **Nunca** la escribas en el manifiesto, en Dart, en un PR ni en un chat con IA. Tu SHA-1: `keytool -list -v -keystore ~/.android/debug.keystore -alias androiddebugkey -storepass android`.
+2. **Correr.** Emulador con imagen «Google APIs» o «Google Play» (sin Play services el mapa no carga):
+   ```bash
+   cd app
+   flutter run -t lib/main_spike_mapa.dart
+   ```
+3. **Medir la fluidez (TC-TT-MOB-04-01).** Solo en un Android físico (el modo *profile* no corre en emulador):
+   ```bash
+   flutter drive --profile --driver=test_driver/perf_driver.dart --target=integration_test/mapa_rendimiento_test.dart
+   ```
+   El resumen queda en `build/mapa_rendimiento.timeline_summary.json`.
+
+Sin clave la app compila igual (`flutter build apk --debug`, como en el CI); solo el mapa queda en blanco. Resultados: `docs/spikes/TT-MOB-04-google-maps.md`.
+
 ## Estructura
 ```
 lib/
