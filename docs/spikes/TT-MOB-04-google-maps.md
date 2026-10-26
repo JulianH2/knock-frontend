@@ -1,7 +1,7 @@
 # TT-MOB-04 — Resultados del spike de Google Maps en Flutter
 
 > **Jira:** KNOCK-39 · **Spec:** `specs/TT-MOB-04-spike-google-maps-pines-agrupacion/spec.md` · **Prepara:** HU-011 (KNOCK-55)
-> **Estado del documento:** parcial (2026-10-22). Falta la parte que necesita la clave de Maps (no existe todavía: espera al plan Blaze, TT-FB-02) y un Android físico.
+> **Estado del documento:** parcial (2026-10-22, actualizado 2026-10-26). Falta la parte que necesita la clave de Maps (no existe todavía: espera al plan Blaze, TT-FB-02) y un Android físico.
 
 ## 1. Entorno
 - Flutter 3.47.7 stable · Dart 3.13.5 · Windows 11.
@@ -28,7 +28,7 @@
 | TC-04 «Mi ubicación» concedido | Automático en verde: el permiso no se pide al abrir; al tocar se lee una vez y la cámara se mueve a ese punto; la posición no se guarda. |
 | TC-05 permiso negado / servicio apagado | Automático en verde: la cámara no se mueve y aparece el aviso; «Abrir ajustes» cuando se negó para siempre. |
 | TC-06 pines ficticios | Automático en verde: 50 pines `prueba-01`…`prueba-50`, deterministas, dentro de lon −99.40..−99.28, lat 20.00..20.12. |
-| TC-07 sin clave en el repo | `local.properties` ignorado; ninguna clave de Google en el repositorio. El build sin clave queda por confirmar (ver §6). |
+| TC-07 sin clave en el repo | `local.properties` ignorado; ninguna clave de Google en el repositorio. Build sin clave confirmado el 2026-10-26: `flutter build apk --debug` → «Built build/app/outputs/flutter-apk/app-debug.apk». |
 
 ## 4. Configuración de claves (sin valores)
 - Una sola clave, de Android, en el proyecto de Google Cloud de Firebase; la crea y custodia el líder cuando el plan Blaze esté activo.
@@ -50,7 +50,7 @@ La consulta se hizo con una herramienta que resume la página; falta la captura 
 - **Mapa pintado:** no hay clave, así que no se vio el mapa, la agrupación real ni el centrado en el emulador.
 - **TC-01:** sin Android físico ni clave, sin medición. No se da la fluidez por confirmada.
 - **TC-02:** pendiente de la clave.
-- **Build sin clave:** se intentó `flutter build apk --debug` el 2026-10-22 y falló por **disco lleno** en la máquina (Gradle no pudo escribir en su caché); hay que repetirlo con espacio libre o tomarlo del job del CI.
+- **Build sin clave:** el intento del 2026-10-22 falló por disco lleno; repetido el 2026-10-26 con espacio libre, compila (`app-debug.apk`).
 - El lienzo del mapa no es accesible para lectores de pantalla (límite del SDK); HU-011 ofrece la lista del panel como alternativa.
 
 ## 7. Recomendación para HU-011
