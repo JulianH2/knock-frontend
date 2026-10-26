@@ -5,6 +5,7 @@ import 'package:app/features/actividad/presentation/actividad_screen.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
 import 'package:app/features/explorar/presentation/explorar_screen.dart';
 import 'package:app/features/inicio/presentation/inicio_screen.dart';
+import 'package:app/features/oficios/presentation/oficios_screen.dart';
 import 'package:app/features/trabajo/presentation/trabajo_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -32,7 +33,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             AppShell(navigationShell: navigationShell),
         branches: [
           _rama(Rutas.inicio, const InicioScreen()),
-          _rama(Rutas.explorar, const ExplorarScreen()),
+          _rama(
+            Rutas.explorar,
+            const ExplorarScreen(),
+            subrutas: [
+              GoRoute(
+                path: 'oficios',
+                builder: (context, state) => const OficiosScreen(),
+              ),
+            ],
+          ),
           _rama(Rutas.actividad, const ActividadScreen()),
           _rama(Rutas.trabajo, const TrabajoScreen()),
           _rama(Rutas.cuenta, const CuentaScreen()),
@@ -48,6 +58,16 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   return router;
 });
 
-StatefulShellBranch _rama(String ruta, Widget pantalla) => StatefulShellBranch(
-  routes: [GoRoute(path: ruta, builder: (context, state) => pantalla)],
+StatefulShellBranch _rama(
+  String ruta,
+  Widget pantalla, {
+  List<RouteBase> subrutas = const [],
+}) => StatefulShellBranch(
+  routes: [
+    GoRoute(
+      path: ruta,
+      builder: (context, state) => pantalla,
+      routes: subrutas,
+    ),
+  ],
 );
