@@ -1,4 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Ubicación aproximada para el botón «Mi ubicación» (TT-MOB-04). Se pide
+         solo al tocar el botón, nunca al abrir la app. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
         android:label="app"
         android:name="${applicationName}"
@@ -30,6 +33,12 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+        <!-- Clave de Maps SDK for Android (TT-MOB-04): la pone Gradle desde
+             MAPS_API_KEY (local.properties o variable de entorno). Nunca
+             escribas la clave aquí. -->
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="${mapsApiKey}" />
     </application>
     <!-- Required to query activities that can process text, see:
          https://developer.android.com/training/package-visibility and

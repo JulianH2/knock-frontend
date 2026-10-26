@@ -47,6 +47,8 @@ panel/reports/
 app/coverage/
 app/mutation-test-report/
 app/android/key.properties
+# Por máquina; aquí va MAPS_API_KEY (TT-MOB-04). También lo ignora app/android/.gitignore.
+app/android/local.properties
 app/android/*.jks
 app/ios/Runner/GoogleService-Info.plist
 
