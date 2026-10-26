@@ -1,0 +1,176 @@
+# TT-WEB-01 — Landing page mínima en Railway: redirección a Google Play y enlace al aviso de privacidad
+
+> **Jira:** KNOCK-148 · **Épica:** — (confirmar en Jira) · **Área:** WEB · Landing · **Responsable:** Erick Trejo Reséndiz · **Sprint:** S2 (vence 2026-10-27) · **Puntos:** 3 · **Capas:** Landing (sitio estático)
+> **Repositorio:** knock-frontend · **Otra parte en:** — · **Relacionadas:** TT-WEB-02 (KNOCK-159, páginas de aviso de privacidad y manejo de datos; contenido de José Julián, plan A10), TT-TIE-01 (KNOCK-52, cuenta de Google Play y AAB) · **Usa:** paleta y fuente de TT-MOB-02 (KNOCK-25)
+> **Fuentes:** Jira KNOCK-148 (título, «terminada cuando» y comentario del líder del 2026-10-22/24: hosting en Railway) · constitución 2.2.0 §1, §3 (Landing), §4 (`landing/`), §9 (versiones y despliegue), §14 (Landing) · `docs/PLAN_ADAPTACION.md` A10, B2, C13, E «Móvil, landing y Play», J (Ola 0) · `docs/VERSIONAMIENTO.md` §2 (componente Landing) · `docs/decisiones/ADR-005` (tareas con fecha dura) · `docs/CUMPLIMIENTO_LINEAMIENTOS.md` filas 3 y 17 · `docs/referencia/DECISIONES.md` §6 y tabla legal (fila 9) · spec TT-MOB-02 §8 decisiones 1 y 2 (paleta y Nunito). No hay ficha `.docx` en `docs/backlog`: la fuente es Jira.
+> **Skills:** spec-first-writing, story-workflow, security-core, testing-strategy-frontend, reuse-before-create, traceability
+> **Estado:** Borrador
+
+## 1. Objetivo
+Publicar por HTTPS, en el espacio de Railway del líder, una página de inicio estática de Knock que lleve a la ficha de Google Play y enlace al aviso de privacidad. Google Play pide la URL de privacidad antes de la solicitud de producción (plan C13). Por eso la tarea vence el 2026-10-27.
+
+A este repositorio le toca la carpeta `landing/` (constitución §4): el HTML y el CSS de la página de inicio, la ruta reservada para el aviso de privacidad (su contenido es de TT-WEB-02), la configuración del servidor con las cabeceras de seguridad, el contenedor que Railway construye y las pruebas. El despliegue en Railway lo hace el líder, porque la cuenta es suya (§8 decisión 6).
+
+**Terminada cuando (Jira):** el sitio está publicado con un enlace a la ficha de Google Play y otro a la página de privacidad.
+
+## 2. Historia y casos de prueba
+**TT-WEB-01** — Como persona que quiere usar Knock, quiero una página web oficial que me lleve a la app en Google Play y me deje leer el aviso de privacidad, para instalarla con confianza. Como equipo, queremos esa URL pública de privacidad para solicitar producción en Google Play.
+
+Las pruebas automáticas viven en `landing/tests/test_landing.py` (Python 3.12, solo biblioteca estándar; §8 decisión 4). El nombre de cada método lleva el ID con guiones bajos (p. ej. `test_TC_TT_WEB_01_02_enlaces`), que es lo que busca `sdd_lint.py --trace` (antes hay que agregar la ruta a `test_globs`, §8 decisión 9). Las filas marcadas «(comando)» se verifican además con un comando cuya salida va en el PR. `<URL>` es la URL que publique el líder.
+
+| Caso | Criterio (Dado / Cuando / Entonces) | Verificación |
+|---|---|---|
+| TC-TT-WEB-01-01 | Dado `landing/`, cuando se construye la imagen y se corre en local, entonces el build termina sin errores; la imagen base está fijada por versión y digest `@sha256:`; el proceso corre sin root (UID distinto de 0) en el puerto 8080; la imagen no declara secretos (`ENV` ni `ARG` con valores sensibles); y `GET /` en local responde 200. | `test_TC_TT_WEB_01_01_dockerfile` (lee el `Dockerfile`: digest, usuario sin root y ausencia de `ENV`/`ARG` sensibles) · (comando) `docker build -t knock-landing landing && docker run -d --rm -p 8080:8080 --name kl knock-landing && curl -s -o /dev/null -w "%{http_code}\n" http://localhost:8080/ && docker exec kl id -u` |
+| TC-TT-WEB-01-02 | Dada la página de inicio, cuando se abre, entonces muestra el nombre Knock, una descripción breve y el pie con la versión `landing-vX.Y.Z`. Además ofrece **una** de estas dos opciones para Google Play, según la configuración de §8 decisión 3: (a) **disponible**: un enlace cuyo `href` es exactamente `https://play.google.com/store/apps/details?id=app.knock.mobile` más el parámetro `referrer` con las marcas UTM fijas de §8 decisión 3, sin `target="_blank"` (o con `rel="noopener noreferrer"`); o (b) **próximamente**: el texto «Próximamente en Google Play» sin ningún enlace a `play.google.com`. En los dos casos hay un enlace visible «Aviso de privacidad» a `/privacidad/`, y la página no tiene ningún otro enlace a dominios externos. | `test_TC_TT_WEB_01_02_enlaces` (analiza `index.html` con `html.parser` y acepta solo los estados a o b) |
+| TC-TT-WEB-01-03 | Dada la ruta `/privacidad/`, cuando TT-WEB-02 todavía no publica el aviso, entonces la ruta responde 200 con una página «Aviso de privacidad en preparación» que no contiene texto legal inventado, lleva `<meta name="robots" content="noindex">` y tiene un enlace de regreso al inicio. Cuando TT-WEB-02 publique el contenido, esa página se reemplaza y este caso deja de exigir el marcador de «en preparación». | `test_TC_TT_WEB_01_03_privacidad` (existe `privacidad/index.html`; si tiene el marcador `data-estado="en-preparacion"`, también tiene `noindex` y no tiene las palabras «responsable», «finalidades» ni «ARCO»; si no lo tiene, es el contenido de TT-WEB-02 y lo prueba esa spec) |
+| TC-TT-WEB-01-04 | Dado el servidor, cuando responde a cualquier ruta (incluidos el 404 y los archivos estáticos), entonces envía `Content-Security-Policy` igual a la de §6, `Strict-Transport-Security: max-age=31536000`, `X-Content-Type-Options: nosniff`, `X-Frame-Options: DENY`, `Referrer-Policy: no-referrer`, `Permissions-Policy` con las funciones de §6 desactivadas y `Cross-Origin-Opener-Policy: same-origin`. Además no envía la versión del servidor (`server_tokens off`), no lista directorios y el 404 es una página propia. | `test_TC_TT_WEB_01_04_cabeceras` (lee `nginx.conf`: cada `add_header` con `always`, en el servidor y repetido en cada `location` que declare cabeceras propias, más `server_tokens off` y `autoindex off`) · (comando) `curl -sI https://<URL>/` y `curl -sI https://<URL>/no-existe` |
+| TC-TT-WEB-01-05 | Dados todos los `.html` y `.css` de `landing/`, cuando se revisan, entonces ningún `src`, `href` de recurso (`<link>`), `@import` ni `url()` apunta a otro origen (solo rutas relativas o que empiezan en `/`); no hay `<script>`, atributos `on*`, atributos `style` ni bloques `<style>`; no hay `<form>`, `<input>`, `<iframe>` ni cookies; y los únicos enlaces externos `<a>` permitidos son los de Google Play del caso 02. | `test_TC_TT_WEB_01_05_sin_terceros` · comprobación manual en la pestaña Network (solo peticiones a `<URL>`), con captura en el PR |
+| TC-TT-WEB-01-06 | Dada la página en tema claro y en oscuro (`prefers-color-scheme`), entonces: el `<html>` tiene `lang="es-MX"`; hay un solo `<h1>`; todos los enlaces tienen un nombre accesible; el foco se ve; no hay `user-scalable=no` ni `maximum-scale`; y cada par de texto y fondo que declara el CSS está en la lista de pares permitidos de TT-MOB-02, con un contraste WCAG 2.x de al menos 4.5:1, calculado con la misma fórmula que `contraste.dart`. | `test_TC_TT_WEB_01_06_accesibilidad` (lee los tokens `--color-*` del CSS y los pares declarados) · (comando) Lighthouse, categoría Accesibilidad = 100 en la URL publicada, en claro y en oscuro, o axe DevTools sin violaciones serias ni críticas, con captura en el PR |
+| TC-TT-WEB-01-07 | Dados los `.html` de `landing/`, cuando se validan con el Nu HTML Checker, entonces no hay errores. | (comando) `docker run --rm -v "$PWD/landing":/w ghcr.io/validator/validator:<versión fijada> vnu --skip-non-html /w` o el validador en línea `https://validator.w3.org/nu/?doc=https://<URL>/` |
+| TC-TT-WEB-01-08 | Dada la URL publicada en Railway, cuando se pide por HTTPS, entonces responde 200 con un certificado válido; y cuando se pide por HTTP, entonces redirige (301 o 308) a la misma ruta por HTTPS. | (comando) `curl -sS -o /dev/null -w "%{http_code} %{ssl_verify_result}\n" https://<URL>/` → `200 0` · `curl -sI http://<URL>/` → `301`/`308` con `Location: https://…` |
+| TC-TT-WEB-01-09 | Dada la página de inicio, entonces el HTML, el CSS y las fuentes que carga suman como máximo 300 KB sin comprimir; el HTML y el CSS se sirven con gzip; y las fuentes usan `font-display: swap`. | `test_TC_TT_WEB_01_09_peso` (suma lo que referencia `index.html`) · (comando) `curl -sI -H "Accept-Encoding: gzip" https://<URL>/` → `Content-Encoding: gzip` · Lighthouse móvil, Rendimiento ≥ 90, con captura en el PR |
+
+## 3. Alcance / No-alcance
+- **In (este repositorio, carpeta `landing/`):**
+  - `index.html`: página de inicio en español con el nombre Knock, una descripción breve (texto en §7), el bloque de Google Play (disponible o próximamente, §8 decisión 3), un enlace a `/privacidad/` y un pie con la versión `landing-vX.Y.Z` y el enlace a privacidad.
+  - `privacidad/index.html`: página provisional «Aviso de privacidad en preparación», sin texto legal (§8 decisión 2). TT-WEB-02 la reemplaza.
+  - `404.html`: página propia de «no encontrada» con un enlace al inicio.
+  - `css/landing.css`: estilos con los tokens claro y oscuro de TT-MOB-02 (§7) y `@font-face` de Nunito 400 y 700 con `font-display: swap`.
+  - `fonts/`: `Nunito-Regular.ttf`, `Nunito-Bold.ttf` y `OFL.txt`, copiados sin cambios de `app/assets/fonts/nunito/` (TT-MOB-02). No se cargan fuentes por red.
+  - `nginx.conf` y `Dockerfile`: nginx sin root, en el puerto 8080, con las cabeceras de §6, gzip, caché corta y el 404 propio (§8 decisión 1).
+  - `railway.json`: configuración como código para Railway (builder Dockerfile, ruta de salud `/`, rutas vigiladas `landing/**`), si el líder la acepta (§8 decisión 6).
+  - `README.md` de `landing/`: cómo correrla en local, cómo pasar Google Play de «próximamente» a «disponible», qué configura el líder en Railway y el plan B.
+  - `tests/test_landing.py`: pruebas de los casos de §2 (solo biblioteca estándar).
+  - Registrar el primer despliegue en `docs/VERSIONES_DESPLEGADAS.md` y una entrada en `Memoria.md`.
+- **Out:**
+  - El contenido del aviso de privacidad y de manejo de datos: TT-WEB-02 (KNOCK-159), con texto de José Julián (plan A10).
+  - Las páginas de **términos** y de **eliminar cuenta** que pide la constitución §14 (Google Play exige la URL de eliminación de cuenta): no son de esta tarea (§8 duda 11).
+  - Google Analytics, el aviso de cookies, la lectura de parámetros UTM de entrada y cualquier JavaScript (§8 decisión 5).
+  - La versión en inglés (§8 decisión 7).
+  - Un dominio propio, una CDN, los App Links de Android (`/.well-known/assetlinks.json`), formularios y boletines.
+  - Usar el espacio de Railway para cualquier otra cosa (Redis, bases de datos, servicios): el líder lo descartó (comentario de Jira). Si algún día se usa para otra cosa, se escribe un ADR como aportación personal y el producto debe funcionar sin eso.
+  - Cambios en `.github/`, `.agents/` y `scripts/`: los pide esta spec y los hace el líder (§8 decisiones 8 a 10).
+  - El enlace a la landing desde la app (TT-MOB-06) y la ficha de Play (TT-TIE-01/03).
+
+## 4. Contratos API y eventos
+— No consume ni expone endpoints de knock-backend, no usa el contrato `contracts/openapi.v1.json` y no publica eventos.
+
+Interfaces públicas que fija esta tarea (otras tareas dependen de ellas y no se renombran sin avisar):
+- `https://<URL>/`: página de inicio.
+- `https://<URL>/privacidad/`: URL del aviso de privacidad que se da a Google Play Console (TT-TIE-01/03) y a la app (TT-MOB-06). TT-WEB-02 llena su contenido sin cambiar la ruta.
+- Rutas reservadas, sin crear todavía: `/terminos/` y `/eliminar-cuenta/` (§8 duda 11).
+- Enlace de salida a Google Play: `https://play.google.com/store/apps/details?id=app.knock.mobile&referrer=<UTM codificado>` (el identificador es el de `app/android/app/build.gradle.kts`, `Memoria.md` 2026-10-15).
+
+## 5. Modelo de datos
+— Sin datos de personas. La página no guarda nada en el navegador (sin cookies, `localStorage` ni `sessionStorage`) y no tiene formularios.
+
+Única configuración: el estado del bloque de Google Play (disponible o próximamente), que vive en `index.html` y se cambia con un PR (§8 decisión 3). Railway no recibe variables de entorno ni secretos.
+
+## 6. Seguridad, privacidad y amenazas
+Riesgo bajo: es un sitio público, sin datos personales, sin sesión y sin entradas del usuario. El riesgo principal es la confianza: la página es la cara oficial de Knock y la URL que revisa Google Play.
+
+**Cabeceras (TC-04)**, en todas las respuestas (`add_header … always`):
+- `Content-Security-Policy: default-src 'none'; style-src 'self'; font-src 'self'; img-src 'self'; base-uri 'none'; form-action 'none'; frame-ancestors 'none'; upgrade-insecure-requests`. Sin `script-src`: la página no tiene JavaScript.
+- `Strict-Transport-Security: max-age=31536000`. Sin `includeSubDomains` ni `preload`, porque el dominio `up.railway.app` no es nuestro.
+- `X-Content-Type-Options: nosniff` · `X-Frame-Options: DENY` · `Referrer-Policy: no-referrer` · `Cross-Origin-Opener-Policy: same-origin` · `Cross-Origin-Resource-Policy: same-origin`.
+- `Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=()`.
+- `server_tokens off`, `autoindex off`, 404 propio. Solo se copian al contenedor los archivos públicos: no van `Dockerfile`, `tests/`, `README.md` ni `.git`.
+
+| Amenaza (STRIDE) | Control | Caso que lo prueba |
+|---|---|---|
+| **Suplantación / phishing:** un clon de la página o una URL parecida engaña a las personas para que instalen otra app o entreguen datos | La página no pide nada: no tiene formularios, inicio de sesión ni campos (no hay nada que robar). La URL oficial solo se publica en la ficha de Play, en la app (TT-MOB-06) y en el `README`. Un texto en el pie dice «Knock nunca te pedirá códigos SMS ni contraseñas en esta página». HSTS. Riesgo aceptado: el subdominio `*.up.railway.app` es menos reconocible que un dominio propio (§8 duda 12). | TC-TT-WEB-01-05, TC-TT-WEB-01-02, TC-TT-WEB-01-04 |
+| **Alteración: enlaces manipulados** (el enlace de Play apunta a otra app, o hay una redirección abierta) | El `href` de Play es una constante del HTML (no sale de parámetros ni de JavaScript) y la prueba exige la URL exacta con `id=app.knock.mobile`. Sin rutas de redirección en nginx. Todo cambio pasa por un PR revisado (CODEOWNERS), y Railway solo despliega desde la rama acordada, después del CI (§8 decisión 6). | TC-TT-WEB-01-02 |
+| **Inyección vía contenido** (XSS, HTML inyectado) | Sitio estático sin entradas del usuario, sin plantillas en el servidor y sin JavaScript. CSP `default-src 'none'` sin `unsafe-inline`; sin `style` en línea ni `<style>` (por eso basta con `style-src 'self'`). | TC-TT-WEB-01-05, TC-TT-WEB-01-04 |
+| **Clickjacking** (la página dentro de un marco ajeno) | `frame-ancestors 'none'` y `X-Frame-Options: DENY` | TC-TT-WEB-01-04 |
+| **Fuga a terceros / trackers** | Ningún recurso de otro origen: Nunito empaquetada (sin Google Fonts), sin CDN, sin analítica y sin cookies. `Referrer-Policy: no-referrer`. Google Analytics queda fuera hasta una tarea con aviso de cookies (§8 decisión 5). | TC-TT-WEB-01-05, TC-TT-WEB-01-04 |
+| **Alteración en tránsito / downgrade a HTTP** | HTTPS con el certificado de Railway, redirección de HTTP a HTTPS en el borde de Railway (confirmar en el despliegue), HSTS y `upgrade-insecure-requests` | TC-TT-WEB-01-08, TC-TT-WEB-01-04 |
+| **Aviso de privacidad falso o inventado** | La ruta `/privacidad/` muestra «en preparación» sin texto legal y con `noindex` hasta que TT-WEB-02 publique el contenido aprobado (§8 decisión 2). Google Play no se solicita con la página provisional. | TC-TT-WEB-01-03 |
+| **Fuga de información del servidor** (versión, listado de archivos, archivos internos) | `server_tokens off`, `autoindex off`, 404 propio; el `Dockerfile` copia solo los archivos públicos | TC-TT-WEB-01-04, TC-TT-WEB-01-01 |
+| **Cadena de suministro** (imagen base vulnerable o cambiada) | Imagen `nginxinc/nginx-unprivileged` (alpine) fijada por versión y digest, sin root; sin paquetes npm ni pub. Trivy sobre la imagen y Dependabot para `landing/` se piden al líder (§8 decisión 8). | TC-TT-WEB-01-01 |
+| **Secretos en el repositorio o en la imagen** | No hace falta ningún secreto: Railway no recibe variables. Gitleaks del CI. La prueba revisa que el `Dockerfile` no tenga `ENV` ni `ARG` sensibles. | TC-TT-WEB-01-01 |
+| **Denegación / costo** (tráfico que consuma el crédito de la cuenta del líder) | Archivos estáticos y pequeños (≤ 300 KB), una réplica y un límite de memoria bajo en Railway, más el límite de uso de la cuenta (lo fija el líder, §8 decisión 6). Riesgo aceptado: no hay límite de peticiones propio, porque detrás del proxy de Railway haría falta confiar en `X-Forwarded-For`. | TC-TT-WEB-01-09 (peso) · configuración de Railway con captura en el PR |
+| **Dependencia de la cuenta personal del líder** (se cierra, se agota o cambia de plan) | La imagen es portátil: corre igual en local (TC-01) y en cualquier hosting de contenedores o archivos estáticos (plan B en §8 decisión 6). El producto funciona sin la landing: la app no depende de ella. Lo único que se pierde es la URL de privacidad para Google Play; si cambia, hay que actualizarla en Play Console y en la app. | TC-TT-WEB-01-01 |
+
+Repudio: no hay acciones de usuarios. El despliegue queda en el historial de Railway y en `docs/VERSIONES_DESPLEGADAS.md`. Matriz `security-core`: aplican 12 (cabeceras), 13 (secretos) y 14 (dependencias e imagen); el 1 al 11, el 15 y el 16 son N/A porque no hay API, sesión, archivos subidos, datos personales ni IA.
+
+## 7. Pantallas
+Un solo idioma, español de México (`lang="es-MX"`). Sin JavaScript. Tema claro y oscuro con `@media (prefers-color-scheme: dark)`; sin interruptor, porque haría falta JavaScript. Diseño de una columna que funciona desde 320 px y crece hasta un máximo de unos 720 px de ancho.
+
+- **Inicio (`/`)**
+  - Encabezado: la marca «Knock» como texto en Nunito 700 (no hay logo en el repositorio, §8 duda 13).
+  - `<h1>` y descripción. Texto propuesto, que sale de la constitución §1 (confirmar): «Técnicos de confianza en tu colonia» / «Knock te conecta con técnicos de confianza en mecánica, plomería y electricidad, colonia por colonia.»
+  - Bloque de Google Play: **disponible**, un botón-enlace «Descargar en Google Play»; o **próximamente**, el texto «Próximamente en Google Play» sin enlace. No se usa la insignia oficial de Google Play (§8 duda 14).
+  - Pie: «Aviso de privacidad» → `/privacidad/`, la versión `landing-vX.Y.Z` y el texto antiphishing de §6.
+- **Privacidad (`/privacidad/`)**, provisional: título «Aviso de privacidad», el texto «Estamos preparando el aviso de privacidad de Knock. Lo publicaremos aquí antes de abrir la app al público.», un enlace «Volver al inicio» y `noindex`.
+- **404:** «No encontramos esta página» y un enlace «Volver al inicio».
+- **Estados:** la página no tiene estados de carga ni de error, porque es estática. Los únicos estados son Play disponible o próximamente, y privacidad provisional o publicada.
+
+**Paleta (tokens de TT-MOB-02, `colores.dart`) y pares permitidos (TC-06):**
+
+| Uso | Claro | Oscuro |
+|---|---|---|
+| Fondo | crema `#FBF5E9` (tarjeta `#FFFFFF`) | `bg` `#14110F` (tarjeta `surface` `#1E1B18`) |
+| Texto principal | `ink` `#231A15` (15.72:1) | `ink` `#F6EEE3` (≥ 13.86:1) |
+| Texto secundario | `ink2` `#4A3C33` (9.74:1) o `mut` `#6B5D52` (5.84:1) | `ink2` `#DCD0C2` o `mut` `#B5A798` (≥ 6.79:1) |
+| Enlaces | `amber-ink` `#8F3510` (7.20:1), subrayados | `amber` `#E9682D` (≥ 4.92:1), subrayados |
+| Botón de Play | fondo `amber` `#E9682D` con texto `ink` (5.27:1) | fondo `amber` con texto `bg` (5.80:1) |
+| Foco | contorno de 2 px `amber-ink` | contorno de 2 px `amber` |
+
+Pares **prohibidos** (TT-MOB-02 §8 decisión 1): `amber` como texto sobre crema o blanco (2.98 y 3.24:1); texto blanco sobre `amber` (3.24:1); `mut`, `navy` o `amber` sobre `navybg`. La landing no usa `navybg`.
+
+**Accesibilidad:** WCAG 2.1 AA; un `<h1>`; regiones `header`, `main` y `footer`; enlaces con texto propio (sin «clic aquí»); área de toque de al menos 48 × 48 px en el botón y los enlaces del pie; el texto escala al 200 % sin perder contenido; `prefers-reduced-motion` respetado (no hay animaciones).
+
+## 8. Pruebas, gates y límites
+**Plan de pruebas** (Sí/No con motivo; meta de mutación):
+
+| Tipo | ¿Aplica? | Motivo / herramienta |
+|---|---|---|
+| Unitarias (comprobaciones estáticas) | Sí | `python -m unittest discover -s landing/tests -v` (Python 3.12, biblioteca estándar): TC-01 a 06 y 09 sobre los archivos, sin red |
+| Widget / componente | No | No hay framework ni componentes |
+| Integración | Sí | Contenedor local y `curl` (TC-01, y TC-04 también en local) |
+| Aceptación | Sí | Los nueve casos de §2 |
+| Seguridad negativa | Sí | Cabeceras, ausencia de terceros, de JavaScript y de contenido en línea, y ausencia de secretos (TC-01, 04 y 05) |
+| Contrato | No | No usa la API |
+| Mutación | No | No hay lógica de negocio. Las pruebas comparan valores exactos (URL de Play, cabeceras, pares de color) para que fallen si algo cambia. Meta: N/A |
+| Arquitectura | No | Carpeta aislada `landing/`, sin código que reutilizar ni fronteras |
+| E2E / humo | Sí | Contra la URL publicada (TC-08 y la parte publicada de TC-04 y TC-09), con la salida en el PR |
+| Rendimiento | Sí | Presupuesto de peso (TC-09) y Lighthouse móvil ≥ 90 (comando) |
+| Usabilidad formal | No | Es una página de un solo paso; se revisa en el PR con capturas en claro y oscuro |
+| Accesibilidad | Sí | TC-06: comprobaciones estáticas y contraste calculado, más Lighthouse o axe DevTools en la URL publicada. Playwright con axe no existe todavía en el repositorio (`panel/` no tiene `playwright.config`): no se agrega una dependencia npm para una página |
+| Compatibilidad | Sí (manual) | Chrome en Android (como en Play) y Chrome, Edge y Firefox de escritorio a 320 px y 1280 px, con capturas. Sin Safari (no hay macOS) |
+| HTML válido | Sí | TC-07 con el Nu HTML Checker (comando) |
+
+**Gates:** los de `AGENTS.md §5` que apliquen a `landing/`. No hay gates de Flutter ni de Angular porque el cambio no toca `app/` ni `panel/`. Sí aplican: las pruebas de `landing/tests` en verde; `sdd_lint.py` y `sdd_lint.py --trace TT-WEB-01` (necesita la decisión 9); `codemap.py --check`; `check_exceptions.py`; `sync_agents.py --check`; Semgrep y Gitleaks del CI (ya revisan todo el repositorio); y `security-reviewer` LIBERA. Esta spec no afirma que nada de eso se haya ejecutado.
+
+**Decisiones propuestas (las confirma el líder al aprobar):**
+1. **Tecnología: HTML y CSS estáticos, sin framework y sin build, servidos por nginx sin root en un contenedor.** Porqué: el repositorio no tiene nada para sitios estáticos (`panel/` es Angular, y usarlo para una página traería cientos de dependencias de npm y JavaScript). Sin JavaScript, la CSP queda estricta. El contenedor da el control de las cabeceras, que el modo estático de Railway (Railpack con Caddy) no deja tan claro, y se puede probar igual en local. Imagen `nginxinc/nginx-unprivileged:<versión estable>-alpine@sha256:<digest>` (nginx, licencia BSD-2; la publica NGINX), que escucha en el 8080 sin root. La evaluación de la dependencia (necesidad, licencia, mantenimiento y vulnerabilidades) va en `Memoria.md`. Alternativa descartada: Railpack con `Caddyfile`, porque hay menos control y queda atado a Railway.
+2. **Privacidad sin contenido todavía:** TT-WEB-01 crea `landing/privacidad/index.html` provisional («en preparación», `noindex`, sin texto legal) y TT-WEB-02 lo **reemplaza** en su PR (el que fusione segundo resuelve el conflicto quedándose con el contenido de TT-WEB-02). Así el enlace nunca da 404 y no se publica un aviso falso. **La solicitud de producción en Google Play no se hace con la página provisional**: necesita TT-WEB-02 publicado.
+3. **Enlace a Google Play configurable con un PR:** el bloque de Play tiene dos variantes marcadas en `index.html` (`data-play="disponible"` y `data-play="proximamente"`) y solo una está presente. Al nacer, es «próximamente», porque la ficha no es pública durante la prueba cerrada (TT-TIE-01/02). Cambiar de estado es un PR de una línea, con su versión y su despliegue. URL de destino: `https://play.google.com/store/apps/details?id=app.knock.mobile&referrer=utm_source%3Dlanding%26utm_medium%3Dweb%26utm_campaign%3Dlanding` (UTM de salida para Play Console, constitución §14; no envía nada a terceros desde la página). Alternativa: una variable de Railway leída por nginx. Se descarta porque mete configuración fuera del repositorio y del PR revisado. Duda: durante la prueba cerrada, ¿se muestra a los testers el enlace de inscripción (`https://play.google.com/apps/testing/app.knock.mobile`)? Propuesta: no; los testers reciben la invitación por otro medio.
+4. **Pruebas en Python con la biblioteca estándar** (`unittest`, `html.parser`, `re`), porque Python 3.12 ya está en el CI y en los hooks, y no agrega dependencias. Nombres de método con `TC_TT_WEB_01_KK`.
+5. **Sin Google Analytics ni aviso de cookies en esta tarea**, aunque la constitución §3 y §14 los mencionan «solo con consentimiento». Porqué: Jira pide una landing mínima, analítica con consentimiento necesita JavaScript, un banner y relajar la CSP, y el aviso de privacidad que lo declare todavía no existe. Se propone una tarea aparte después de TT-WEB-02. Si el líder lo quiere aquí, cambian TC-05 y §6.
+6. **Despliegue en Railway: lo hace el líder.** Erick no tiene acceso a la cuenta. Propuesta de configuración, que el líder aplica y documenta con capturas sin tokens:
+   - Servicio nuevo en su proyecto, conectado al repositorio `knock-frontend` con la app de GitHub de Railway.
+   - Root Directory `landing`, builder Dockerfile y rutas vigiladas `landing/**`. Railway no aplica el Root Directory al archivo de configuración: confirmar si `railway.json` se indica como `/landing/railway.json`.
+   - Dominio generado `*.up.railway.app` con puerto destino 8080, una réplica, un límite de memoria bajo (p. ej. 128 MB), ninguna variable de entorno, «Wait for CI» activado (confirmar que exista en su plan) y el límite de uso de la cuenta.
+   - **Rama:** la constitución §9 dice que todo despliegue sale del pipeline y que el despliegue sale de `main`, pero el PR va a `sprint-01` y la fecha es el 2026-10-27. Propuesta: (a) el líder promueve el cambio por la cadena `sprint-01 → develop → release → main` y Railway sigue a `main`; o, si no da tiempo, (b) Railway sigue a `develop` de forma temporal, como excepción escrita en `Memoria.md`, y vuelve a `main` en la primera promoción.
+   - El líder comparte la URL; Erick corre TC-04, 06, 07, 08 y 09 contra ella y registra la fila en `docs/VERSIONES_DESPLEGADAS.md`.
+   - **Plan B** si la cuenta deja de estar disponible: la misma imagen en cualquier hosting de contenedores, o los mismos archivos en un hosting estático que permita cabeceras propias (p. ej. Azure Static Web Apps, nivel gratuito, con `staticwebapp.config.json`; confirmar). GitHub Pages sirve solo como último recurso, porque no permite cabeceras propias. Cambiar de URL obliga a actualizar Play Console y la app.
+7. **Solo español** al nacer (Play publica la ficha en es-MX y la constitución pide español en la interfaz). El inglés queda para después, sin cambiar las rutas (p. ej. `/en/`).
+8. **CI (pedido al líder, `.github/` es suyo):** en `ci-pr.yml`, detectar `^landing/` y agregar un job `landing` que corra `python -m unittest discover -s landing/tests -v`, `docker build landing`, `curl -sI` al contenedor local para revisar las cabeceras, Trivy sobre la imagen (altas y críticas bloquean) y el Nu HTML Checker fijado por digest. El paso de trazabilidad de `detect` debe incluir `landing` (hoy solo mira `^(app|panel)/` y omitiría `--trace`). Dependabot con `package-ecosystem: docker` y `directory: /landing`.
+9. **`.agents/knock.json` (pedido al líder):** agregar `landing/tests/**/*.py` a `test_globs` (para que `--trace` encuentre las pruebas), el scope de commit `landing` (hoy `branch_rules.py` rechazaría `feat(landing): …`; mientras tanto se usa `infra`) y `TT-WEB-01` en `technical_tasks`. Después, `python scripts/sync_agents.py`.
+10. **Quién escribe `landing/`:** ningún agente constructor tiene permiso sobre `landing/` (`flutter-builder` edita `app/`; `panel-builder`, `panel/src`). Propuesta: lo implementa Erick con apoyo de IA bajo la misma spec, o el líder amplía el `can_edit` de un agente en `.agents/agents/`. Lo decide el líder.
+
+**Límites y dudas abiertas:**
+
+11. **Términos y eliminar cuenta:** la constitución §14 y `DECISIONES.md` (tabla legal, fila 9) piden esas páginas en la landing, y Google Play exige la URL web para eliminar la cuenta. ¿Entran en TT-WEB-02 o en una tarea nueva? Esta tarea solo reserva las rutas `/terminos/` y `/eliminar-cuenta/`.
+12. **Dominio:** se propone el subdominio gratuito de Railway (costo cero). Un dominio propio daría más confianza contra el phishing, pero cuesta dinero.
+13. **Logo e icono:** no hay logo ni favicon de la maqueta en el repositorio. Propuesta: la marca como texto y una respuesta 204 para `/favicon.ico` en nginx (evita el 404 en los registros), hasta tener el icono de la app.
+14. **Insignia oficial de Google Play:** usarla obliga a seguir las reglas de marca de Google y a servir la imagen desde la landing. Propuesta: botón de texto en esta versión.
+15. **Primera versión:** la constitución §9 dice `1.0.0` y `VERSIONAMIENTO.md` dice `0.1.0` (alineación pendiente, `Memoria.md` 2026-10-22). Como manda la constitución, se propone `landing-v1.0.0`, con la etiqueta `puntos-landing-N` en el PR y el pie leyendo esa versión a mano hasta TT-CD-03.
+16. **Dependencia de TT-MOB-02 (KNOCK-25):** las fuentes y la paleta están en su rama, todavía sin fusionar en `sprint-01`. Si no se fusiona antes, los `.ttf` y `OFL.txt` se copian del repositorio oficial `googlefonts/nunito` (mismos archivos) y se anota su origen.
+17. **Texto de la descripción y del pie antiphishing:** son propuestas del agente; los confirma el equipo.
+
+## Aprobación
+- [ ] Revisor 1 — nombre: ________ fecha: ________
+- [ ] Sin conflicto con la constitución
+- **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
