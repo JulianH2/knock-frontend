@@ -5,6 +5,10 @@ abstract final class Rutas {
   static const actividad = '/actividad';
   static const trabajo = '/trabajo';
   static const cuenta = '/cuenta';
+
+  /// Subruta de Explorar (TT-PRU-02): la pantalla cuelga de la rama Explorar y
+  /// conserva la barra inferior.
+  static const oficios = '/explorar/oficios';
 }
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.
