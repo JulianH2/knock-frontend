@@ -1,0 +1,18 @@
+{
+  "@@locale": "en",
+  "appTitle": "Knock",
+  "tabInicio": "Home",
+  "tabExplorar": "Explore",
+  "explorarOficios": "Trades",
+  "tabActividad": "Activity",
+  "tabTrabajo": "Work",
+  "tabCuenta": "My account",
+  "pruebaModoTecnico": "Technician mode (test)",
+  "pruebaTema": "Theme (test)",
+  "pruebaTemaSistema": "System",
+  "pruebaTemaClaro": "Light",
+  "pruebaTemaOscuro": "Dark",
+  "pruebaIdioma": "Language (test)",
+  "pruebaIdiomaEspanol": "Español",
+  "pruebaIdiomaIngles": "English"
+}

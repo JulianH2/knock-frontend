@@ -1,0 +1,63 @@
+{
+  "@@locale": "es",
+  "appTitle": "Knock",
+  "@appTitle": {
+    "description": "Nombre de la app (título de la tarea en el sistema). Es una marca: no se traduce."
+  },
+  "tabInicio": "Inicio",
+  "@tabInicio": {
+    "description": "Pestaña de la barra inferior y título de la pantalla de inicio."
+  },
+  "tabExplorar": "Explorar",
+  "@tabExplorar": {
+    "description": "Pestaña de la barra inferior y título de la pantalla para buscar técnicos."
+  },
+  "explorarOficios": "Oficios",
+  "@explorarOficios": {
+    "description": "Acceso temporal de Explorar a la pantalla de oficios (TT-PRU-02); lo reemplaza la historia de Explorar."
+  },
+  "tabActividad": "Actividad",
+  "@tabActividad": {
+    "description": "Pestaña de la barra inferior y título de la pantalla con las solicitudes y su historial."
+  },
+  "tabTrabajo": "Trabajo",
+  "@tabTrabajo": {
+    "description": "Pestaña de la barra inferior y título de la pantalla de trabajo; solo la ven los técnicos."
+  },
+  "tabCuenta": "Mi cuenta",
+  "@tabCuenta": {
+    "description": "Pestaña de la barra inferior y título de la pantalla con los datos y la configuración de la cuenta."
+  },
+  "pruebaModoTecnico": "Modo técnico (prueba)",
+  "@pruebaModoTecnico": {
+    "description": "Interruptor de prueba (solo fuera de la versión de tienda) que da el rol de técnico."
+  },
+  "pruebaTema": "Tema (prueba)",
+  "@pruebaTema": {
+    "description": "Título del selector de prueba (solo fuera de la versión de tienda) para elegir el tema."
+  },
+  "pruebaTemaSistema": "Sistema",
+  "@pruebaTemaSistema": {
+    "description": "Opción del selector de tema: seguir el tema claro u oscuro del teléfono."
+  },
+  "pruebaTemaClaro": "Claro",
+  "@pruebaTemaClaro": {
+    "description": "Opción del selector de tema: tema claro."
+  },
+  "pruebaTemaOscuro": "Oscuro",
+  "@pruebaTemaOscuro": {
+    "description": "Opción del selector de tema: tema oscuro."
+  },
+  "pruebaIdioma": "Idioma (prueba)",
+  "@pruebaIdioma": {
+    "description": "Título del selector de prueba (solo fuera de la versión de tienda) para elegir el idioma."
+  },
+  "pruebaIdiomaEspanol": "Español",
+  "@pruebaIdiomaEspanol": {
+    "description": "Opción del selector de idioma. Se escribe siempre en español, en cualquier idioma."
+  },
+  "pruebaIdiomaIngles": "English",
+  "@pruebaIdiomaIngles": {
+    "description": "Opción del selector de idioma. Se escribe siempre en inglés, en cualquier idioma."
+  }
+}
