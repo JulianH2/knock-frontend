@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-10-26T17:19:37Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-10-27T21:14:22Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,11 +10,13 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
 | `cuenta` | presentation | 2 | 4 | 4 |
+| `errores` | core | 1 | 3 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | presentation | 1 | 1 | 1 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
+| `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 1 | 2 | 4 |
 | `router` | core | 3 | 3 | 4 |
@@ -50,12 +52,19 @@
 - `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`, class `_Encabezado`, class `_Opcion`
   - `build()`:16, `build()`:67, `build()`:83
 
+### errores
+
+**core**
+
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`
+  - `toString()`:10
+
 ### explorar
 
 **presentation**
 
 - `app/lib/features/explorar/presentation/explorar_screen.dart` — class `ExplorarScreen`
-  - `build()`:11
+  - `build()`:15
 
 ### home
 
@@ -79,7 +88,7 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:191, `isSupported()`:196, `shouldReload()`:200, `lookupAppLocalizations()`:203
+  - `of()`:70, `load()`:197, `isSupported()`:202, `shouldReload()`:206, `lookupAppLocalizations()`:209
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
@@ -88,6 +97,32 @@
 **core**
 
 - `panel/src/app/core/layout/app-shell.component.ts` — class `AppShellComponent`
+
+### oficios
+
+**-**
+
+- `app/lib/features/oficios/oficios_providers.dart` — —
+
+**data**
+
+- `app/lib/features/oficios/data/oficio_mapper.dart` — class `OficioMapper`
+  - `listaDesdeContrato()`:13, `desdeContrato()`:21
+- `app/lib/features/oficios/data/oficios_repository_de_prueba.dart` — class `OficiosRepositoryDePrueba`
+  - `listar()`:24
+
+**domain**
+
+- `app/lib/features/oficios/domain/modalidad.dart` — class `Modalidad`
+- `app/lib/features/oficios/domain/oficio.dart` — class `Oficio`
+- `app/lib/features/oficios/domain/oficios_repository.dart` — class `OficiosRepository`
+
+**presentation**
+
+- `app/lib/features/oficios/presentation/oficios_controller.dart` — class `OficiosController`
+  - `build()`:9, `reintentar()`:13
+- `app/lib/features/oficios/presentation/oficios_screen.dart` — class `OficiosScreen`, class `_Cargando`, class `_Vacio`, class `_ConError`, class `_Lista`, class `_FilaOficio`
+  - `build()`:15, `build()`:39, `build()`:48, `build()`:65, `build()`:93, `build()`:105
 
 ### panel
 
@@ -112,7 +147,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:35, `build()`:48, `Scaffold()`:53
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:13
+  - `redireccionPorRol()`:17
 
 ### sesion
 
