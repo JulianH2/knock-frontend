@@ -15,7 +15,8 @@
 - **No tocar:** `app/`, `panel/`, `contracts/`, clientes generados, `scripts/`, `.github/`, `.agents/` (los cambios de `test_globs`, `code_dirs` y CI de §8 decisión 5 son del Tech Lead o de TT-WEB-01), configuración de Railway y dominio (TT-WEB-01).
 
 ## 2. Riesgos y efectos secundarios
-- **Legal:** publicar un texto que no es el aprobado o que no coincide con lo que hace la app. Mitigación: estado `borrador` visible (TC-07) e inventario con fuentes (TC-10).
+- **Legal:** publicar un texto que no es el aprobado o que no coincide con lo que hace la app. Mitigación: estado `borrador` visible (TC-07), inventario con fuentes del backend (TC-10) y la regla compartida R1 de la spec §8 (Google Play: prueba cerrada con `borrador`, producción solo con `vigente`), idéntica en TT-WEB-01.
+- **Analítica:** el aviso declara que el sitio no usa cookies ni analítica (regla compartida R2). Si otra tarea agrega Google Analytics sin actualizar el aviso, el aviso miente; esa tarea debe cambiar la sección `cookies-y-analitica` en el mismo PR.
 - **Coordinación con TT-WEB-01:** va en paralelo en otra rama; si cambia carpeta, rutas o estilos, hay conflicto en el pie de página. Mitigación: fusionar después de TT-WEB-01 o rebasar sobre ella antes del PR.
 - **Trazabilidad y CI:** hoy el CI no detecta `landing/` y `--trace` no busca pruebas ahí (spec §8 decisión 5). Sin ese cambio, las pruebas se corren a mano y su salida va en el PR.
 - **Datos del equipo:** el domicilio o correo del responsable puede exponer datos personales (spec §8 duda 1).
@@ -32,7 +33,7 @@
 | TC-TT-WEB-02-06 | `test_TC_TT_WEB_02_06_version_y_fecha_visibles` | `landing/tests/test_paginas_legales.py` |
 | TC-TT-WEB-02-07 | `test_TC_TT_WEB_02_07_texto_provisional_nunca_se_presenta_como_vigente` + `curl` del estado publicado | `landing/tests/test_paginas_legales.py` · (comando) |
 | TC-TT-WEB-02-08 | `test_TC_TT_WEB_02_08_sin_recursos_de_terceros` | `landing/tests/test_paginas_legales.py` |
-| TC-TT-WEB-02-09 | `test_TC_TT_WEB_02_09_estructura_accesible` + auditoría WCAG 2.1 AA sobre las URLs publicadas | `landing/tests/test_paginas_legales.py` · (comando) |
+| TC-TT-WEB-02-09 | `test_TC_TT_WEB_02_09_estructura_accesible` + axe-core (`wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`; 0 violaciones) sobre las URLs publicadas | `landing/tests/test_paginas_legales.py` · (comando) |
 | TC-TT-WEB-02-10 | `test_TC_TT_WEB_02_10_inventario_completo_en_el_aviso` | `landing/tests/test_paginas_legales.py` |
 
 Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha o el aviso de borrador, o si se agrega un `<script>`, un `<form>` o un recurso de otro origen (comprobarlo una vez rompiendo un archivo a propósito y anotarlo en el PR).
@@ -55,7 +56,9 @@ curl -sS -o /dev/null -w "%{http_code} %{content_type} %{url_effective}\n" https
 curl -sSI http://<dominio>/privacidad/                     # 301/308 y Location: https://…
 curl -sS https://<dominio>/ | grep -oE 'href="/(privacidad|eliminar-cuenta)/"'
 curl -sS https://<dominio>/privacidad/ | grep -o 'data-estado="[a-z]*"'
-# Accesibilidad: herramienta de TT-WEB-01 o Lighthouse (DevTools, modo navegación) por URL; resultado en el PR
+# Accesibilidad (regla compartida R3): axe-core 4.14.0, etiquetas wcag2a, wcag2aa, wcag21a y wcag21aa, 0 violaciones
+npx --yes @axe-core/cli@4.14.0 https://<dominio>/privacidad/ https://<dominio>/privacidad/simplificado/ https://<dominio>/eliminar-cuenta/ --tags wcag2a,wcag2aa,wcag21a,wcag21aa --exit
+# Tema oscuro: axe DevTools con prefers-color-scheme: dark emulado; captura en el PR
 PYTHONIOENCODING=utf-8 python scripts/sdd_lint.py
 PYTHONIOENCODING=utf-8 python scripts/sdd_lint.py --trace TT-WEB-02
 python scripts/codemap.py --check
