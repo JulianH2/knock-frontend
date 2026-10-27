@@ -3,7 +3,7 @@
 ## T1 — Confirmar decisiones y pedir lo que es del líder [Landing]
 - **Crear:** —
 - **Modificar:** —
-- **Verificar:** que el líder confirme la spec §8: tecnología (1), privacidad provisional (2), estado de Play (3), sin analítica (5), configuración y rama de Railway (6) e idioma (7). Pedirle el job `landing` del CI y Dependabot (8), los cambios de `.agents/knock.json` (9) y quién escribe `landing/` (10).
+- **Verificar:** que el líder confirme la spec §8: tecnología (1), privacidad provisional (2), estado de Play (3), sin analítica (5), configuración y rama de Railway (6) e idioma (7). Pedirle el job `landing` del CI y Dependabot (8), los cambios de `.agents/knock.json`, incluido `landing/**` en `code_dirs` (9) y quién escribe `landing/` (10).
 - **No hacer:** empezar código con la spec en Borrador; pedir acceso a la cuenta de Railway o a sus tokens.
 - **Agente:** persona responsable (Erick) con el líder.
 
@@ -15,7 +15,7 @@
 - **Agente:** el que decida el líder (spec §8 decisión 10).
 
 ## T3 — Páginas y estilos [Landing]
-- **Crear:** `landing/index.html`, `landing/privacidad/index.html` (provisional, `data-estado="en-preparacion"`, `noindex`), `landing/404.html`, `landing/css/landing.css` (tokens claro y oscuro, `@font-face` con `font-display: swap`) y `landing/fonts/` (Nunito 400 y 700 con `OFL.txt`).
+- **Crear:** `landing/index.html`, `landing/privacidad/index.html` (provisional, `data-estado="en-preparacion"`, `noindex`), `landing/404.html`, `landing/css/landing.css` (tokens claro y oscuro, `@font-face` con `font-display: swap`) y `landing/fonts/` (subconjuntos WOFF2 de Nunito 400 y 700 con `OFL.txt`; spec §8 decisión 1).
 - **Modificar:** —
 - **Verificar:** TC-02, 03, 05, 06 y 09 en verde; capturas a 320 px y 1280 px, en claro y en oscuro.
 - **No hacer:** JavaScript, `style=""`, `<style>`, recursos de otros orígenes, texto legal inventado ni la insignia oficial de Play sin decisión.
@@ -39,5 +39,5 @@
 - **Crear:** —
 - **Modificar:** `docs/VERSIONES_DESPLEGADAS.md` (fecha, Landing, versión, Railway, responsable) y `Memoria.md` (URL publicada y decisiones finales).
 - **Verificar:** con la URL del líder, TC-04, 06, 07, 08 y 09 y la captura de la pestaña Network (TC-05), con la salida en el PR o en un comentario del PR.
-- **No hacer:** desplegar a mano ni con la cuenta de otra persona; solicitar producción en Play con la página de privacidad provisional.
+- **No hacer:** desplegar a mano ni con la cuenta de otra persona; dar a Google Play la página provisional o pedir producción sin `/privacidad/` en `vigente` (regla compartida R1 de la spec §8).
 - **Agente:** el líder despliega; Erick verifica y documenta.
