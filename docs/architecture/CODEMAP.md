@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-10-26T05:16:56Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-10-27T21:17:05Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -8,12 +8,12 @@
 | Módulo | Capas | Archivos | Tipos | Métodos públicos |
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
-| `app` | - | 2 | 1 | 2 |
+| `app` | - | 3 | 2 | 4 |
 | `cuenta` | presentation | 1 | 1 | 1 |
 | `errores` | core | 1 | 3 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
-| `inicio` | presentation | 1 | 1 | 1 |
+| `inicio` | data, domain, presentation | 10 | 18 | 17 |
 | `layout` | core | 1 | 1 | 0 |
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
@@ -39,6 +39,8 @@
   - `build()`:11
 - `app/lib/main.dart` — —
   - `main()`:5
+- `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
+  - `main()`:11, `build()`:20
 
 ### cuenta
 
@@ -73,10 +75,34 @@
 
 ### inicio
 
+**data**
+
+- `app/lib/features/inicio/data/ubicacion_geolocator_repository.dart` — class `UbicacionGeolocatorRepository`
+  - `obtenerUnaVez()`:20, `abrirAjustes()`:65
+
+**domain**
+
+- `app/lib/features/inicio/domain/punto_mapa.dart` — class `PuntoMapa`
+  - `toString()`:28
+- `app/lib/features/inicio/domain/ubicacion_repository.dart` — class `ResultadoUbicacion`, class `Concedida`, class `Denegada`, class `DenegadaParaSiempre`, class `ServicioDesactivado`, class `UbicacionRepository`
+  - `toString()`:16
+
 **presentation**
 
 - `app/lib/features/inicio/presentation/inicio_screen.dart` — class `InicioScreen`
   - `build()`:10
+- `app/lib/features/inicio/presentation/mapa/boton_mi_ubicacion.dart` — class `BotonMiUbicacion`
+  - `build()`:23, `FloatingActionButton()`:43
+- `app/lib/features/inicio/presentation/mapa/mapa_con_pines.dart` — class `MapaConPines`, class `_MapaConPinesState`, class `_CamaraGoogleMap`
+  - `didUpdateWidget()`:37, `build()`:45, `moverA()`:71
+- `app/lib/features/inicio/presentation/mapa/marcadores.dart` — —
+  - `construirMarcadores()`:16
+- `app/lib/features/inicio/presentation/mapa/mi_ubicacion_controller.dart` — class `CamaraMapa`, enum `AvisoUbicacion`, class `MiUbicacionController`
+  - `build()`:43, `centrar()`:46, `abrirAjustes()`:65
+- `app/lib/features/inicio/presentation/spike/mapa_spike_screen.dart` — class `MapaSpikeScreen`, class `_MapaSpikeScreenState`
+  - `build()`:30, `Scaffold()`:31
+- `app/lib/features/inicio/presentation/spike/pines_de_prueba.dart` — —
+  - `pinesDePrueba()`:28
 
 ### layout
 
