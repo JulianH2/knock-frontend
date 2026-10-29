@@ -240,3 +240,8 @@
 - Hecho: rebase sobre `sprint-01` (constitución 2.2.0 y KNOCK-140), 4 commits de implementación. Gates: `dart format` sin cambios, `flutter analyze --fatal-infos` limpio, `flutter gen-l10n` sin cambios, `flutter test --coverage` 35 en verde (99.1 % de líneas), `sdd_lint --trace TT-MOB-02` OK, `codemap --check`, `check_exceptions` y `sync_agents --check` OK. `security-reviewer` LIBERA; `traceability-clerk` sin drift de código.
 - Nota: la primera corrida completa tras `pub get` dejó 2 pruebas de `textos_desde_arb_test.dart` «did not complete»; 4 corridas siguientes (paralelo, serie y dos con `--coverage`) pasaron completas.
 - Pendiente: capturas en emulador (claro, oscuro, español, inglés y lanzador «Knock»); la spec §8 no recoge las decisiones del líder del 2026-10-24 (botón relleno con borde, `es` plantilla y respaldo), que están en el PR; `.agents/knock.json` → `generated` no incluye `app/lib/l10n/generado/**` (archivo protegido, lo decide una persona).
+
+## 2026-10-29 — TT-GES-15 (KNOCK-194): fichas de TT-API-04 y TT-SEC-03 alineadas con la arquitectura vigente
+- Decisión (líder): las copias de `docs/backlog/TT-API-04.md` y `docs/backlog/TT-SEC-03.md` de knock-frontend pasan al mismo texto que las de knock-backend (PR #88 de knock-backend): outbox con transacciones de MongoDB y biblioteca de mensajes decidida con una comparación escrita, y ZAP baseline pasivo contra el entorno desplegado.
+- Porqué: las dos copias deben decir lo mismo; las anteriores citaban EF Core, TT-BD-01, Azure Service Bus y Staging, que ya se retiraron.
+- A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro.
