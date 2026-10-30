@@ -244,4 +244,6 @@
 ## 2026-10-29 — TT-GES-15 (KNOCK-194): fichas de TT-API-04 y TT-SEC-03 alineadas con la arquitectura vigente
 - Decisión (líder): las copias de `docs/backlog/TT-API-04.md` y `docs/backlog/TT-SEC-03.md` de knock-frontend pasan al mismo texto que las de knock-backend (PR #88 de knock-backend): outbox con transacciones de MongoDB y biblioteca de mensajes decidida con una comparación escrita, y ZAP baseline pasivo contra el entorno desplegado.
 - Porqué: las dos copias deben decir lo mismo; las anteriores citaban EF Core, TT-BD-01, Azure Service Bus y Staging, que ya se retiraron.
-- A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro.
+- Pendiente: actualizar los dos Word de origen (`TT-API-04_OutboxTransaccionalMensajesProgramados_Knock.docx` y `TT-SEC-03_ModeloAmenazasEscaneoZap_Knock.docx`), porque estas fichas se generan desde ellos y una nueva exportación pisaría el texto.
+- Revisión de pares (Alexis, en el PR #88 de knock-backend): TT-API-04 pide confirmar que Azure DocumentDB y documentdb-local soportan transacciones de varios documentos (plan B: evento en el mismo documento) y que la reserva atómica lleve expiración (lease); se agregaron a la ficha (V6 y V7) y se quitó el «Día sugerido».
+- A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro; dar por hecho que las transacciones de varios documentos funcionan sin comprobarlo.
