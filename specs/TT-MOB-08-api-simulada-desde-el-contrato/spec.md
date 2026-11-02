@@ -7,7 +7,7 @@
 > **Ficha:** no hay ficha `.docx` ni `docs/backlog/TT-MOB-08.md`; la fuente es la descripción de Jira KNOCK-191 (citada en §1).
 > **Fuentes:** Jira KNOCK-191 · contratos de la §4 de las specs del backend (detalle y commit en §4) · spec TT-PRU-02 (§1, §3 Out y §8 decisiones; `Memoria.md` 2026-10-25/26) · ficha TT-MOB-03 (`docs/backlog/TT-MOB-03.md`, §5 y §8: «La URL y llaves por entorno no se escriben en el código (dart-define)») · constitución 2.2.1 (principios 3, 4, 8 y 9; §3; §4 knock-frontend; §6; §12) · `AGENTS.md` §§0, 4 y 5 · skills `api-client-contract`, `flutter-clean-architecture`, `testing-strategy-frontend`, `security-core`
 > **Skills:** spec-first-writing, story-workflow, api-client-contract, flutter-clean-architecture, testing-strategy-frontend, security-core, reuse-before-create, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 **Cómo leer esta spec.** Lo que dice Jira está en §1 tal cual. Lo que Jira no decide (cómo se sirve la simulación, dónde vive, cómo se configura la URL, cómo se escriben los mocks y cómo se comparan con el contrato) está numerado en §8 (D1 a D12): lo que el líder respondió en el PR #45 (2026-10-28) está marcado «Resuelto»; el resto es propuesta de quien redacta, sin dudas abiertas.
 
@@ -170,6 +170,6 @@ Cobertura mínima de la app: 50 % (AGENTS.md §5); no se bajan umbrales.
 6. **Revisor:** lo revisa el líder.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución (pendiente de D2: excepción al principio 4)
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-02
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
