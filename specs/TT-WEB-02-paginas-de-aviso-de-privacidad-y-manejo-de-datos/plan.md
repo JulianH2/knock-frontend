@@ -8,7 +8,7 @@
   - `landing/privacidad/index.html` (aviso integral, 16 secciones de §7)
   - `landing/privacidad/simplificado/index.html` (aviso simplificado)
   - `landing/eliminar-cuenta/index.html` (manejo de datos y eliminación de cuenta)
-  - `landing/tests/test_paginas_legales.py` (TC-02 a TC-10, `unittest` + `html.parser`)
+  - `landing/tests/test_paginas_legales.py` (TC-02 a TC-11, `unittest` + `html.parser`)
 - **Modificar:**
   - Pie de página de la landing de TT-WEB-01 (solo los enlaces a `/privacidad/` y `/eliminar-cuenta/`)
   - `Memoria.md`
@@ -19,7 +19,8 @@
 - **Analítica:** el aviso declara que el sitio no usa cookies ni analítica (regla compartida R2). Si otra tarea agrega Google Analytics sin actualizar el aviso, el aviso miente; esa tarea debe cambiar la sección `cookies-y-analitica` en el mismo PR.
 - **Coordinación con TT-WEB-01:** va en paralelo en otra rama; si cambia carpeta, rutas o estilos, hay conflicto en el pie de página. Mitigación: fusionar después de TT-WEB-01 o rebasar sobre ella antes del PR.
 - **Trazabilidad y CI:** hoy el CI no detecta `landing/` y `--trace` no busca pruebas ahí (spec §8 decisión 5). Sin ese cambio, las pruebas se corren a mano y su salida va en el PR.
-- **Datos del equipo:** el domicilio o correo del responsable puede exponer datos personales (spec §8 duda 1).
+- **Datos del equipo:** el responsable es Team Knock, sin domicilio particular de ninguna persona, y el contacto es `soporte@tdevs.com.mx` (spec §8 dudas 1 y 2).
+- **Sin abogado:** el texto legal no tiene revisión de abogado; riesgo aceptado por el líder (spec §8 duda 14 y `Memoria.md`).
 - **Dependencias:** ninguna nueva.
 
 ## 3. Pruebas por caso
@@ -35,15 +36,16 @@
 | TC-TT-WEB-02-08 | `test_TC_TT_WEB_02_08_sin_recursos_de_terceros` | `landing/tests/test_paginas_legales.py` |
 | TC-TT-WEB-02-09 | `test_TC_TT_WEB_02_09_estructura_accesible` + axe-core (`wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`; 0 violaciones) sobre las URLs publicadas | `landing/tests/test_paginas_legales.py` · (comando) |
 | TC-TT-WEB-02-10 | `test_TC_TT_WEB_02_10_inventario_completo_en_el_aviso` | `landing/tests/test_paginas_legales.py` |
+| TC-TT-WEB-02-11 | `test_TC_TT_WEB_02_11_datos_fijados_por_el_lider` | `landing/tests/test_paginas_legales.py` |
 
-Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha o el aviso de borrador, o si se agrega un `<script>`, un `<form>` o un recurso de otro origen (comprobarlo una vez rompiendo un archivo a propósito y anotarlo en el PR).
+Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha, el aviso de borrador o un dato fijado por el líder, o si se agrega un `<script>`, un `<form>` o un recurso de otro origen (comprobarlo una vez rompiendo un archivo a propósito y anotarlo en el PR).
 
 ## 4. Secuencia
 1. Esperar o rebasar sobre TT-WEB-01 (carpeta, estilos, servidor y dominio).
-2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"` y marcadores `[PENDIENTE: …]`.
-3. Pruebas TC-02 a TC-10 en `landing/tests/` (primero en rojo contra páginas incompletas, luego en verde).
+2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"`, los datos que el líder ya fijó (TC-11) y marcadores `[PENDIENTE: …]`.
+3. Pruebas TC-02 a TC-11 en `landing/tests/` (primero en rojo contra páginas incompletas, luego en verde).
 4. Enlaces en el pie de la landing.
-5. Texto del líder: se copia tal cual; solo el líder cambia el estado a `vigente` y la versión a `1.0`.
+5. Texto del líder: lo aporta él en un commit aparte (A10). Además del comentario obligatorio de par, Alexis y Guillermo comentan el texto final; después, solo el líder cambia el estado a `vigente` y la versión a `1.0` en un commit propio.
 6. Despliegue en Railway y comandos de TC-01, TC-02, TC-07 y TC-09 contra la URL real.
 7. Gates + `Memoria.md` + informe final con «Uso de IA».
 
