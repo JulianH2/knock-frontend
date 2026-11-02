@@ -6,7 +6,7 @@
 > **Depende de:** TT-MOB-02 (KNOCK-25, spec Aprobada el 2026-10-22, **PR #16 fusionado en `sprint-02` el 2026-10-28**). Esta rama ya está actualizada con `sprint-02`; la implementación empieza cuando esta spec esté Aprobada.
 > **Fuentes:** ficha `docs/backlog/HU-052.md` · spec de TT-MOB-02 (`specs/TT-MOB-02-tema-claro-oscuro-y-traducciones-arb/spec.md`, §3, §5 y §8 decisiones 1, 4, 5, 6 y 8) y su código (`app/lib/core/preferencias/preferencias_provider.dart`, `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart`, `app/lib/core/tema/`, `app/lib/l10n/*.arb`, `app/l10n.yaml`) · DECISIONES.md #14 y §7 («Un idioma guardado que ya no exista vuelve al español») · FUNCIONES_Y_FLUJOS.md (Mi cuenta → Configuración: «Idioma (Español/English), apariencia (claro/oscuro/automático)») · `.specify/memory/constitution.md` 2.2.1 (tokens solo en almacenamiento seguro; dependencias evaluadas; accesibilidad 48 dp) · `AGENTS.md` §§0, 4, 5 y 7
 > **Skills:** spec-first-writing, story-workflow, flutter-clean-architecture, testing-strategy-frontend, security-core, reuse-before-create, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 **Cómo leer esta spec.** HU-052 es la segunda mitad de TT-MOB-02: allí quedaron el tema claro y oscuro, los ARB es/en, el proveedor de preferencias **solo en memoria** (§8 decisión 5: «el guardado es de HU-052») y un menú de prueba en Mi cuenta (solo fuera de release, decisión 4). Esta historia **no rehace nada de eso**: agrega la pantalla real de **Configuración**, le da al proveedor existente **carga y guardado** en el dispositivo con `shared_preferences` y retira del menú de prueba los selectores de tema e idioma. Las decisiones del líder están en §8.
 
@@ -171,6 +171,6 @@ No aplican: autenticación, autorización por recurso, datos sensibles o biomét
 9. **Sprint y rama. Resuelto: Sprint 2 y `sprint-02`**, rama `feature/KNOCK-49-language-and-theme-settings`. La ficha de Jira la ajusta el líder.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-02
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
