@@ -1,4 +1,5 @@
 import 'package:app/core/sesion/es_tecnico_provider.dart';
+import 'package:app/l10n/generado/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -10,17 +11,24 @@ const int ramaTrabajo = 3;
 class _Destino {
   const _Destino(this.etiqueta, this.icono, this.iconoSeleccionado);
 
-  final String etiqueta;
+  /// Texto de la etiqueta en el idioma activo (ARB).
+  final String Function(AppLocalizations textos) etiqueta;
   final IconData icono;
   final IconData iconoSeleccionado;
 }
 
+String _tabInicio(AppLocalizations t) => t.tabInicio;
+String _tabExplorar(AppLocalizations t) => t.tabExplorar;
+String _tabActividad(AppLocalizations t) => t.tabActividad;
+String _tabTrabajo(AppLocalizations t) => t.tabTrabajo;
+String _tabCuenta(AppLocalizations t) => t.tabCuenta;
+
 const List<_Destino> _destinos = [
-  _Destino('Inicio', Icons.home_outlined, Icons.home),
-  _Destino('Explorar', Icons.explore_outlined, Icons.explore),
-  _Destino('Actividad', Icons.receipt_long_outlined, Icons.receipt_long),
-  _Destino('Trabajo', Icons.handyman_outlined, Icons.handyman),
-  _Destino('Mi cuenta', Icons.person_outline, Icons.person),
+  _Destino(_tabInicio, Icons.home_outlined, Icons.home),
+  _Destino(_tabExplorar, Icons.explore_outlined, Icons.explore),
+  _Destino(_tabActividad, Icons.receipt_long_outlined, Icons.receipt_long),
+  _Destino(_tabTrabajo, Icons.handyman_outlined, Icons.handyman),
+  _Destino(_tabCuenta, Icons.person_outline, Icons.person),
 ];
 
 /// Ramas visibles en la barra según el rol: sin técnico no hay Trabajo.
@@ -40,6 +48,7 @@ class AppShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final ramas = ramasVisibles(esTecnico: ref.watch(esTecnicoProvider));
     final seleccionado = ramas.indexOf(navigationShell.currentIndex);
+    final textos = AppLocalizations.of(context);
 
     return Scaffold(
       body: navigationShell,
@@ -57,7 +66,7 @@ class AppShell extends ConsumerWidget {
             NavigationDestination(
               icon: Icon(_destinos[rama].icono),
               selectedIcon: Icon(_destinos[rama].iconoSeleccionado),
-              label: _destinos[rama].etiqueta,
+              label: _destinos[rama].etiqueta(textos),
             ),
         ],
       ),

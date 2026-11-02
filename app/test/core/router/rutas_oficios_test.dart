@@ -45,8 +45,10 @@ void main() {
     expect(find.byType(NavigationBar), findsOneWidget);
     expect(_indiceSeleccionado(tester), 1);
 
-    // Se puede regresar a Explorar.
-    await tester.pageBack();
+    // Se puede regresar a Explorar. Se toca el BackButton en lugar de
+    // `pageBack()`, que lo busca por el tooltip en inglés («Back») y la app
+    // está en español desde TT-MOB-02 («Atrás»).
+    await tester.tap(find.byType(BackButton));
     await tester.pumpAndSettle();
 
     expect(_ubicacion(container), Rutas.explorar);
