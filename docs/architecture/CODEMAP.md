@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-10-27T21:17:05Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-02T19:44:45Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -9,16 +9,19 @@
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
-| `cuenta` | presentation | 1 | 1 | 1 |
+| `cuenta` | presentation | 2 | 4 | 4 |
 | `errores` | core | 1 | 3 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | data, domain, presentation | 10 | 18 | 17 |
+| `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
+| `preferencias` | core | 1 | 2 | 4 |
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
+| `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
 
@@ -29,14 +32,14 @@
 **presentation**
 
 - `app/lib/features/actividad/presentation/actividad_screen.dart` — class `ActividadScreen`
-  - `build()`:10
+  - `build()`:11
 
 ### app
 
 **-**
 
 - `app/lib/app.dart` — class `KnockApp`
-  - `build()`:11
+  - `build()`:16
 - `app/lib/main.dart` — —
   - `main()`:5
 - `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
@@ -47,7 +50,9 @@
 **presentation**
 
 - `app/lib/features/cuenta/presentation/cuenta_screen.dart` — class `CuentaScreen`
-  - `build()`:11
+  - `build()`:13
+- `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`, class `_Encabezado`, class `_Opcion`
+  - `build()`:16, `build()`:67, `build()`:83
 
 ### errores
 
@@ -61,7 +66,7 @@
 **presentation**
 
 - `app/lib/features/explorar/presentation/explorar_screen.dart` — class `ExplorarScreen`
-  - `build()`:14
+  - `build()`:15
 
 ### home
 
@@ -90,7 +95,7 @@
 **presentation**
 
 - `app/lib/features/inicio/presentation/inicio_screen.dart` — class `InicioScreen`
-  - `build()`:10
+  - `build()`:11
 - `app/lib/features/inicio/presentation/mapa/boton_mi_ubicacion.dart` — class `BotonMiUbicacion`
   - `build()`:23, `FloatingActionButton()`:43
 - `app/lib/features/inicio/presentation/mapa/mapa_con_pines.dart` — class `MapaConPines`, class `_MapaConPinesState`, class `_CamaraGoogleMap`
@@ -103,6 +108,15 @@
   - `build()`:30, `Scaffold()`:31
 - `app/lib/features/inicio/presentation/spike/pines_de_prueba.dart` — —
   - `pinesDePrueba()`:28
+
+### l10n
+
+**-**
+
+- `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
+  - `of()`:70, `load()`:197, `isSupported()`:202, `shouldReload()`:206, `lookupAppLocalizations()`:209
+- `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
+- `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
 ### layout
 
@@ -144,13 +158,20 @@
 - `panel/src/app/app.ts` — class `App`
 - `panel/src/main.ts` — —
 
+### preferencias
+
+**core**
+
+- `app/lib/core/preferencias/preferencias_provider.dart` — class `Preferencias`, class `PreferenciasNotifier`
+  - `copyWith()`:22, `build()`:43, `cambiarTema()`:45, `cambiarIdioma()`:49
+
 ### router
 
 **core**
 
 - `app/lib/core/router/app_router.dart` — —
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
-  - `ramasVisibles()`:27, `build()`:40, `Scaffold()`:44
+  - `ramasVisibles()`:35, `build()`:48, `Scaffold()`:53
 - `app/lib/core/router/rutas.dart` — class `Rutas`
   - `redireccionPorRol()`:17
 
@@ -161,12 +182,21 @@
 - `app/lib/core/sesion/es_tecnico_provider.dart` — class `EsTecnicoNotifier`
   - `build()`:13, `cambiar()`:16
 
+### tema
+
+**core**
+
+- `app/lib/core/tema/colores.dart` — class `ColoresClaro`, class `ColoresOscuro`, class `ColoresError`
+- `app/lib/core/tema/contraste.dart` — —
+  - `relacionDeContraste()`:16
+- `app/lib/core/tema/tema.dart` — —
+
 ### trabajo
 
 **presentation**
 
 - `app/lib/features/trabajo/presentation/trabajo_screen.dart` — class `TrabajoScreen`
-  - `build()`:10
+  - `build()`:11
 
 ### widgets
 

@@ -3,7 +3,7 @@
          solo al tocar el botón, nunca al abrir la app. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
     <application
-        android:label="app"
+        android:label="Knock"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
