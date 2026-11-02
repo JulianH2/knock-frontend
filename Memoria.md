@@ -247,3 +247,9 @@
 - Pendiente: actualizar los dos Word de origen (`TT-API-04_OutboxTransaccionalMensajesProgramados_Knock.docx` y `TT-SEC-03_ModeloAmenazasEscaneoZap_Knock.docx`), porque estas fichas se generan desde ellos y una nueva exportación pisaría el texto.
 - Revisión de pares (Alexis, en el PR #88 de knock-backend): TT-API-04 pide confirmar que Azure DocumentDB y documentdb-local soportan transacciones de varios documentos (plan B: evento en el mismo documento) y que la reserva atómica lleve expiración (lease); se agregaron a la ficha (V6 y V7) y se quitó el «Día sugerido».
 - A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro; dar por hecho que las transacciones de varios documentos funcionan sin comprobarlo.
+
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA de licencias deja pasar 15 paquetes de pub revisados (EXC-002)
+- Decisión (líder, 2026-10-28): se mantiene `deny-licenses` (AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0) y el job de SCA; solo se agrega `allow-dependencies-licenses` con los 15 paquetes de pub que `dependency-review-action` no reconoce, y la excepción EXC-002 en `security/exceptions.yaml` (creada 2026-11-02, vence 2027-01-30).
+- Porqué: el action recibe de pub las licencias en minúsculas (`mit`, `bsd-3-clause`, `mpl-2.0`) y no las reconoce como SPDX, y a `geolocator_windows` no le detecta ninguna. Se leyó el LICENSE de cada paquete: 7 MIT, 6 BSD-3-Clause y 2 MPL-2.0, todas en la lista permitida de CONTRIBUTING.md. Los 15 son exactamente los que el CI de #28 marcó como «sin resolver».
+- Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
