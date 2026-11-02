@@ -1,4 +1,3 @@
-import 'package:app/app.dart';
 import 'package:app/core/router/app_router.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
@@ -6,34 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-/// Indicador con valor inicial fijo; `cambiar` sigue funcionando.
-class _EsTecnicoInicial extends EsTecnicoNotifier {
-  _EsTecnicoInicial(this._inicial);
-
-  final bool _inicial;
-
-  @override
-  bool build() => _inicial;
-}
-
-Future<ProviderContainer> _montarApp(
-  WidgetTester tester, {
-  required bool esTecnico,
-  bool interruptorDePrueba = true,
-}) async {
-  final container = ProviderContainer(
-    overrides: [
-      esTecnicoProvider.overrideWith(() => _EsTecnicoInicial(esTecnico)),
-      interruptorDePruebaProvider.overrideWithValue(interruptorDePrueba),
-    ],
-  );
-  addTearDown(container.dispose);
-  await tester.pumpWidget(
-    UncontrolledProviderScope(container: container, child: const KnockApp()),
-  );
-  await tester.pumpAndSettle();
-  return container;
-}
+import '../../soporte/montar_app.dart';
 
 /// Etiquetas de la barra inferior, en orden.
 List<String> _etiquetasDeLaBarra(WidgetTester tester) => tester
@@ -65,7 +37,7 @@ void main() {
     testWidgets(
       'TC-TT-MOB-01-02 oculta la pestaña Trabajo si el usuario no es técnico',
       (tester) async {
-        final container = await _montarApp(tester, esTecnico: false);
+        final container = await montarApp(tester, esTecnico: false);
 
         expect(_etiquetasDeLaBarra(tester), [
           'Inicio',
@@ -88,7 +60,7 @@ void main() {
     testWidgets(
       'TC-TT-MOB-01-02 muestra Trabajo entre Actividad y Mi cuenta si es técnico',
       (tester) async {
-        final container = await _montarApp(tester, esTecnico: true);
+        final container = await montarApp(tester, esTecnico: true);
 
         expect(_etiquetasDeLaBarra(tester), [
           'Inicio',
@@ -110,7 +82,7 @@ void main() {
     testWidgets(
       'TC-TT-MOB-01-02 al dejar de ser técnico estando en Trabajo vuelve a Inicio',
       (tester) async {
-        final container = await _montarApp(tester, esTecnico: true);
+        final container = await montarApp(tester, esTecnico: true);
         container.read(appRouterProvider).go(Rutas.trabajo);
         await tester.pumpAndSettle();
         expect(_titulo('Trabajo'), findsOneWidget);
@@ -127,7 +99,7 @@ void main() {
     testWidgets(
       'TC-TT-MOB-01-02 el interruptor de prueba de Mi cuenta muestra y oculta Trabajo',
       (tester) async {
-        final container = await _montarApp(tester, esTecnico: false);
+        final container = await montarApp(tester, esTecnico: false);
         await tester.tap(_destino('Mi cuenta'));
         await tester.pumpAndSettle();
 
@@ -151,7 +123,7 @@ void main() {
     testWidgets(
       'TC-TT-MOB-01-02 sin el interruptor de prueba (release) Mi cuenta no ofrece Modo técnico',
       (tester) async {
-        await _montarApp(tester, esTecnico: false, interruptorDePrueba: false);
+        await montarApp(tester, esTecnico: false, interruptorDePrueba: false);
         await tester.tap(_destino('Mi cuenta'));
         await tester.pumpAndSettle();
 
@@ -166,7 +138,7 @@ void main() {
     testWidgets('TC-TT-MOB-01-04 tocar cada pestaña muestra su pantalla', (
       tester,
     ) async {
-      final container = await _montarApp(tester, esTecnico: true);
+      final container = await montarApp(tester, esTecnico: true);
       expect(_titulo('Inicio'), findsOneWidget);
       expect(_indiceSeleccionado(tester), 0);
 
@@ -202,7 +174,7 @@ void main() {
       'TC-TT-MOB-01-04 la barra cumple tamaño táctil y etiquetas (A11Y)',
       (tester) async {
         final semantica = tester.ensureSemantics();
-        await _montarApp(tester, esTecnico: true);
+        await montarApp(tester, esTecnico: true);
 
         await expectLater(tester, meetsGuideline(androidTapTargetGuideline));
         await expectLater(tester, meetsGuideline(labeledTapTargetGuideline));
@@ -217,7 +189,7 @@ void main() {
         tester.platformDispatcher.textScaleFactorTestValue = 2;
         addTearDown(tester.platformDispatcher.clearTextScaleFactorTestValue);
 
-        await _montarApp(tester, esTecnico: true);
+        await montarApp(tester, esTecnico: true);
 
         expect(tester.takeException(), isNull);
         expect(_etiquetasDeLaBarra(tester), hasLength(5));
