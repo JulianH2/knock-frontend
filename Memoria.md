@@ -253,3 +253,6 @@
 - Dependencia: se construye sobre TT-MOB-02 (PR #16, aún sin fusionar en `sprint-02`); la implementación empieza cuando ese PR se fusione. Reutiliza `preferenciasProvider` (que hoy vive solo en memoria) y le agrega carga y guardado con `shared_preferences`; no se crea otro proveedor.
 - Propuestas pendientes de decisión (9 dudas en §8): evaluación de `shared_preferences` (API clásico); la pantalla Configuración reemplaza los selectores del menú de prueba, que queda solo con «Modo técnico (prueba)» fuera de release, y dos pruebas de TT-MOB-02 cambian solo el camino y las claves; CA2 se prueba con ARB de prueba generados con gen-l10n, sin quitar traducciones reales; carga antes del primer cuadro para no parpadear; almacén en memoria por defecto y como respaldo; español por defecto.
 - A evitar: guardar en `shared_preferences` algo distinto de `knock.preferencias.tema` y `knock.preferencias.idioma` (los tokens van en almacenamiento seguro); quitar una traducción de `app_en.arb` para probar el respaldo (rompe TC-TT-MOB-02-02); empezar el código antes del merge del PR #16.
+
+## 2026-11-02 — HU-052 (KNOCK-49): respuestas del líder aplicadas a la spec
+- Estado: las 9 dudas de §8 pasan a «Resuelto» (PR #44) y las referencias al PR #16 quedan como fusionado; nombres de TT-MOB-02 comprobados en la rama; sigue en Borrador.

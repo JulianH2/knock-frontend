@@ -1,10 +1,10 @@
 # HU-052 — tareas
 
-> Ninguna tarea empieza antes de que el PR #16 (TT-MOB-02) esté fusionado en `sprint-02`, esta rama rebasada y la spec Aprobada por una persona distinta del autor.
+> El PR #16 (TT-MOB-02) ya está fusionado en `sprint-02` y esta rama ya está actualizada. Ninguna tarea empieza antes de que la spec esté Aprobada por una persona distinta del autor.
 
 ## T1 — Evaluar y agregar `shared_preferences` [Mobile]
 - **Crear:** —
-- **Modificar:** `app/pubspec.yaml`, `app/pubspec.lock` (con `flutter pub add shared_preferences`), `Memoria.md` (evaluación: necesidad, licencia, editor, mantenimiento, OSV, transitivas).
+- **Modificar:** `app/pubspec.yaml`, `app/pubspec.lock` (con `flutter pub add shared_preferences`), `Memoria.md` (evaluación, también en el PR: licencia, editor, mantenimiento, OSV, transitivas nuevas y estado vigente del API clásico).
 - **Verificar:** TC-HU-052-11 (comando).
 - **No hacer:** agregar otros paquetes (`hive`, `flutter_secure_storage` para esto, `mocktail` si no hace falta); fijar versiones a mano en el lock.
 - **Agente:** persona responsable (decide la dependencia) + flutter-builder.
@@ -25,7 +25,7 @@
 
 ## T4 — Ajustar pruebas de TT-MOB-02 y respaldo al español [Pruebas]
 - **Crear:** `test/l10n/respaldo_espanol_test.dart` y `test/l10n/respaldo/app_es.arb`, `app_en.arb`.
-- **Modificar:** `test/features/cuenta/menu_de_prueba_test.dart` y `test/l10n/textos_desde_arb_test.dart` (solo el camino a los selectores y las claves; aserciones e IDs iguales, spec §8 duda 2); `test/soporte/montar_app.dart` solo si hace falta.
+- **Modificar:** `test/features/cuenta/menu_de_prueba_test.dart` y `test/l10n/textos_desde_arb_test.dart` (solo el camino a los selectores y las claves; aserciones e IDs iguales, spec §8 decisión 2; el caso del tooltip Atrás, en «Límites conocidos», se declara en el PR); `test/soporte/montar_app.dart` solo si hace falta.
 - **Verificar:** TC-HU-052-02; TC-TT-MOB-02-01, 02 y 04 siguen verdes; las pruebas de TT-MOB-01 y TT-PRU-02 sin cambios.
 - **No hacer:** quitar una traducción de `app_en.arb` para probar el respaldo; relajar la comparación de claves de TC-TT-MOB-02-02; borrar o renombrar casos de otra spec.
 - **Agente:** flutter-builder.

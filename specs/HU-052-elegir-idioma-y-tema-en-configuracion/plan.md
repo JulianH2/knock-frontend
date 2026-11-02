@@ -1,15 +1,15 @@
 # plan.md — HU-052 Elegir idioma y tema en Configuración
 
-> **Precondición:** el PR #16 (TT-MOB-02, KNOCK-25) fusionado en `sprint-02` y esta rama rebasada sobre `sprint-02`. Antes de eso no se escribe código.
+> **Precondición:** spec Aprobada. El PR #16 (TT-MOB-02, KNOCK-25) ya está fusionado en `sprint-02` y esta rama ya está actualizada con `sprint-02`. Antes de la aprobación no se escribe código.
 
 ## 1. Mapeo de archivos
-- **Reutilizar (leído en `origin/chore/KNOCK-25-theme-and-languages`; volver a buscar con `python scripts/codemap.py --query "preferencias"` y `--query "configuracion"` después del rebase):**
+- **Reutilizar (comprobado en esta rama el 2026-11-02; volver a buscar con `python scripts/codemap.py --query "preferencias"` y `--query "configuracion"` al empezar):**
   - `core/preferencias/preferencias_provider.dart` (`Preferencias`, `PreferenciasNotifier`, `preferenciasProvider`, `idiomasSoportados`): **se extiende**, no se duplica.
   - `app.dart` (`KnockApp` ya lee `themeMode` y `locale`), `core/tema/` (temas y colores), `core/widgets/pantalla_titulada.dart`, `core/router/` (`Rutas`, `appRouterProvider`, `_rama` con subrutas), `core/sesion/es_tecnico_provider.dart` (`interruptorDePruebaProvider`).
   - Widgets `_Encabezado` y `_Opcion` de `features/cuenta/presentation/widgets/menu_de_prueba.dart` (se mueven a Configuración).
   - Arnés de pruebas `test/soporte/montar_app.dart` (`montarApp`, `leerArb`, `enLaBarra`, `enElTitulo`, `ubicacion`, `tocarTexto`) y el método de `test/features/oficios/arquitectura_test.dart` para leer `import`.
 - **Crear (`app/lib/`):**
-  - `core/preferencias/almacen_preferencias.dart` — interfaz `AlmacenPreferencias`, `AlmacenPreferenciasShared` (sobre `SharedPreferences`, claves `knock.preferencias.tema` / `.idioma`, conversión estricta) y `AlmacenPreferenciasEnMemoria`; `almacenPreferenciasProvider` (por defecto en memoria, spec §8 duda 5).
+  - `core/preferencias/almacen_preferencias.dart` — interfaz `AlmacenPreferencias`, `AlmacenPreferenciasShared` (sobre `SharedPreferences`, claves `knock.preferencias.tema` / `.idioma`, conversión estricta) y `AlmacenPreferenciasEnMemoria`; `almacenPreferenciasProvider` (por defecto en memoria, spec §8 decisión 5).
   - `core/preferencias/arranque.dart` (o nombre equivalente) — función que obtiene `SharedPreferences.getInstance()` y devuelve el almacén, o el de memoria si falla (TC-05, TC-08).
   - `features/cuenta/presentation/configuracion_screen.dart` — `ConfiguracionScreen`.
 - **Crear (`app/test/` y `app/integration_test/`):**
@@ -24,14 +24,14 @@
   - `features/cuenta/presentation/cuenta_screen.dart` (lista con la entrada «Configuración» siempre y el menú de prueba solo fuera de release) y `widgets/menu_de_prueba.dart` (solo el interruptor de técnico).
   - `lib/l10n/app_es.arb`, `lib/l10n/app_en.arb` (claves `configuracion…`, se quitan las `pruebaTema…`/`pruebaIdioma…`) y `lib/l10n/generado/*` **regenerados con `flutter gen-l10n`** (no a mano).
   - `pubspec.yaml` y `pubspec.lock` (`shared_preferences`, con `flutter pub add`).
-  - Pruebas de TT-MOB-02, solo el camino y las claves (spec §8 duda 2): `test/features/cuenta/menu_de_prueba_test.dart`, `test/l10n/textos_desde_arb_test.dart`; y, si hace falta, el arnés `test/soporte/montar_app.dart` (p. ej. parámetro para el almacén).
+  - Pruebas de TT-MOB-02, solo el camino y las claves (spec §8 decisión 2 y «Límites conocidos»): `test/features/cuenta/menu_de_prueba_test.dart`, `test/l10n/textos_desde_arb_test.dart`; y, si hace falta, el arnés `test/soporte/montar_app.dart` (p. ej. parámetro para el almacén).
   - `docs/architecture/*` regenerado con `python scripts/codemap.py`, `app/README.md` (sección de preferencias guardadas) y `Memoria.md`.
 - **No tocar:** `contracts/`, `app/packages/knock_api/`, `.github/`, `scripts/`, la constitución, `core/tema/` (paleta y contrastes), `l10n.yaml`, la regla de la pestaña Trabajo y `es_tecnico_provider.dart`, las pruebas de TT-MOB-01 y TT-PRU-02 (deben seguir en verde sin cambios) y las aserciones de las pruebas de TT-MOB-02.
 
 ## 2. Riesgos y efectos secundarios
-- **PR #16 sin fusionar:** si cambia antes del merge, los nombres de este plan pueden no coincidir; revisar después del rebase.
+- **Tooltip de la flecha Atrás en TC-TT-MOB-02-02:** `_textosVisibles` lee los `Tooltip` y `Atrás`/`Back` no está en los ARB; al visitar Configuración hay que tratarlo como dice la spec §8 «Límites conocidos» y declararlo en el PR.
 - **`KnockApp` y el router:** cambiar `main.dart` no debe recrear el router ni el `MaterialApp` al cambiar tema o idioma (TC-01 y TC-TT-MOB-02-01 lo vigilan).
-- **Pruebas que montan `KnockApp` sin overrides** (`rutas_oficios_test.dart`, `app_shell_test.dart`…): con el almacén en memoria por defecto siguen igual; si se elige la alternativa de la duda 5, hay que tocar su arnés.
+- **Pruebas que montan `KnockApp` sin overrides** (`rutas_oficios_test.dart`, `app_shell_test.dart`…): con el almacén en memoria por defecto siguen igual.
 - **`SharedPreferences.setMockInitialValues` es global por proceso de prueba:** cada prueba lo fija en su `setUp` para no arrastrar valores de otra.
 - **`platformBrightnessTestValue`** se limpia con `addTearDown(clearPlatformBrightnessTestValue)` para no afectar otras pruebas.
 - **Prueba de gen-l10n con `Process.run`** (TC-02): depende de `flutter` en el `PATH`; si resulta frágil en el CI, se pasa a «(comando)» con permiso del revisor.
@@ -54,8 +54,8 @@
 | TC-HU-052-12 | Formato, análisis, gen-l10n al día y pruebas (comando) | CI de la app |
 
 ## 4. Secuencia
-1. Esperar el merge del PR #16; rebasar sobre `sprint-02`; repetir `codemap.py --query`. Spec Aprobada por una persona distinta del autor.
-2. Evaluar `shared_preferences` y registrarlo en `Memoria.md`; `flutter pub add shared_preferences` (TC-11).
+1. Spec Aprobada por una persona distinta del autor; repetir `codemap.py --query`.
+2. Evaluar `shared_preferences`, incluido el estado vigente del API clásico, y registrarlo en `Memoria.md` y en el PR; `flutter pub add shared_preferences` (TC-11).
 3. Almacén, conversión y arranque con sus unitarias (TC-05 parte unitaria, 06, 07, 08).
 4. Extender `PreferenciasNotifier` y `main.dart`; prueba del primer cuadro (TC-05).
 5. Ruta, Mi cuenta, Configuración y menú de prueba reducido; ARB y `flutter gen-l10n` (TC-01, 03, 04, 09, 10).
