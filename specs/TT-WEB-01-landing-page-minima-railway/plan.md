@@ -2,24 +2,24 @@
 
 ## 1. Mapeo de archivos
 - **Reutilizar (buscado en el repositorio el 2026-10-26):**
-  - Fuentes `app/assets/fonts/nunito/Nunito-Regular.ttf` y `Nunito-Bold.ttf` (base de los subconjuntos WOFF2, spec §8 decisión 1), `OFL.txt` y los tokens de color de `app/lib/core/tema/colores.dart` (rama de TT-MOB-02, KNOCK-25). Se copian o se derivan, porque Railway construye solo con `landing/` como contexto y no puede leer `../app`.
+  - Fuentes `app/assets/fonts/nunito/Nunito-Regular.ttf` y `Nunito-Bold.ttf` (base de los subconjuntos WOFF2, spec §8 decisión 1), `OFL.txt` y los tokens de color de `app/lib/core/tema/colores.dart` (TT-MOB-02, KNOCK-25, ya en `sprint-02`). Se copian o se derivan, porque Railway construye solo con `landing/` como contexto y no puede leer `../app`.
   - La fórmula de contraste de `app/lib/core/tema/contraste.dart`, reescrita en Python dentro de la prueba con los mismos valores de control (21:1 y 1:1).
   - Python 3.12 del CI y de los hooks para las pruebas, sin paquetes nuevos.
   - `codemap.py` no mapea `landing/` y no hace falta: no hay código reutilizable.
 - **Crear (`landing/`):** `index.html`, `privacidad/index.html` (provisional), `404.html`, `css/landing.css`, `fonts/{nunito-400-latin.woff2,nunito-700-latin.woff2,OFL.txt}`, `nginx.conf`, `Dockerfile`, `.dockerignore`, `railway.json` (si el líder lo acepta), `README.md` y `tests/test_landing.py`.
 - **Modificar:** `docs/VERSIONES_DESPLEGADAS.md` (fila del primer despliegue) y `Memoria.md` (entrada del issue y evaluación de la imagen de nginx).
-- **Pedir al líder (no los toca esta tarea):** `.github/workflows/ci-pr.yml` (job `landing` y trazabilidad), `.github/dependabot.yml` (docker en `/landing`), `.agents/knock.json` (`test_globs`, `code_dirs` con `landing/**`, scope `landing` y `technical_tasks`) y el permiso de un agente sobre `landing/` (spec §8, decisiones 8 a 10).
+- **A cargo del líder, en un PR aparte (no los toca esta tarea):** `.github/workflows/ci-pr.yml` (job `landing` y trazabilidad), `.github/dependabot.yml` (docker en `/landing`) y `.agents/knock.json` (`test_globs`, `code_dirs` con `landing/**`, scope `landing` y `technical_tasks`) (spec §8, decisiones 8 y 9). Mientras tanto los commits usan el scope `infra`.
 - **No tocar:** `app/`, `panel/`, `contracts/`, clientes generados, `constitution.md`, `AGENTS.md` y la carpeta de TT-WEB-02 fuera de `landing/privacidad/index.html`.
 
 ## 2. Riesgos y efectos secundarios
 - **Google Play:** la página provisional no se da a Play; prueba cerrada y producción siguen la regla compartida R1 de la spec §8, idéntica en TT-WEB-02.
-- **Fecha dura (2026-10-27):** sin la URL publicada se atrasa la solicitud de producción en Play. El despliegue depende del líder (cuenta de Railway) y de la rama que siga Railway (spec §8 decisión 6). Pedirle hoy la configuración.
+- **Fecha dura (2026-10-27):** sin la URL publicada se atrasa la solicitud de producción en Play. El despliegue depende del líder (cuenta de Railway) y de que `sprint-02` llegue a `develop`, la rama que sigue Railway (spec §8 decisión 6).
 - **Conflicto con TT-WEB-02** en `landing/privacidad/index.html`: se resuelve quedándose con el contenido de TT-WEB-02. Avisar a quien tenga esa rama.
-- **TT-MOB-02 sin fusionar:** las fuentes y la paleta vienen de su rama. Si no se fusiona a tiempo, se usa el origen oficial de Nunito (spec §8 duda 16).
+- **Excepción de rama:** Railway sigue `develop` de forma temporal, aunque la constitución §9 pide `main`. La excepción está en `Memoria.md` y Railway pasa a `main` en la primera promoción (spec §8 decisión 6).
 - **CSP estricta:** cualquier `style=""` o `<style>` que se agregue después rompe el estilo en producción. La prueba TC-05 lo detecta antes.
 - **HSTS:** al ser `max-age` de un año, servir después por HTTP en esa URL no es posible. Es aceptable porque Railway siempre da HTTPS.
 - **Costo:** consume del espacio del líder. Una réplica y un límite de memoria bajo.
-- **Trazabilidad:** sin el cambio de `test_globs`, `sdd_lint.py --trace TT-WEB-01` marcará FALTA aunque las pruebas existan; sin el cambio de `detect` en el CI, el PR no correrá `--trace`.
+- **Trazabilidad:** hasta que se fusione el PR aparte del líder, sin el cambio de `test_globs`, `sdd_lint.py --trace TT-WEB-01` marcará FALTA aunque las pruebas existan; sin el cambio de `detect` en el CI, el PR no correrá `--trace`.
 
 ## 3. Pruebas por caso
 | Caso | Prueba | Suite |
@@ -35,12 +35,12 @@
 | TC-TT-WEB-01-09 | `test_TC_TT_WEB_01_09_peso` (≤ 150 KB, WOFF2 ≤ 50 KB cada una) + `curl` con gzip + Lighthouse 13.5.0 móvil, mediana de 3 corridas ≥ 90 | `landing/tests/test_landing.py` · comando en el PR |
 
 ## 4. Secuencia
-1. Confirmar con el líder las decisiones de §8 (sobre todo la 2, la 3, la 5 y la 6) y pedirle la configuración de Railway, el job de CI y `knock.json`.
+1. Esperar a que el líder apruebe la spec (revisa las decisiones de §8 que siguen por confirmar, sobre todo la 2, la 3 y la 5, y el texto de la duda 17). Él configura Railway y abre el PR aparte del CI y `knock.json`.
 2. Escribir primero las pruebas de `landing/tests/test_landing.py` (fallan sin los archivos).
 3. Crear `css/landing.css` con los tokens y `@font-face`, generar los subconjuntos WOFF2 y copiar `OFL.txt` (comando y SHA-256 en `landing/README.md`), y crear `index.html`, `privacidad/index.html` y `404.html`.
 4. Crear `nginx.conf`, `Dockerfile` (imagen fijada por digest), `.dockerignore` y `railway.json`. Construir y probar en local (TC-01 y TC-04 en local).
 5. Pruebas en verde, Nu HTML Checker y capturas en 320 px y 1280 px, en claro y en oscuro.
-6. PR a `sprint-01`. Cuando el líder despliegue: TC-04, 06, 07, 08 y 09 contra la URL, fila en `docs/VERSIONES_DESPLEGADAS.md` y `Memoria.md`.
+6. PR a `sprint-02`. Cuando el líder despliegue: TC-04, 06, 07, 08 y 09 contra la URL, fila en `docs/VERSIONES_DESPLEGADAS.md` y `Memoria.md`.
 7. `security-reviewer` y `traceability-clerk` antes de pedir la fusión.
 
 ## 5. Verificación (comandos exactos)

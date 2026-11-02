@@ -1,9 +1,9 @@
 # TT-WEB-01 — tareas
 
-## T1 — Confirmar decisiones y pedir lo que es del líder [Landing]
+## T1 — Aprobación y lo que es del líder [Landing]
 - **Crear:** —
 - **Modificar:** —
-- **Verificar:** que el líder confirme la spec §8: tecnología (1), privacidad provisional (2), estado de Play (3), sin analítica (5), configuración y rama de Railway (6) e idioma (7). Pedirle el job `landing` del CI y Dependabot (8), los cambios de `.agents/knock.json`, incluido `landing/**` en `code_dirs` (9) y quién escribe `landing/` (10).
+- **Verificar:** que el líder apruebe la spec, con lo que sigue por confirmar en §8: tecnología (1), privacidad provisional (2), estado de Play (3), sin analítica (5), configuración de Railway (6), idioma (7) y texto de la duda 17. La rama (6), Erick como responsable de `landing/` (10) y el resto de las dudas ya están resueltos. El job `landing` del CI y Dependabot (8) y los cambios de `.agents/knock.json`, incluido `landing/**` en `code_dirs` (9), los hace el líder en un PR aparte.
 - **No hacer:** empezar código con la spec en Borrador; pedir acceso a la cuenta de Railway o a sus tokens.
 - **Agente:** persona responsable (Erick) con el líder.
 
@@ -12,13 +12,13 @@
 - **Modificar:** —
 - **Verificar:** `python -m unittest discover -s landing/tests -v` falla por falta de archivos (rojo esperado).
 - **No hacer:** agregar paquetes de pip o npm; aserciones vacías.
-- **Agente:** el que decida el líder (spec §8 decisión 10).
+- **Agente:** Erick con apoyo de IA (spec §8 decisión 10). Commits con el scope `infra` mientras el líder no agregue `landing`.
 
 ## T3 — Páginas y estilos [Landing]
 - **Crear:** `landing/index.html`, `landing/privacidad/index.html` (provisional, `data-estado="en-preparacion"`, `noindex`), `landing/404.html`, `landing/css/landing.css` (tokens claro y oscuro, `@font-face` con `font-display: swap`) y `landing/fonts/` (subconjuntos WOFF2 de Nunito 400 y 700 con `OFL.txt`; spec §8 decisión 1).
 - **Modificar:** —
 - **Verificar:** TC-02, 03, 05, 06 y 09 en verde; capturas a 320 px y 1280 px, en claro y en oscuro.
-- **No hacer:** JavaScript, `style=""`, `<style>`, recursos de otros orígenes, texto legal inventado ni la insignia oficial de Play sin decisión.
+- **No hacer:** JavaScript, `style=""`, `<style>`, recursos de otros orígenes, texto legal inventado ni la insignia oficial de Play (spec §8 duda 14).
 - **Agente:** idem T2.
 
 ## T4 — Servidor y contenedor [Landing]
@@ -31,13 +31,13 @@
 ## T5 — Validación y PR [Pruebas]
 - **Crear:** `landing/README.md` (correr en local, cambiar el estado de Play, configuración de Railway y plan B).
 - **Modificar:** —
-- **Verificar:** TC-07 (Nu HTML Checker), los gates de gobierno de `plan.md §5`, `security-reviewer` y `traceability-clerk`. PR `KNOCK-148 · TT-WEB-01 …` a `sprint-01` con el informe, «Uso de IA» y la etiqueta `puntos-landing-N`.
+- **Verificar:** TC-07 (Nu HTML Checker), los gates de gobierno de `plan.md §5`, `security-reviewer` y `traceability-clerk`. PR `KNOCK-148 · TT-WEB-01 …` a `sprint-02` con el informe, «Uso de IA» y la etiqueta `puntos-landing-N`.
 - **No hacer:** dar por pasado lo que no se ejecutó; tocar `.github/` ni `.agents/`.
 - **Agente:** idem T2; revisores sin edición.
 
 ## T6 — Despliegue y evidencia [Landing]
 - **Crear:** —
-- **Modificar:** `docs/VERSIONES_DESPLEGADAS.md` (fecha, Landing, versión, Railway, responsable) y `Memoria.md` (URL publicada y decisiones finales).
+- **Modificar:** `docs/VERSIONES_DESPLEGADAS.md` (fecha, Landing, versión, Railway, responsable) y `Memoria.md` (URL publicada, decisiones finales y cierre de la excepción de rama cuando Railway pase a `main`).
 - **Verificar:** con la URL del líder, TC-04, 06, 07, 08 y 09 y la captura de la pestaña Network (TC-05), con la salida en el PR o en un comentario del PR.
 - **No hacer:** desplegar a mano ni con la cuenta de otra persona; dar a Google Play la página provisional o pedir producción sin `/privacidad/` en `vigente` (regla compartida R1 de la spec §8).
 - **Agente:** el líder despliega; Erick verifica y documenta.
