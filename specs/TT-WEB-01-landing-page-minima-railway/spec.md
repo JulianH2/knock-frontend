@@ -4,7 +4,7 @@
 > **Repositorio:** knock-frontend · **Otra parte en:** — · **Relacionadas:** TT-WEB-02 (KNOCK-159, páginas de aviso de privacidad y manejo de datos; contenido de José Julián, plan A10), TT-TIE-01 (KNOCK-52, cuenta de Google Play y AAB) · **Usa:** paleta y fuente de TT-MOB-02 (KNOCK-25)
 > **Fuentes:** Jira KNOCK-148 (título, «terminada cuando» y comentario del líder del 2026-10-22/24: hosting en Railway) · constitución 2.2.0 §1, §3 (Landing), §4 (`landing/`), §9 (versiones y despliegue), §14 (Landing) · `docs/PLAN_ADAPTACION.md` A10, B2, C13, E «Móvil, landing y Play», J (Ola 0) · `docs/VERSIONAMIENTO.md` §2 (componente Landing) · `docs/decisiones/ADR-005` (tareas con fecha dura) · `docs/CUMPLIMIENTO_LINEAMIENTOS.md` filas 3 y 17 · `docs/referencia/DECISIONES.md` §6 y tabla legal (fila 9) · spec TT-MOB-02 §8 decisiones 1 y 2 (paleta y Nunito) · `app/assets/fonts/nunito/OFL.txt` de `sprint-02` (licencia de Nunito; TT-MOB-02 se fusionó en el PR #16) · revisión de pares de Alexis en el PR #42 (2026-10-27) · respuestas del líder en el PR #42 (2026-10-28). No hay ficha `.docx` en `docs/backlog`: la fuente es Jira.
 > **Skills:** spec-first-writing, story-workflow, security-core, testing-strategy-frontend, reuse-before-create, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 ## 1. Objetivo
 Publicar por HTTPS, en el espacio de Railway del líder, una página de inicio estática de Knock que lleve a la ficha de Google Play y enlace al aviso de privacidad. Google Play pide la URL de privacidad antes de la solicitud de producción (plan C13). Por eso la tarea vence el 2026-10-27.
@@ -181,6 +181,6 @@ Pares **prohibidos** (TT-MOB-02 §8 decisión 1): `amber` como texto sobre crema
 19. **Reglas compartidas R1 a R3. Resuelto (líder, PR #42, 2026-10-28):** el líder confirma R1, R2 y R3 tal como están. Si cambia alguna, cambia igual en TT-WEB-02.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-02
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
