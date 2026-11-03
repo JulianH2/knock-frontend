@@ -181,6 +181,6 @@ Pares **prohibidos** (TT-MOB-02 §8 decisión 1): `amber` como texto sobre crema
 19. **Reglas compartidas R1 a R3. Resuelto (líder, PR #42, 2026-10-28):** el líder confirma R1, R2 y R3 tal como están. Si cambia alguna, cambia igual en TT-WEB-02. **R1 corregida el 2026-11-03 (líder, PR #43)** en las dos specs a la vez: el texto debe estar `vigente` antes de la primera subida a la prueba cerrada y el `borrador` solo sirve para pruebas internas.
 
 ## Aprobación
-- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-02
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-03
 - [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
