@@ -248,6 +248,12 @@
 - Revisión de pares (Alexis, en el PR #88 de knock-backend): TT-API-04 pide confirmar que Azure DocumentDB y documentdb-local soportan transacciones de varios documentos (plan B: evento en el mismo documento) y que la reserva atómica lleve expiración (lease); se agregaron a la ficha (V6 y V7) y se quitó el «Día sugerido».
 - A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro; dar por hecho que las transacciones de varios documentos funcionan sin comprobarlo.
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA falla por minimatch 10.x en el panel; se fuerza minimatch 11.0.1
+- Decisión (líder): se agrega `"minimatch": "11.0.1"` a `overrides` de `panel/package.json` y se actualizan solo tres entradas de `panel/package-lock.json` (minimatch, su dependencia nueva `@isaacs/nonrecursive-glob-match` y el rango de `brace-expansion`).
+- Porqué: OSV-Scanner reporta GHSA-g3hv-75wg-m249 (denegación de servicio, severidad media) en `minimatch` 10.2.6, que llega como dependencia de desarrollo de eslint y typescript-eslint. Todas las versiones 10.x están afectadas y la corrección es 11.0.1. Desde el 2026-11-02 el job SCA fallaba en `sprint-02` y en todos los PR del frontend.
+- Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
+- A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
+
 ## 2026-10-26 — TT-WEB-01 (KNOCK-148): spec de la landing en Borrador
 - Hecho: spec, plan, tareas y checklist en `specs/TT-WEB-01-landing-page-minima-railway/` (9 casos, estado Borrador, sin revisor). La fuente es Jira (no hay ficha `.docx`). Hosting en **Railway** (comentario del líder del 2026-10-22/24), no en GitHub Pages.
 - Decisiones propuestas (spec §8, a confirmar al aprobar): HTML y CSS estáticos sin JavaScript ni build, servidos por `nginx-unprivileged` fijado por digest en el puerto 8080 (control de las cabeceras y CSP `default-src 'none'`); Nunito 400 y 700 copiada de TT-MOB-02 con su `OFL.txt`; paleta y pares de contraste de TT-MOB-02; solo español; enlace a Play que nace en «próximamente» y pasa a disponible con un PR; `/privacidad/` provisional sin texto legal, que TT-WEB-02 reemplaza; sin Google Analytics ni cookies en esta tarea; pruebas en Python con la biblioteca estándar.
