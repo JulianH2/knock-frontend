@@ -1,13 +1,13 @@
 # Checklist — TT-WEB-01
 
-- [ ] Spec con 8 secciones + Aprobación, estado Aprobada por una persona y clave KNOCK-148
-- [ ] Decisiones de §8 confirmadas por el líder (tecnología, privacidad provisional, estado de Play, sin analítica, Railway, idioma); rama `develop` temporal con la excepción en `Memoria.md`
+- [x] Spec con 8 secciones + Aprobación, estado Aprobada por una persona y clave KNOCK-148
+- [x] Decisiones de §8 confirmadas por el líder (tecnología, privacidad provisional, estado de Play, sin analítica, Railway, idioma); rama `develop` temporal con la excepción en `Memoria.md`
 - [ ] PR aparte del líder fusionado o registrado: job `landing` en el CI, Dependabot docker, `test_globs`, `code_dirs` con `landing/**`, scope `landing` y `technical_tasks` en `.agents/knock.json`
 - [ ] Cada caso TC-TT-WEB-01-01…09 con su prueba `test_TC_TT_WEB_01_KK` o con la salida de su comando en el PR
-- [ ] `python -m unittest discover -s landing/tests -v` en verde (resultado real)
-- [ ] Imagen fijada por versión y digest, sin root, puerto 8080; evaluación de la imagen en `Memoria.md`
+- [x] `python -m unittest discover -s landing/tests -v` en verde (resultado real)
+- [x] Imagen fijada por versión y digest, sin root, puerto 8080; evaluación de la imagen en `Memoria.md`
 - [ ] Cabeceras de §6 presentes en local y en la URL publicada (`curl -sI`, también en el 404)
-- [ ] Sin recursos de terceros, sin JavaScript, sin estilos en línea, sin formularios ni cookies
+- [x] Sin recursos de terceros, sin JavaScript, sin estilos en línea, sin formularios ni cookies
 - [ ] Contraste con los pares permitidos de TT-MOB-02 (≥ 4.5:1), `alt` en cada `<img>` y axe-core (`wcag2a`, `wcag2aa`, `wcag21a`, `wcag21aa`) con 0 violaciones, en claro y oscuro
 - [ ] Nu HTML Checker fijado por digest sin errores (con su `--version` en el PR)
 - [ ] HTTPS 200 con certificado válido y HTTP → HTTPS en la URL publicada
