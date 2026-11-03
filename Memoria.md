@@ -260,6 +260,15 @@
 - Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
 - A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
 
+## 2026-10-24 — TT-GES-06 (KNOCK-144): quién aprueba specs y explicación del PR con IA (propuesta)
+- Decisión (propuesta del líder, pendiente de que el equipo la acepte el lunes 26): la spec la aprueba el Tech Lead o Guillermo, en menos de 24 horas y nunca el autor; el Tech Lead firma las críticas (sesión, datos sensibles, nube y constitución). La plantilla de PR pide, en «Uso de IA», explicar en 2 o 3 frases qué hace el código y cómo se validó. Porqué: las specs esperaban días por firma, y cualquier integrante puede ser interrogado sobre su código.
+- No cambia la constitución: ya dice que aprueba «una persona» con revisor. Cambian `docs/FLUJO_EQUIPO.md`, el ADR-005 y la plantilla de PR.
+- A evitar: que el autor apruebe su propia spec; que el agente firme; fusionar esto antes de que el equipo lo acepte. Conflicto con backend #63 y frontend #37 (también tocan FLUJO_EQUIPO y el ADR-005): el que se fusione segundo hace rebase.
+
+## 2026-11-03 — TT-GES-09 (KNOCK-181): DECISION_TECNICA.md alineado con el backend
+- Decisión (líder): este documento es idéntico en `knock-backend` y `knock-frontend`; se copia el mismo cambio de la nota de actualización (revocación de tokens: `jti` en Redis y huella del refresh en MongoDB, ADR-002 regla 4) que hace el PR de backend de KNOCK-181.
+- A evitar: que los dos repositorios digan cosas distintas en un documento que se declara idéntico.
+
 ## 2026-10-26 — TT-WEB-02 (KNOCK-159): spec de las páginas de privacidad (borrador)
 - Hecho: spec en Borrador en `specs/TT-WEB-02-paginas-de-aviso-de-privacidad-y-manejo-de-datos/` con tres páginas estáticas en `landing/` (`/privacidad/`, `/privacidad/simplificado/` y `/eliminar-cuenta/`), 10 casos, inventario de datos con la fuente de cada fila y 14 dudas para el líder.
 - Decisión propuesta: el texto legal lo entrega o aprueba José Julián. Mientras no lo apruebe, la página se publica con `data-estado="borrador"` y un aviso visible de texto provisional. El enlace desde la app va en TT-MOB-06, porque hace falta evaluar `url_launcher` y Mi cuenta todavía está vacía. Esto choca con el «Terminada cuando» de Jira, y lo decide el líder.
