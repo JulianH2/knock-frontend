@@ -171,6 +171,6 @@ Cobertura mínima de la app: 50 % (AGENTS.md §5); no se bajan umbrales.
 6. **Revisor:** lo revisa el líder.
 
 ## Aprobación
-- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-02
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-03
 - [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
