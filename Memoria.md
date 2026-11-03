@@ -254,6 +254,12 @@
 - Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
 - A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA de licencias deja pasar 15 paquetes de pub revisados (EXC-002)
+- Decisión (líder, 2026-10-28): se mantiene `deny-licenses` (AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0) y el job de SCA; solo se agrega `allow-dependencies-licenses` con los 15 paquetes de pub que `dependency-review-action` no reconoce, y la excepción EXC-002 en `security/exceptions.yaml` (creada 2026-11-02, vence 2027-01-30).
+- Porqué: el action recibe de pub las licencias en minúsculas (`mit`, `bsd-3-clause`, `mpl-2.0`) y no las reconoce como SPDX, y a `geolocator_windows` no le detecta ninguna. Se leyó el LICENSE de cada paquete: 7 MIT, 6 BSD-3-Clause y 2 MPL-2.0, todas en la lista permitida de CONTRIBUTING.md. Los 15 son exactamente los que el CI de #28 marcó como «sin resolver».
+- Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
+
 ## 2026-10-26 — TT-WEB-02 (KNOCK-159): spec de las páginas de privacidad (borrador)
 - Hecho: spec en Borrador en `specs/TT-WEB-02-paginas-de-aviso-de-privacidad-y-manejo-de-datos/` con tres páginas estáticas en `landing/` (`/privacidad/`, `/privacidad/simplificado/` y `/eliminar-cuenta/`), 10 casos, inventario de datos con la fuente de cada fila y 14 dudas para el líder.
 - Decisión propuesta: el texto legal lo entrega o aprueba José Julián. Mientras no lo apruebe, la página se publica con `data-estado="borrador"` y un aviso visible de texto provisional. El enlace desde la app va en TT-MOB-06, porque hace falta evaluar `url_launcher` y Mi cuenta todavía está vacía. Esto choca con el «Terminada cuando» de Jira, y lo decide el líder.
