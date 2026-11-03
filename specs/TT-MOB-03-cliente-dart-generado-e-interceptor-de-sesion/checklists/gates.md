@@ -1,0 +1,23 @@
+# Checklist — TT-MOB-03
+
+- [ ] Spec de 8 secciones con clave Jira (KNOCK-38), EP-13, 2 puntos y estado aprobado por una persona distinta del autor; dudas D1 a D15 respondidas
+- [ ] TT-MOB-08 (KNOCK-191) fusionada en `sprint-02` antes de empezar el código
+- [ ] PR del líder con `scripts/sync_contract.py`, `scripts/gen_clients.sh` y el job `contract` ajustado, antes o junto con este (D1)
+- [ ] `contracts/openapi.v1.json` idéntico al del backend, con el commit de origen en el PR y en `Memoria.md` (caso 01)
+- [ ] Cliente generado reproducible con versión fija del generador; nada editado a mano (casos 02 y 03)
+- [ ] Ninguna llamada HTTP escrita a mano (principio 4): simulado y real pasan por el cliente generado (D3)
+- [ ] Cada caso TC-TT-MOB-03-04…14 tiene su prueba (`sdd_lint.py --trace TT-MOB-03`); los casos 01, 02, 03, 15 y 16 tienen su salida de comando en el PR
+- [ ] Prueba de cambio de URL (trasladada de TT-MOB-08) en verde con los proveedores por defecto (caso 10)
+- [ ] Token solo hacia el origen configurado, nunca a `/auth/*` ni a URL de almacenamiento; redirecciones no seguidas (casos 06 y 11)
+- [ ] Un `401` renueva a lo más una vez; sin bucles (caso 07)
+- [ ] Tokens solo por `AlmacenDeSesion`; nada en `SharedPreferences`, archivos ni registros (caso 13)
+- [ ] ProblemDetails y errores de transporte → `Failure`; textos del catálogo ARB es/en; nunca `title`/`detail` del servidor (casos 08 y 09)
+- [ ] Sin `LogInterceptor`, `print`, `log` ni validación TLS desactivada (caso 14)
+- [ ] Release con `https` usa el cliente real; release sin URL sigue fallando; la simulación nunca en release (caso 12)
+- [ ] Dependencias nuevas evaluadas en `Memoria.md` (licencia, mantenimiento, publicador, OSV) y `osv-scanner` sin altas (caso 15)
+- [ ] Pruebas de TT-MOB-08, TT-PRU-02 y TT-MOB-01 en verde con sus nombres
+- [ ] `dart format --set-exit-if-changed`, `flutter analyze --fatal-infos`, `flutter test --coverage` (≥ 50 %), `flutter build apk --debug` y `flutter build appbundle --release` con resultado real (caso 16)
+- [ ] `codemap.py --check`, `check_exceptions.py`, `sdd_lint.py` y `sync_agents.py --check` en OK
+- [ ] Issue en knock-backend con las diferencias del contrato (D9)
+- [ ] `security-reviewer` LIBERA · `traceability-clerk` sin drift
+- [ ] `Memoria.md` actualizado · informe en el PR con «Uso de IA»
