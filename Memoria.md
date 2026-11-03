@@ -254,6 +254,12 @@
 - Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
 - A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA de licencias deja pasar 15 paquetes de pub revisados (EXC-002)
+- Decisión (líder, 2026-10-28): se mantiene `deny-licenses` (AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0) y el job de SCA; solo se agrega `allow-dependencies-licenses` con los 15 paquetes de pub que `dependency-review-action` no reconoce, y la excepción EXC-002 en `security/exceptions.yaml` (creada 2026-11-02, vence 2027-01-30).
+- Porqué: el action recibe de pub las licencias en minúsculas (`mit`, `bsd-3-clause`, `mpl-2.0`) y no las reconoce como SPDX, y a `geolocator_windows` no le detecta ninguna. Se leyó el LICENSE de cada paquete: 7 MIT, 6 BSD-3-Clause y 2 MPL-2.0, todas en la lista permitida de CONTRIBUTING.md. Los 15 son exactamente los que el CI de #28 marcó como «sin resolver».
+- Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
+
 ## 2026-10-28 — TT-MOB-08 (KNOCK-191): spec en Borrador de la API simulada desde el contrato
 - Estado: spec, plan, task y gates en `specs/TT-MOB-08-api-simulada-desde-el-contrato/` (15 casos, Borrador, sin revisor); sin código.
 - Propuesta (pendiente del líder): API simulada en memoria en `app/lib/core/red/simulada/` detrás de una interfaz `ClienteApi` y un único `clienteApiProvider` (punto de inyección para TT-MOB-03); URL por `--dart-define=KNOCK_API_URL` sin URL real en el repositorio (sin valor = simulado, nunca en release) y escenarios 4xx/5xx por `KNOCK_API_ESCENARIO`; mocks ficticios como texto JSON en constantes de Dart; tabla `app/test/contrato/contrato_s4.json` copiada de la §4 con el commit de origen y una prueba que compara mocks y tabla en las dos direcciones; la pantalla de oficios de TT-PRU-02 pasa a `OficiosRepositoryApi` cambiando solo `oficios_providers.dart`. Porqué: sin dependencias nuevas, sin proceso aparte y sin esperar a TT-CI-02.
