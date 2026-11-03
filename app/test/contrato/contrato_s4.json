@@ -1,0 +1,124 @@
+{
+  "descripcion": "Tabla de contrato derivada a mano de la §4 de las specs de knock-backend (TT-MOB-08, spec §8 D5). Se reemplaza por contracts/openapi.v1.json cuando exista el contrato vendorizado (TT-CI-02 / TT-MOB-03). Si cambia la §4 de una spec, se actualiza su fila y su commit.",
+  "definiciones": {
+    "problema": {
+      "type": "object",
+      "required": ["type", "title", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "integer" },
+        "traceId": { "type": "string" }
+      }
+    },
+    "problemaDeValidacion": {
+      "type": "object",
+      "required": ["type", "title", "status", "errors"],
+      "additionalProperties": false,
+      "properties": {
+        "type": { "type": "string" },
+        "title": { "type": "string" },
+        "status": { "type": "integer" },
+        "traceId": { "type": "string" },
+        "errors": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "lat": { "type": "array", "items": { "type": "string" } },
+            "lon": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    }
+  },
+  "endpoints": [
+    {
+      "metodo": "GET",
+      "ruta": "/api/v1/oficios",
+      "fuente": {
+        "repo": "knock-backend",
+        "rama": "origin/sprint-02",
+        "commit": "028ff21",
+        "spec": "specs/TT-PRU-01-endpoint-get-api-v1-oficios/spec.md"
+      },
+      "respuestas": {
+        "200": {
+          "contentType": "application/json",
+          "esquema": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": ["clave", "nombre", "modalidad"],
+              "additionalProperties": false,
+              "properties": {
+                "clave": { "type": "string", "maxLength": 16 },
+                "nombre": { "type": "string", "maxLength": 100 },
+                "modalidad": { "type": "string" }
+              }
+            }
+          }
+        },
+        "500": {
+          "contentType": "application/problem+json",
+          "esquema": { "$ref": "problema" }
+        }
+      }
+    },
+    {
+      "metodo": "GET",
+      "ruta": "/api/v1/colonias/en-punto",
+      "fuente": {
+        "repo": "knock-backend",
+        "rama": "origin/sprint-02",
+        "commit": "c1170f2",
+        "ultimoCambioDeLaSpec": "d73a8b9",
+        "spec": "specs/TT-API-07-endpoint-colonia-por-punto/spec.md"
+      },
+      "encabezados": { "cache-control": "^no-store$" },
+      "encabezadosProhibidos": ["etag"],
+      "respuestas": {
+        "200": {
+          "contentType": "application/json",
+          "esquema": {
+            "type": "object",
+            "required": ["enCobertura", "colonia"],
+            "additionalProperties": false,
+            "properties": {
+              "enCobertura": { "type": "boolean" },
+              "colonia": {
+                "type": "object",
+                "nullable": true,
+                "required": ["id", "nombre", "cp", "municipio"],
+                "additionalProperties": false,
+                "properties": {
+                  "id": { "type": "string", "pattern": "^[0-9a-f]{24}$" },
+                  "nombre": { "type": "string" },
+                  "cp": { "type": "string", "pattern": "^[0-9]{5}$" },
+                  "municipio": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "401": {
+          "contentType": "application/problem+json",
+          "esquema": { "$ref": "problema" }
+        },
+        "422": {
+          "contentType": "application/problem+json",
+          "esquema": { "$ref": "problemaDeValidacion" }
+        },
+        "429": {
+          "contentType": "application/problem+json",
+          "encabezados": { "retry-after": "^[0-9]+$" },
+          "esquema": { "$ref": "problema" }
+        },
+        "500": {
+          "contentType": "application/problem+json",
+          "esquema": { "$ref": "problema" }
+        }
+      }
+    }
+  ]
+}

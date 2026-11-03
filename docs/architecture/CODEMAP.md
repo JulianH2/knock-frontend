@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-10-27T21:14:22Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-03T12:05:59Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,15 +10,16 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
 | `cuenta` | presentation | 2 | 4 | 4 |
-| `errores` | core | 1 | 3 | 1 |
+| `errores` | core | 1 | 4 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | presentation | 1 | 1 | 1 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
-| `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
+| `oficios` | -, data, domain, presentation | 9 | 13 | 12 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 1 | 2 | 4 |
+| `red` | core | 5 | 12 | 13 |
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
 | `tema` | core | 3 | 3 | 1 |
@@ -41,7 +42,7 @@
 - `app/lib/app.dart` — class `KnockApp`
   - `build()`:16
 - `app/lib/main.dart` — —
-  - `main()`:5
+  - `main()`:7
 
 ### cuenta
 
@@ -56,7 +57,7 @@
 
 **core**
 
-- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `SolicitudRechazadaFailure`
   - `toString()`:10
 
 ### explorar
@@ -108,6 +109,8 @@
 
 - `app/lib/features/oficios/data/oficio_mapper.dart` — class `OficioMapper`
   - `listaDesdeContrato()`:13, `desdeContrato()`:21
+- `app/lib/features/oficios/data/oficios_repository_api.dart` — class `OficiosRepositoryApi`
+  - `listar()`:22
 - `app/lib/features/oficios/data/oficios_repository_de_prueba.dart` — class `OficiosRepositoryDePrueba`
   - `listar()`:24
 
@@ -138,6 +141,21 @@
 
 - `app/lib/core/preferencias/preferencias_provider.dart` — class `Preferencias`, class `PreferenciasNotifier`
   - `copyWith()`:22, `build()`:43, `cambiarTema()`:45, `cambiarIdioma()`:49
+
+### red
+
+**core**
+
+- `app/lib/core/red/cliente_api.dart` — class `PeticionApi`, class `RespuestaApi`, class `ClienteApi`, class `ErrorDeRedApi`, enum `MotivoDeErrorDeConfiguracion`, class `ErrorDeConfiguracionApi`
+  - `valoresDe()`:35, `encabezado()`:41, `toString()`:46, `encabezado()`:65, `toString()`:73, `toString()`:90, `toString()`:116
+- `app/lib/core/red/cliente_api_provider.dart` — —
+  - `crearClienteApi()`:27
+- `app/lib/core/red/configuracion_api.dart` — enum `ModoApi`, enum `EscenarioApi`, class `ConfiguracionApi`
+  - `desdeClave()`:31, `toString()`:102
+- `app/lib/core/red/simulada/cliente_api_simulado.dart` — class `ClienteApiSimulado`
+  - `enviar()`:40, `toString()`:57
+- `app/lib/core/red/simulada/respuestas_simuladas.dart` — class `TiposDeContenido`, class `RespuestasSimuladas`
+  - `coordenadasInvalidas()`:57
 
 ### router
 

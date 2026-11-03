@@ -20,3 +20,19 @@ final class DatosInvalidosFailure extends Failure {
 final class ServicioNoDisponibleFailure extends Failure {
   const ServicioNoDisponibleFailure();
 }
+
+/// La API rechazó la petición con un estado `4xx` (TT-MOB-08, spec §8 D7).
+/// TT-MOB-03 lo amplía con el ProblemDetails y el catálogo de mensajes.
+final class SolicitudRechazadaFailure extends Failure {
+  const SolicitudRechazadaFailure(this.estado);
+
+  /// Estado HTTP recibido (`400` a `499`).
+  final int estado;
+
+  @override
+  bool operator ==(Object other) =>
+      other is SolicitudRechazadaFailure && other.estado == estado;
+
+  @override
+  int get hashCode => estado.hashCode;
+}
