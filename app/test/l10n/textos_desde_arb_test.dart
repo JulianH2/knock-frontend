@@ -13,6 +13,25 @@ List<String> _textosVisibles(WidgetTester tester) => [
     if (ayuda.message != null) ayuda.message!,
 ];
 
+/// Comprueba que todo texto visible de la pantalla está en [permitidos] y
+/// devuelve los textos vistos.
+List<String> _comprobarTextos(
+  WidgetTester tester,
+  Set<String> permitidos,
+  String pantalla,
+  String idioma,
+) {
+  final textos = _textosVisibles(tester);
+  for (final texto in textos) {
+    expect(
+      permitidos,
+      contains(texto),
+      reason: '«$texto» en $pantalla no está en app_$idioma.arb',
+    );
+  }
+  return textos;
+}
+
 const _clavesDePestana = [
   'tabInicio',
   'tabExplorar',
@@ -63,28 +82,42 @@ void main() {
             await tester.pumpAndSettle();
             expect(enElTitulo(arb[clave]!), findsOneWidget, reason: clave);
 
-            final textos = _textosVisibles(tester);
-            for (final texto in textos) {
-              expect(
-                permitidos,
-                contains(texto),
-                reason: '«$texto» en ${arb[clave]} no está en app_$idioma.arb',
-              );
-            }
-            vistos.addAll(textos);
+            vistos.addAll(
+              _comprobarTextos(tester, permitidos, arb[clave]!, idioma),
+            );
           }
 
-          // El recorrido vio las 5 pestañas y el menú de prueba completo.
+          // HU-052: los selectores de tema e idioma están en Configuración.
+          // Solo ahí se admite además el tooltip de la flecha Atrás, que viene
+          // de MaterialLocalizations y no de los ARB (spec HU-052 §8, Límites
+          // conocidos).
+          await tester.tap(find.text(arb['configuracionTitulo']!));
+          await tester.pumpAndSettle();
+          final atras = MaterialLocalizations.of(
+            tester.element(find.byType(AppBar)),
+          ).backButtonTooltip;
+          vistos.addAll(
+            _comprobarTextos(
+              tester,
+              {...permitidos, atras},
+              arb['configuracionTitulo']!,
+              idioma,
+            ),
+          );
+
+          // El recorrido vio las 5 pestañas, el menú de prueba y Configuración.
           for (final clave in [
             ..._clavesDePestana,
             'pruebaModoTecnico',
-            'pruebaTema',
-            'pruebaTemaSistema',
-            'pruebaTemaClaro',
-            'pruebaTemaOscuro',
-            'pruebaIdioma',
-            'pruebaIdiomaEspanol',
-            'pruebaIdiomaIngles',
+            'configuracionTitulo',
+            'configuracionIdioma',
+            'configuracionIdiomaEspanol',
+            'configuracionIdiomaIngles',
+            'configuracionTema',
+            'configuracionTemaAutomatico',
+            'configuracionTemaAutomaticoDetalle',
+            'configuracionTemaClaro',
+            'configuracionTemaOscuro',
           ]) {
             expect(vistos, contains(arb[clave]), reason: clave);
           }

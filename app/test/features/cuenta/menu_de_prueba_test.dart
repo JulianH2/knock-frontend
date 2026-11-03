@@ -12,6 +12,12 @@ import '../../soporte/montar_app.dart';
 ThemeData _temaActivo(WidgetTester tester) =>
     Theme.of(tester.element(find.byType(AppBar)));
 
+/// Desde Configuración regresa a Mi cuenta con la flecha Atrás.
+Future<void> _regresarAMiCuenta(WidgetTester tester) async {
+  await tester.tap(find.byType(BackButton));
+  await tester.pumpAndSettle();
+}
+
 void main() {
   group('TC-TT-MOB-02-01 menú de prueba de tema e idioma', () {
     testWidgets('TC-TT-MOB-02-01 cambia tema e idioma sin reiniciar la app', (
@@ -41,6 +47,8 @@ void main() {
         esquemaOscuro.surface,
       );
 
+      // HU-052: los selectores están en Mi cuenta → Configuración.
+      await tocarTexto(tester, 'Configuración');
       await tocarTexto(tester, 'Claro');
       expect(container.read(preferenciasProvider).modoTema, ThemeMode.light);
       expect(_temaActivo(tester).brightness, Brightness.light);
@@ -53,6 +61,8 @@ void main() {
 
       await tocarTexto(tester, 'English');
       expect(container.read(preferenciasProvider).idioma, const Locale('en'));
+      expect(find.text('Theme'), findsOneWidget);
+      await _regresarAMiCuenta(tester);
       expect(enElTitulo('My account'), findsOneWidget);
       expect(enElTitulo('Mi cuenta'), findsNothing);
       expect(etiquetasDeLaBarra(tester), [
@@ -62,11 +72,12 @@ void main() {
         'Work',
         'My account',
       ]);
-      expect(find.text('Theme (test)'), findsOneWidget);
 
+      await tocarTexto(tester, 'Settings');
       await tocarTexto(tester, 'Español');
+      expect(find.text('Tema'), findsOneWidget);
+      await _regresarAMiCuenta(tester);
       expect(enElTitulo('Mi cuenta'), findsOneWidget);
-      expect(find.text('Tema (prueba)'), findsOneWidget);
 
       // Se conservan la pestaña, la ruta y el tema elegido.
       expect(indiceSeleccionado(tester), 4);
