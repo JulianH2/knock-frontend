@@ -146,47 +146,59 @@ abstract class AppLocalizations {
   /// **'Modo técnico (prueba)'**
   String get pruebaModoTecnico;
 
-  /// Título del selector de prueba (solo fuera de la versión de tienda) para elegir el tema.
+  /// Entrada de Mi cuenta y título de la pantalla para elegir idioma y tema.
   ///
   /// In es, this message translates to:
-  /// **'Tema (prueba)'**
-  String get pruebaTema;
+  /// **'Configuración'**
+  String get configuracionTitulo;
 
-  /// Opción del selector de tema: seguir el tema claro u oscuro del teléfono.
+  /// Encabezado del selector de idioma en Configuración.
   ///
   /// In es, this message translates to:
-  /// **'Sistema'**
-  String get pruebaTemaSistema;
-
-  /// Opción del selector de tema: tema claro.
-  ///
-  /// In es, this message translates to:
-  /// **'Claro'**
-  String get pruebaTemaClaro;
-
-  /// Opción del selector de tema: tema oscuro.
-  ///
-  /// In es, this message translates to:
-  /// **'Oscuro'**
-  String get pruebaTemaOscuro;
-
-  /// Título del selector de prueba (solo fuera de la versión de tienda) para elegir el idioma.
-  ///
-  /// In es, this message translates to:
-  /// **'Idioma (prueba)'**
-  String get pruebaIdioma;
+  /// **'Idioma'**
+  String get configuracionIdioma;
 
   /// Opción del selector de idioma. Se escribe siempre en español, en cualquier idioma.
   ///
   /// In es, this message translates to:
   /// **'Español'**
-  String get pruebaIdiomaEspanol;
+  String get configuracionIdiomaEspanol;
 
   /// Opción del selector de idioma. Se escribe siempre en inglés, en cualquier idioma.
   ///
   /// In es, this message translates to:
   /// **'English'**
-  String get pruebaIdiomaIngles;
+  String get configuracionIdiomaIngles;
+
+  /// Encabezado del selector de tema en Configuración.
+  ///
+  /// In es, this message translates to:
+  /// **'Tema'**
+  String get configuracionTema;
+
+  /// Opción del selector de tema: seguir el tema claro u oscuro del teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Automático'**
+  String get configuracionTemaAutomatico;
+
+  /// Subtítulo de la opción Automático del selector de tema.
+  ///
+  /// In es, this message translates to:
+  /// **'Igual que el teléfono'**
+  String get configuracionTemaAutomaticoDetalle;
+
+  /// Opción del selector de tema: tema claro.
+  ///
+  /// In es, this message translates to:
+  /// **'Claro'**
+  String get configuracionTemaClaro;
+
+  /// Opción del selector de tema: tema oscuro.
+  ///
+  /// In es, this message translates to:
+  /// **'Oscuro'**
+  String get configuracionTemaOscuro;
 }
 
 class _AppLocalizationsDelegate

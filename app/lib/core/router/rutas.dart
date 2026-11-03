@@ -9,6 +9,9 @@ abstract final class Rutas {
   /// Subruta de Explorar (TT-PRU-02): la pantalla cuelga de la rama Explorar y
   /// conserva la barra inferior.
   static const oficios = '/explorar/oficios';
+
+  /// Subruta de Mi cuenta (HU-052): conserva la barra inferior.
+  static const configuracion = '/cuenta/configuracion';
 }
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.
