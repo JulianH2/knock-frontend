@@ -39,5 +39,5 @@
 - **Crear:** —
 - **Modificar:** `docs/VERSIONES_DESPLEGADAS.md` (fecha, Landing, versión, Railway, responsable) y `Memoria.md` (URL publicada, decisiones finales y cierre de la excepción de rama cuando Railway pase a `main`).
 - **Verificar:** con la URL del líder, TC-04, 06, 07, 08 y 09 y la captura de la pestaña Network (TC-05), con la salida en el PR o en un comentario del PR.
-- **No hacer:** desplegar a mano ni con la cuenta de otra persona; dar a Google Play la página provisional o pedir producción sin `/privacidad/` en `vigente` (regla compartida R1 de la spec §8).
+- **No hacer:** desplegar a mano ni con la cuenta de otra persona; dar a Google Play la página provisional o el `borrador`, o subir a la prueba cerrada o a producción sin `/privacidad/` en `vigente` (regla compartida R1 de la spec §8).
 - **Agente:** el líder despliega; Erick verifica y documenta.
