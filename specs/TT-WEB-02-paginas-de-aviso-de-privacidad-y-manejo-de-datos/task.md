@@ -1,7 +1,7 @@
 # TT-WEB-02 — tareas
 
 ## T1 — Estructura de las páginas legales [Landing]
-- **Crear:** `landing/privacidad/index.html`, `landing/privacidad/simplificado/index.html`, `landing/eliminar-cuenta/index.html` con `lang="es-MX"`, `data-estado="borrador"`, `data-version`, versión y fecha visibles, índice, secciones `h2` con los `id` de la spec §4 y §7, un `data-categoria` por fila del inventario §5, los datos que el líder ya fijó en §8 (TC-11), marcadores `[PENDIENTE: …]` donde va el texto del líder y `[DECISIÓN: …]` donde falta una decisión abierta (nombre legal y domicilio del responsable, número de WhatsApp del canal sin app, `sin-tu-numero`). Simplificado sin `transferencias-con-consentimiento` ni `como-negarse`; `/eliminar-cuenta/` con `sin-tu-numero` y `cuenta-de-tecnico`, y `plazo-de-gracia` diciendo que no hay plazo y que la eliminación es definitiva.
+- **Crear:** `landing/privacidad/index.html`, `landing/privacidad/simplificado/index.html`, `landing/eliminar-cuenta/index.html` con `lang="es-MX"`, `data-estado="borrador"`, `data-version`, versión y fecha visibles, índice, secciones `h2` con los `id` de la spec §4 y §7, un `data-categoria` por fila del inventario §5, los datos que el líder ya fijó en §8 (TC-11), marcadores `[PENDIENTE: …]` donde va el texto del líder y `[DECISIÓN: …]` donde falta una decisión abierta (nombre legal y domicilio del responsable, proveedores del canal de atención, número desde el que se envía la confirmación del canal sin app, `sin-tu-numero`; son decisiones del líder y no bloquean esta tarea). Simplificado sin `transferencias-con-consentimiento` ni `como-negarse`; `/eliminar-cuenta/` con `sin-tu-numero` y `cuenta-de-tecnico`, y `plazo-de-gracia` diciendo que no hay plazo y que la eliminación es definitiva, y `como-solicitar-sin-la-app` diciendo que se pide por correo a `soporte@tdevs.com.mx` y se confirma con un mensaje al número registrado.
 - **Modificar:** —
 - **Verificar:** TC-TT-WEB-02-03 · TC-TT-WEB-02-04 · TC-TT-WEB-02-05 · TC-TT-WEB-02-06 · TC-TT-WEB-02-07 · TC-TT-WEB-02-08 · TC-TT-WEB-02-09 · TC-TT-WEB-02-10 · TC-TT-WEB-02-11
 - **No hacer:** redactar texto legal; poner `data-estado="vigente"`; agregar `<script>`, `<form>`, fuentes o recursos de otros orígenes; escribir correos, teléfonos o domicilios personales; escribir «contraseña» o claves internas (`TT-`, `HU-`, `KNOCK-`) en el HTML, ni siquiera en marcadores o comentarios.
@@ -18,9 +18,9 @@
 - **No hacer:** `skip`, pruebas que solo comprueban que el archivo existe.
 
 ## T4 — Texto del líder y estado vigente [Contenido]
-- **Modificar:** las 3 páginas con el texto que aporta José Julián en un commit aparte (A10). Además del comentario obligatorio de par, Alexis y Guillermo comentan el texto final; después, él cambia `data-estado` a `vigente` y la versión a `1.0` en un commit propio.
-- **Verificar:** TC-TT-WEB-02-07 (sin `[PENDIENTE` ni `[DECISIÓN` en `vigente`, y sin marcadores antes de la primera subida a la prueba cerrada) · TC-TT-WEB-02-10 · TC-TT-WEB-02-11 (cuando el líder fije responsable y domicilio, agregar sus comprobaciones)
-- **No hacer:** que el agente o el autor marquen `vigente`.
+- **Modificar:** las 3 páginas con el texto que aporta José Julián en un commit aparte (A10). Además del comentario obligatorio de par, Alexis y Guillermo comentan el texto final; después, él cambia `data-estado` a `vigente` y la versión a `1.0` en un commit propio, antes de la primera subida a la prueba cerrada (regla compartida R1).
+- **Verificar:** TC-TT-WEB-02-07 (sin `[PENDIENTE` ni `[DECISIÓN` en `vigente`, y `vigente` antes de la primera subida a la prueba cerrada; R1) · TC-TT-WEB-02-10 · TC-TT-WEB-02-11 (cuando el líder fije responsable y domicilio, agregar sus comprobaciones; respaldos, Firebase y Sentry solo cuando confirme su configuración)
+- **No hacer:** que el agente o el autor marquen `vigente`; dar el `borrador` a Google Play en cualquier pista.
 
 ## T5 — Publicación y evidencia [Landing]
 - **Verificar:** TC-TT-WEB-02-01 · TC-TT-WEB-02-02 · TC-TT-WEB-02-07 · TC-TT-WEB-02-09 con los comandos de `plan.md §5` contra la URL de Railway; capturas en Chrome de Android y escritorio.

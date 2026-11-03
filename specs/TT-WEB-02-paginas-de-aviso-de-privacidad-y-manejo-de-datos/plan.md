@@ -15,12 +15,12 @@
 - **No tocar:** `app/`, `panel/`, `contracts/`, clientes generados, `scripts/`, `.github/`, `.agents/` (los cambios de `test_globs`, `code_dirs` y CI de §8 decisión 5 son del Tech Lead o de TT-WEB-01), configuración de Railway y dominio (TT-WEB-01).
 
 ## 2. Riesgos y efectos secundarios
-- **Legal:** publicar un texto que no es el aprobado o que no coincide con lo que hace la app. Mitigación: estado `borrador` visible (TC-07), inventario con fuentes del backend (TC-10) y la regla compartida R1 de la spec §8 (Google Play: prueba cerrada con `borrador`, producción solo con `vigente`), idéntica en TT-WEB-01.
+- **Legal:** publicar un texto que no es el aprobado o que no coincide con lo que hace la app. Mitigación: estado `borrador` visible (TC-07), inventario con fuentes del backend (TC-10) y la regla compartida R1 de la spec §8 (Google Play: texto `vigente` antes de la primera subida a la prueba cerrada y en producción; el `borrador` solo para pruebas internas, nunca en Google Play), idéntica en TT-WEB-01.
 - **Analítica:** el aviso declara que el sitio no usa cookies ni analítica (regla compartida R2). Si otra tarea agrega Google Analytics sin actualizar el aviso, el aviso miente; esa tarea debe cambiar la sección `cookies-y-analitica` en el mismo PR.
 - **Coordinación con TT-WEB-01:** va en paralelo en otra rama; si cambia carpeta, rutas o estilos, hay conflicto en el pie de página. Mitigación: fusionar después de TT-WEB-01 o rebasar sobre ella antes del PR.
 - **Trazabilidad y CI:** hoy el CI no detecta `landing/` y `--trace` no busca pruebas ahí (spec §8 decisión 5). Sin ese cambio, las pruebas se corren a mano y su salida va en el PR.
-- **Primera subida a la prueba cerrada:** el texto debe ser real, sin `[PENDIENTE` ni `[DECISIÓN`, y TT-MOB-06 debe ir en ese AAB con el enlace al aviso (spec §8 decisión 2 y duda 4). Si el texto del líder o las decisiones abiertas se retrasan, se retrasa esa subida. Cómo encaja con R1: spec §8 duda 27.
-- **Datos del equipo:** el nombre legal y el domicilio del responsable, y el número de WhatsApp del canal sin app, los decide el líder (spec §8 dudas 1, 21 y 25); mientras tanto, marcadores `[DECISIÓN: …]`. El contacto es `soporte@tdevs.com.mx` (duda 2). Si el domicilio o el número fueran de una persona del equipo, se publicaría un dato personal.
+- **Primera subida a la prueba cerrada:** el texto debe estar `vigente`, sin `[PENDIENTE` ni `[DECISIÓN` (regla compartida R1), y TT-MOB-06 debe ir en ese AAB con el enlace al aviso (spec §8 decisión 2 y duda 4). Si el texto del líder o sus decisiones (`[DECISIÓN]`) se retrasan, se retrasa esa subida; el `borrador` no se da a Google Play como sustituto (spec §8 duda 27).
+- **Datos del equipo:** el nombre legal y el domicilio del responsable, los proveedores del canal de atención y el número desde el que se envía la confirmación del canal sin app los decide el líder (spec §8 dudas 1, 21, 24 y 25); mientras tanto, marcadores `[DECISIÓN: …]`, que no bloquean la estructura ni el código. El contacto, también para pedir la eliminación sin la app, es `soporte@tdevs.com.mx` (dudas 2 y 3). Si el domicilio o el número fueran de una persona del equipo, se publicaría un dato personal.
 - **Claves internas:** los marcadores y comentarios del HTML no citan `TT-`, `HU-` ni `KNOCK-` (TC-08).
 - **Sin abogado:** el texto legal no tiene revisión de abogado; riesgo aceptado por el líder (spec §8 duda 14 y `Memoria.md`).
 - **Dependencias:** ninguna nueva.
@@ -44,11 +44,11 @@ Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha,
 
 ## 4. Secuencia
 1. Esperar o rebasar sobre TT-WEB-01 (carpeta, estilos, servidor y dominio).
-2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"`, los datos que el líder ya fijó (TC-11), marcadores `[PENDIENTE: …]` para su texto y `[DECISIÓN: …]` para las decisiones abiertas (responsable, domicilio, número de WhatsApp, `sin-tu-numero`), sin claves internas.
+2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"`, los datos que el líder ya fijó (TC-11), marcadores `[PENDIENTE: …]` para su texto y `[DECISIÓN: …]` para las decisiones abiertas (responsable, domicilio, proveedores del canal de atención, número desde el que se envía la confirmación, `sin-tu-numero`), sin claves internas.
 3. Pruebas TC-02 a TC-11 en `landing/tests/` (primero en rojo contra páginas incompletas, luego en verde).
 4. Enlaces en el pie de la landing.
 5. Texto del líder: lo aporta él en un commit aparte (A10). Además del comentario obligatorio de par, Alexis y Guillermo comentan el texto final; después, solo el líder cambia el estado a `vigente` y la versión a `1.0` en un commit propio.
-6. Despliegue en Railway (sigue `develop` de forma temporal, spec §8 duda 5) y comandos de TC-01, TC-02, TC-07 y TC-09 contra la URL real. Antes de la primera subida a la prueba cerrada, el conteo de `[PENDIENTE` y `[DECISIÓN` de las tres páginas es 0.
+6. Despliegue en Railway (sigue `develop` de forma temporal, spec §8 duda 5) y comandos de TC-01, TC-02, TC-07 y TC-09 contra la URL real. Antes de la primera subida a la prueba cerrada, las tres páginas están en `data-estado="vigente"` y su conteo de `[PENDIENTE` y `[DECISIÓN` es 0 (regla compartida R1); el `borrador` solo sirve para pruebas internas.
 7. Gates + `Memoria.md` + informe final con «Uso de IA».
 
 ## 5. Verificación (comandos exactos)
@@ -60,7 +60,7 @@ curl -sS -o /dev/null -w "%{http_code} %{content_type} %{url_effective}\n" https
 curl -sSI http://<dominio>/privacidad/                     # 301/308 y Location: https://…
 curl -sS https://<dominio>/ | grep -oE 'href="/(privacidad|eliminar-cuenta)/"'
 curl -sS https://<dominio>/privacidad/ | grep -o 'data-estado="[a-z]*"'
-for r in privacidad/ privacidad/simplificado/ eliminar-cuenta/; do curl -sS "https://<dominio>/$r" | grep -cE '\[(PENDIENTE|DECISIÓN)'; done   # 0 antes de la primera subida a la prueba cerrada
+for r in privacidad/ privacidad/simplificado/ eliminar-cuenta/; do curl -sS "https://<dominio>/$r" | grep -cE '\[(PENDIENTE|DECISIÓN)'; done   # 0 y data-estado vigente antes de la primera subida a la prueba cerrada (R1)
 # Accesibilidad (regla compartida R3): axe-core 4.14.0, etiquetas wcag2a, wcag2aa, wcag21a y wcag21aa, 0 violaciones
 npx --yes @axe-core/cli@4.14.0 https://<dominio>/privacidad/ https://<dominio>/privacidad/simplificado/ https://<dominio>/eliminar-cuenta/ --tags wcag2a,wcag2aa,wcag21a,wcag21aa --exit
 # Tema oscuro: axe DevTools con prefers-color-scheme: dark emulado; captura en el PR
