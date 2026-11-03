@@ -248,6 +248,12 @@
 - Revisión de pares (Alexis, en el PR #88 de knock-backend): TT-API-04 pide confirmar que Azure DocumentDB y documentdb-local soportan transacciones de varios documentos (plan B: evento en el mismo documento) y que la reserva atómica lleve expiración (lease); se agregaron a la ficha (V6 y V7) y se quitó el «Día sugerido».
 - A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro; dar por hecho que las transacciones de varios documentos funcionan sin comprobarlo.
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA falla por minimatch 10.x en el panel; se fuerza minimatch 11.0.1
+- Decisión (líder): se agrega `"minimatch": "11.0.1"` a `overrides` de `panel/package.json` y se actualizan solo tres entradas de `panel/package-lock.json` (minimatch, su dependencia nueva `@isaacs/nonrecursive-glob-match` y el rango de `brace-expansion`).
+- Porqué: OSV-Scanner reporta GHSA-g3hv-75wg-m249 (denegación de servicio, severidad media) en `minimatch` 10.2.6, que llega como dependencia de desarrollo de eslint y typescript-eslint. Todas las versiones 10.x están afectadas y la corrección es 11.0.1. Desde el 2026-11-02 el job SCA fallaba en `sprint-02` y en todos los PR del frontend.
+- Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
+- A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
+
 ## 2026-10-24 — TT-GES-06 (KNOCK-144): quién aprueba specs y explicación del PR con IA (propuesta)
 - Decisión (propuesta del líder, pendiente de que el equipo la acepte el lunes 26): la spec la aprueba el Tech Lead o Guillermo, en menos de 24 horas y nunca el autor; el Tech Lead firma las críticas (sesión, datos sensibles, nube y constitución). La plantilla de PR pide, en «Uso de IA», explicar en 2 o 3 frases qué hace el código y cómo se validó. Porqué: las specs esperaban días por firma, y cualquier integrante puede ser interrogado sobre su código.
 - No cambia la constitución: ya dice que aprueba «una persona» con revisor. Cambian `docs/FLUJO_EQUIPO.md`, el ADR-005 y la plantilla de PR.
