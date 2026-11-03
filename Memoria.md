@@ -268,3 +268,7 @@
 ## 2026-11-03 — TT-GES-09 (KNOCK-181): DECISION_TECNICA.md alineado con el backend
 - Decisión (líder): este documento es idéntico en `knock-backend` y `knock-frontend`; se copia el mismo cambio de la nota de actualización (revocación de tokens: `jti` en Redis y huella del refresh en MongoDB, ADR-002 regla 4) que hace el PR de backend de KNOCK-181.
 - A evitar: que los dos repositorios digan cosas distintas en un documento que se declara idéntico.
+
+## 2026-11-03 — HU-052 (KNOCK-49): el SCA de licencias deja pasar 4 paquetes de pub más (EXC-002)
+- Decisión (líder, 2026-11-03): se agregan `jni@1.1.1`, `shared_preferences@2.5.6`, `shared_preferences_android@2.5.4` y `shared_preferences_foundation@2.5.7` a `allow-dependencies-licenses`, con la misma justificación de EXC-002: el action no reconoce `bsd-3-clause` como SPDX en `pubspec.lock`. La licencia de los cuatro es BSD de 3 cláusulas (consultada en pub.dev; `jni` de dart-lang/native, los otros de flutter/packages). Se mantiene `deny-licenses` y el job de SCA; la lista queda en 19 paquetes.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin comprobar su licencia; olvidar que el action ignora la versión y que una versión nueva sigue exenta.
