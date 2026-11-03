@@ -254,6 +254,12 @@
 - Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
 - A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA de licencias deja pasar 15 paquetes de pub revisados (EXC-002)
+- Decisión (líder, 2026-10-28): se mantiene `deny-licenses` (AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0) y el job de SCA; solo se agrega `allow-dependencies-licenses` con los 15 paquetes de pub que `dependency-review-action` no reconoce, y la excepción EXC-002 en `security/exceptions.yaml` (creada 2026-11-02, vence 2027-01-30).
+- Porqué: el action recibe de pub las licencias en minúsculas (`mit`, `bsd-3-clause`, `mpl-2.0`) y no las reconoce como SPDX, y a `geolocator_windows` no le detecta ninguna. Se leyó el LICENSE de cada paquete: 7 MIT, 6 BSD-3-Clause y 2 MPL-2.0, todas en la lista permitida de CONTRIBUTING.md. Los 15 son exactamente los que el CI de #28 marcó como «sin resolver».
+- Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
+
 ## 2026-10-24 — TT-GES-06 (KNOCK-144): quién aprueba specs y explicación del PR con IA (propuesta)
 - Decisión (propuesta del líder, pendiente de que el equipo la acepte el lunes 26): la spec la aprueba el Tech Lead o Guillermo, en menos de 24 horas y nunca el autor; el Tech Lead firma las críticas (sesión, datos sensibles, nube y constitución). La plantilla de PR pide, en «Uso de IA», explicar en 2 o 3 frases qué hace el código y cómo se validó. Porqué: las specs esperaban días por firma, y cualquier integrante puede ser interrogado sobre su código.
 - No cambia la constitución: ya dice que aprueba «una persona» con revisor. Cambian `docs/FLUJO_EQUIPO.md`, el ADR-005 y la plantilla de PR.
