@@ -260,6 +260,15 @@
 - Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
 - A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
 
+## 2026-10-24 — TT-GES-06 (KNOCK-144): quién aprueba specs y explicación del PR con IA (propuesta)
+- Decisión (propuesta del líder, pendiente de que el equipo la acepte el lunes 26): la spec la aprueba el Tech Lead o Guillermo, en menos de 24 horas y nunca el autor; el Tech Lead firma las críticas (sesión, datos sensibles, nube y constitución). La plantilla de PR pide, en «Uso de IA», explicar en 2 o 3 frases qué hace el código y cómo se validó. Porqué: las specs esperaban días por firma, y cualquier integrante puede ser interrogado sobre su código.
+- No cambia la constitución: ya dice que aprueba «una persona» con revisor. Cambian `docs/FLUJO_EQUIPO.md`, el ADR-005 y la plantilla de PR.
+- A evitar: que el autor apruebe su propia spec; que el agente firme; fusionar esto antes de que el equipo lo acepte. Conflicto con backend #63 y frontend #37 (también tocan FLUJO_EQUIPO y el ADR-005): el que se fusione segundo hace rebase.
+
+## 2026-11-03 — TT-GES-09 (KNOCK-181): DECISION_TECNICA.md alineado con el backend
+- Decisión (líder): este documento es idéntico en `knock-backend` y `knock-frontend`; se copia el mismo cambio de la nota de actualización (revocación de tokens: `jti` en Redis y huella del refresh en MongoDB, ADR-002 regla 4) que hace el PR de backend de KNOCK-181.
+- A evitar: que los dos repositorios digan cosas distintas en un documento que se declara idéntico.
+
 ## 2026-10-26 — TT-WEB-01 (KNOCK-148): spec de la landing en Borrador
 - Hecho: spec, plan, tareas y checklist en `specs/TT-WEB-01-landing-page-minima-railway/` (9 casos, estado Borrador, sin revisor). La fuente es Jira (no hay ficha `.docx`). Hosting en **Railway** (comentario del líder del 2026-10-22/24), no en GitHub Pages.
 - Decisiones propuestas (spec §8, a confirmar al aprobar): HTML y CSS estáticos sin JavaScript ni build, servidos por `nginx-unprivileged` fijado por digest en el puerto 8080 (control de las cabeceras y CSP `default-src 'none'`); Nunito 400 y 700 copiada de TT-MOB-02 con su `OFL.txt`; paleta y pares de contraste de TT-MOB-02; solo español; enlace a Play que nace en «próximamente» y pasa a disponible con un PR; `/privacidad/` provisional sin texto legal, que TT-WEB-02 reemplaza; sin Google Analytics ni cookies en esta tarea; pruebas en Python con la biblioteca estándar.
