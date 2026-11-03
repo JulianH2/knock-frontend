@@ -254,6 +254,12 @@
 - Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
 - A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA de licencias deja pasar 15 paquetes de pub revisados (EXC-002)
+- Decisión (líder, 2026-10-28): se mantiene `deny-licenses` (AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0) y el job de SCA; solo se agrega `allow-dependencies-licenses` con los 15 paquetes de pub que `dependency-review-action` no reconoce, y la excepción EXC-002 en `security/exceptions.yaml` (creada 2026-11-02, vence 2027-01-30).
+- Porqué: el action recibe de pub las licencias en minúsculas (`mit`, `bsd-3-clause`, `mpl-2.0`) y no las reconoce como SPDX, y a `geolocator_windows` no le detecta ninguna. Se leyó el LICENSE de cada paquete: 7 MIT, 6 BSD-3-Clause y 2 MPL-2.0, todas en la lista permitida de CONTRIBUTING.md. Los 15 son exactamente los que el CI de #28 marcó como «sin resolver».
+- Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
+- A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
+
 ## 2026-10-26 — TT-WEB-01 (KNOCK-148): spec de la landing en Borrador
 - Hecho: spec, plan, tareas y checklist en `specs/TT-WEB-01-landing-page-minima-railway/` (9 casos, estado Borrador, sin revisor). La fuente es Jira (no hay ficha `.docx`). Hosting en **Railway** (comentario del líder del 2026-10-22/24), no en GitHub Pages.
 - Decisiones propuestas (spec §8, a confirmar al aprobar): HTML y CSS estáticos sin JavaScript ni build, servidos por `nginx-unprivileged` fijado por digest en el puerto 8080 (control de las cabeceras y CSP `default-src 'none'`); Nunito 400 y 700 copiada de TT-MOB-02 con su `OFL.txt`; paleta y pares de contraste de TT-MOB-02; solo español; enlace a Play que nace en «próximamente» y pasa a disponible con un PR; `/privacidad/` provisional sin texto legal, que TT-WEB-02 reemplaza; sin Google Analytics ni cookies en esta tarea; pruebas en Python con la biblioteca estándar.
