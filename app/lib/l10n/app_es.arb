@@ -32,32 +32,40 @@
   "@pruebaModoTecnico": {
     "description": "Interruptor de prueba (solo fuera de la versión de tienda) que da el rol de técnico."
   },
-  "pruebaTema": "Tema (prueba)",
-  "@pruebaTema": {
-    "description": "Título del selector de prueba (solo fuera de la versión de tienda) para elegir el tema."
+  "configuracionTitulo": "Configuración",
+  "@configuracionTitulo": {
+    "description": "Entrada de Mi cuenta y título de la pantalla para elegir idioma y tema."
   },
-  "pruebaTemaSistema": "Sistema",
-  "@pruebaTemaSistema": {
-    "description": "Opción del selector de tema: seguir el tema claro u oscuro del teléfono."
+  "configuracionIdioma": "Idioma",
+  "@configuracionIdioma": {
+    "description": "Encabezado del selector de idioma en Configuración."
   },
-  "pruebaTemaClaro": "Claro",
-  "@pruebaTemaClaro": {
-    "description": "Opción del selector de tema: tema claro."
-  },
-  "pruebaTemaOscuro": "Oscuro",
-  "@pruebaTemaOscuro": {
-    "description": "Opción del selector de tema: tema oscuro."
-  },
-  "pruebaIdioma": "Idioma (prueba)",
-  "@pruebaIdioma": {
-    "description": "Título del selector de prueba (solo fuera de la versión de tienda) para elegir el idioma."
-  },
-  "pruebaIdiomaEspanol": "Español",
-  "@pruebaIdiomaEspanol": {
+  "configuracionIdiomaEspanol": "Español",
+  "@configuracionIdiomaEspanol": {
     "description": "Opción del selector de idioma. Se escribe siempre en español, en cualquier idioma."
   },
-  "pruebaIdiomaIngles": "English",
-  "@pruebaIdiomaIngles": {
+  "configuracionIdiomaIngles": "English",
+  "@configuracionIdiomaIngles": {
     "description": "Opción del selector de idioma. Se escribe siempre en inglés, en cualquier idioma."
+  },
+  "configuracionTema": "Tema",
+  "@configuracionTema": {
+    "description": "Encabezado del selector de tema en Configuración."
+  },
+  "configuracionTemaAutomatico": "Automático",
+  "@configuracionTemaAutomatico": {
+    "description": "Opción del selector de tema: seguir el tema claro u oscuro del teléfono."
+  },
+  "configuracionTemaAutomaticoDetalle": "Igual que el teléfono",
+  "@configuracionTemaAutomaticoDetalle": {
+    "description": "Subtítulo de la opción Automático del selector de tema."
+  },
+  "configuracionTemaClaro": "Claro",
+  "@configuracionTemaClaro": {
+    "description": "Opción del selector de tema: tema claro."
+  },
+  "configuracionTemaOscuro": "Oscuro",
+  "@configuracionTemaOscuro": {
+    "description": "Opción del selector de tema: tema oscuro."
   }
 }

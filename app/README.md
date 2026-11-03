@@ -14,7 +14,7 @@ flutter pub get
 flutter emulators --launch <id_del_emulador>   # o abre uno desde Android Studio
 flutter run
 ```
-La cuenta empieza como cliente (4 pestañas), en español y con el tema del sistema. En **Mi cuenta** hay un menú de prueba: el interruptor «Modo técnico (prueba)» agrega la pestaña **Trabajo**, y los selectores «Tema (prueba)» (Sistema · Claro · Oscuro) e «Idioma (prueba)» (Español · English) cambian la app sin reiniciarla. El menú solo existe en compilaciones debug y profile (`!kReleaseMode`); el rol lo dará la sesión real y la pantalla de Configuración con la preferencia guardada es de HU-052. La elección vive solo en memoria.
+La cuenta empieza como cliente (4 pestañas), en español y con el tema del sistema (Automático). En **Mi cuenta → Configuración** (`/cuenta/configuracion`, HU-052) se eligen el idioma (Español · English) y el tema (Automático · Claro · Oscuro); el cambio se ve al momento y se conserva al cerrar y abrir la app. Fuera de release (`!kReleaseMode`), Mi cuenta muestra además el interruptor «Modo técnico (prueba)», que agrega la pestaña **Trabajo** hasta que el rol llegue con la sesión real.
 
 ## Tema
 - `lib/core/tema/colores.dart`: tokens de la maqueta (`css/knock.css`) en claro y oscuro, y los `ColorScheme` completos.
@@ -23,9 +23,14 @@ La cuenta empieza como cliente (4 pestañas), en español y con el tema del sist
 - **Regla de contraste:** estos pares no llegan a 4.5:1 y **no** se usan para texto ni para botones: en claro, `amber` (#E9682D) como texto sobre crema o blanco, y blanco sobre `amber`; en oscuro, `mut`, `navy` o `amber` sobre `navybg`, y `amber` sobre `navy-soft`. Para texto naranja usa `ColoresClaro.amberInk`; sobre `amber` va tinta (`onPrimary`). Usa siempre los colores de `Theme.of(context).colorScheme`, no colores sueltos.
 - **Fuente:** Nunito 400, 500, 600 y 700 empaquetada en `assets/fonts/nunito/` con su licencia (`OFL.txt`, SIL Open Font License 1.1). No se usa `google_fonts` ni se descarga nada en tiempo de ejecución.
 
+## Preferencias guardadas (HU-052)
+- `lib/core/preferencias/`: `preferenciasProvider` (estado) y `AlmacenPreferencias` (dónde se guarda). En el dispositivo se guardan **solo** `knock.preferencias.tema` (`automatico`, `claro`, `oscuro`) y `knock.preferencias.idioma` (`es`, `en`) con `shared_preferences`, que **no está cifrado**: nunca guardes ahí tokens ni datos de la cuenta (van en almacenamiento seguro). `test/core/preferencias/arquitectura_preferencias_test.dart` falla si otra carpeta de `lib/` importa `shared_preferences`.
+- `main()` espera `crearAlmacenDeArranque()` antes de `runApp` para que el primer cuadro ya tenga lo guardado. Un valor guardado inválido usa el valor por defecto (español, Automático) y un fallo del almacenamiento no rompe la app ni se registra.
+- En pruebas: `SharedPreferences.setMockInitialValues({...})` en cada prueba. Sin override, `almacenPreferenciasProvider` es un almacén en memoria.
+
 ## Idiomas (ARB)
 - Español es el idioma fuente (`lib/l10n/app_es.arb`, plantilla y respaldo) e inglés el segundo (`lib/l10n/app_en.arb`). Configuración en `l10n.yaml`.
-- **Agregar un texto:** 1) agrega la clave en `app_es.arb` (camelCase con prefijo, p. ej. `tabInicio`, `pruebaTema`) con su `@clave.description`; 2) agrega la misma clave en `app_en.arb`; 3) corre `flutter gen-l10n`; 4) úsalo con `AppLocalizations.of(context).<clave>`. Nunca escribas un texto visible directo en un widget.
+- **Agregar un texto:** 1) agrega la clave en `app_es.arb` (camelCase con prefijo, p. ej. `tabInicio`, `configuracionTema`) con su `@clave.description`; 2) agrega la misma clave en `app_en.arb`; 3) corre `flutter gen-l10n`; 4) úsalo con `AppLocalizations.of(context).<clave>`. Nunca escribas un texto visible directo en un widget.
 - `lib/l10n/generado/` es la salida de `flutter gen-l10n`: se versiona y **no se edita a mano**. Tras cambiar un ARB, `flutter gen-l10n` y `git status lib/l10n` deben quedar al día.
 - `test/l10n/textos_desde_arb_test.dart` comprueba que ambos ARB tengan las mismas claves y que todo texto visible salga del ARB del idioma activo; al agregar una pantalla, agrégala a su recorrido.
 

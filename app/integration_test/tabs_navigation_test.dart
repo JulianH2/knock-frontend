@@ -18,7 +18,7 @@ void main() {
   testWidgets('TC-TT-MOB-01-01 abre la app y navega entre las 5 pestañas', (
     tester,
   ) async {
-    knock.main();
+    await knock.main();
     await tester.pumpAndSettle();
 
     // Cuenta de cliente por defecto: 4 pestañas, sin Trabajo.

@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:app/core/preferencias/almacen_preferencias.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,14 +39,23 @@ class Preferencias {
 
 /// Estado de tema e idioma que lee `KnockApp`.
 ///
-/// Solo en memoria (TT-MOB-02, spec §8 decisión 5): se pierde al cerrar la
-/// app hasta que HU-052 guarde la preferencia.
+/// Arranca con lo guardado en [almacenPreferenciasProvider] (lectura síncrona,
+/// HU-052 spec §8 decisión 4). Al cambiar, primero se actualiza el estado y
+/// luego se guarda sin esperar: lo que se ve no depende del guardado.
 class PreferenciasNotifier extends Notifier<Preferencias> {
   @override
-  Preferencias build() => Preferencias.inicial;
+  Preferencias build() {
+    final almacen = ref.read(almacenPreferenciasProvider);
+    return Preferencias.inicial.copyWith(
+      modoTema: almacen.leerTema(),
+      idioma: almacen.leerIdioma(),
+    );
+  }
 
-  void cambiarTema(ThemeMode modoTema) =>
-      state = state.copyWith(modoTema: modoTema);
+  void cambiarTema(ThemeMode modoTema) {
+    state = state.copyWith(modoTema: modoTema);
+    _guardar(() => ref.read(almacenPreferenciasProvider).guardarTema(modoTema));
+  }
 
   /// Cambia el idioma. Solo acepta los de [idiomasSoportados].
   void cambiarIdioma(Locale idioma) {
@@ -51,6 +63,18 @@ class PreferenciasNotifier extends Notifier<Preferencias> {
       throw ArgumentError.value(idioma, 'idioma', 'Idioma no soportado');
     }
     state = state.copyWith(idioma: idioma);
+    _guardar(() => ref.read(almacenPreferenciasProvider).guardarIdioma(idioma));
+  }
+
+  /// Un fallo al guardar se ignora sin registrarlo (spec §8 decisión 5).
+  void _guardar(Future<void> Function() guardado) {
+    unawaited(() async {
+      try {
+        await guardado();
+      } on Object {
+        return;
+      }
+    }());
   }
 }
 

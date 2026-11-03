@@ -12,7 +12,7 @@
   - `app/lib/features/<x>/{domain,data}/.gitkeep` y `app/lib/core/{tema,errores,red}/.gitkeep` (decisión 10).
   - `app/test/core/router/app_shell_test.dart` — TC-TT-MOB-01-02 y TC-TT-MOB-01-04 (+ A11Y).
   - `app/test/core/router/rutas_test.dart` — unitarias de la regla de rol (`redireccionPorRol`, `ramasVisibles`), TC-TT-MOB-01-02 (agregado al implementar).
-  - `app/integration_test/tabs_navigation_test.dart` — TC-TT-MOB-01-01 (decisión 7).
+  - `app/integration_test/tabs_navigation_test.dart` — TC-TT-MOB-01-01 (decisión 7). **Ajuste posterior (HU-052, PR #44, aceptado por el líder el 2026-11-03):** como `main()` pasó a ser asíncrono (HU-052 §8 decisión 4), la prueba llama `await knock.main();`. No cambia ninguna aserción.
   - `app/README.md` — versión de Flutter y cómo correr la app.
 - **Modificar:** `app/pubspec.yaml` (`flutter_riverpod`, `go_router`; `integration_test` en `dev_dependencies`), `app/analysis_options.yaml` (copia de la plantilla), `Memoria.md`.
 - **No tocar:** `contracts/`, `app/packages/knock_api/`, `panel/`, `.gitignore` (ya cubre los archivos sensibles), workflows (TT-CI-01), scripts de gobierno.

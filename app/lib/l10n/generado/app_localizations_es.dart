@@ -34,23 +34,29 @@ class AppLocalizationsEs extends AppLocalizations {
   String get pruebaModoTecnico => 'Modo técnico (prueba)';
 
   @override
-  String get pruebaTema => 'Tema (prueba)';
+  String get configuracionTitulo => 'Configuración';
 
   @override
-  String get pruebaTemaSistema => 'Sistema';
+  String get configuracionIdioma => 'Idioma';
 
   @override
-  String get pruebaTemaClaro => 'Claro';
+  String get configuracionIdiomaEspanol => 'Español';
 
   @override
-  String get pruebaTemaOscuro => 'Oscuro';
+  String get configuracionIdiomaIngles => 'English';
 
   @override
-  String get pruebaIdioma => 'Idioma (prueba)';
+  String get configuracionTema => 'Tema';
 
   @override
-  String get pruebaIdiomaEspanol => 'Español';
+  String get configuracionTemaAutomatico => 'Automático';
 
   @override
-  String get pruebaIdiomaIngles => 'English';
+  String get configuracionTemaAutomaticoDetalle => 'Igual que el teléfono';
+
+  @override
+  String get configuracionTemaClaro => 'Claro';
+
+  @override
+  String get configuracionTemaOscuro => 'Oscuro';
 }

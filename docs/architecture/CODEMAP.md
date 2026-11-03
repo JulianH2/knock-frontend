@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-02T19:44:45Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-03T20:25:10Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -9,7 +9,7 @@
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
-| `cuenta` | presentation | 2 | 4 | 4 |
+| `cuenta` | presentation | 3 | 5 | 5 |
 | `errores` | core | 1 | 3 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
@@ -18,7 +18,7 @@
 | `layout` | core | 1 | 1 | 0 |
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
-| `preferencias` | core | 1 | 2 | 4 |
+| `preferencias` | core | 3 | 5 | 12 |
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
 | `tema` | core | 3 | 3 | 1 |
@@ -41,7 +41,7 @@
 - `app/lib/app.dart` — class `KnockApp`
   - `build()`:16
 - `app/lib/main.dart` — —
-  - `main()`:5
+  - `main()`:9
 - `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
   - `main()`:11, `build()`:20
 
@@ -49,10 +49,12 @@
 
 **presentation**
 
+- `app/lib/features/cuenta/presentation/configuracion_screen.dart` — class `ConfiguracionScreen`, class `_Encabezado`, class `_Opcion`
+  - `build()`:16, `build()`:69, `build()`:86
 - `app/lib/features/cuenta/presentation/cuenta_screen.dart` — class `CuentaScreen`
-  - `build()`:13
-- `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`, class `_Encabezado`, class `_Opcion`
-  - `build()`:16, `build()`:67, `build()`:83
+  - `build()`:16
+- `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`
+  - `build()`:15
 
 ### errores
 
@@ -114,7 +116,7 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:197, `isSupported()`:202, `shouldReload()`:206, `lookupAppLocalizations()`:209
+  - `of()`:70, `load()`:209, `isSupported()`:214, `shouldReload()`:218, `lookupAppLocalizations()`:221
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
@@ -162,8 +164,11 @@
 
 **core**
 
+- `app/lib/core/preferencias/almacen_preferencias.dart` — class `AlmacenPreferencias`, class `AlmacenPreferenciasShared`, class `AlmacenPreferenciasEnMemoria`
+  - `leerTema()`:41, `leerIdioma()`:44, `guardarTema()`:47, `guardarIdioma()`:51, `leerTema()`:65, `leerIdioma()`:68, `guardarTema()`:71, `guardarIdioma()`:74
+- `app/lib/core/preferencias/arranque.dart` — —
 - `app/lib/core/preferencias/preferencias_provider.dart` — class `Preferencias`, class `PreferenciasNotifier`
-  - `copyWith()`:22, `build()`:43, `cambiarTema()`:45, `cambiarIdioma()`:49
+  - `copyWith()`:25, `build()`:47, `cambiarTema()`:55, `cambiarIdioma()`:61
 
 ### router
 
@@ -173,7 +178,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:35, `build()`:48, `Scaffold()`:53
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:17
+  - `redireccionPorRol()`:20
 
 ### sesion
 
