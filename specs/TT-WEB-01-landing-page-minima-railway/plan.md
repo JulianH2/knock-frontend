@@ -53,8 +53,8 @@ docker exec kl id -u
 curl -sI http://localhost:8080/
 curl -sI http://localhost:8080/no-existe
 docker stop kl
-docker run --rm ghcr.io/validator/validator@sha256:8f21030474e68e06905cfa801b37376e99c0e37867c653c5b6cd7e2dcaf3f503 /vnu-runtime-image/bin/vnu --version
-docker run --rm -v "$PWD/landing":/w ghcr.io/validator/validator@sha256:8f21030474e68e06905cfa801b37376e99c0e37867c653c5b6cd7e2dcaf3f503 /vnu-runtime-image/bin/vnu --skip-non-html /w
+docker run --rm ghcr.io/validator/validator@sha256:8f21030474e68e06905cfa801b37376e99c0e37867c653c5b6cd7e2dcaf3f503 java -jar /vnu.jar --version
+docker run --rm -v "$PWD/landing":/w ghcr.io/validator/validator@sha256:8f21030474e68e06905cfa801b37376e99c0e37867c653c5b6cd7e2dcaf3f503 java -jar /vnu.jar --skip-non-html /w
 # Con la URL que publique el líder
 curl -sS -o /dev/null -w "%{http_code} %{ssl_verify_result}\n" https://<URL>/
 curl -sI http://<URL>/
