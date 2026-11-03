@@ -5,9 +5,9 @@
   - Hoja de estilos, encabezado, pie de página y servidor estático de la landing (TT-WEB-01, KNOCK-148). No se crea otra hoja de estilos ni otro servidor.
   - Inventario de datos y fuentes de la spec §5; textos aportados por el líder.
 - **Crear:**
-  - `landing/privacidad/index.html` (aviso integral, 16 secciones de §7)
-  - `landing/privacidad/simplificado/index.html` (aviso simplificado)
-  - `landing/eliminar-cuenta/index.html` (manejo de datos y eliminación de cuenta)
+  - `landing/privacidad/index.html` (aviso integral, 17 secciones de §7, incluida `lo-que-compartes-tu`)
+  - `landing/privacidad/simplificado/index.html` (aviso simplificado: `responsable`, `datos-tratados`, `finalidades`, `limitar-uso`, `aviso-integral`)
+  - `landing/eliminar-cuenta/index.html` (manejo de datos y eliminación de cuenta, con `sin-tu-numero` y `cuenta-de-tecnico`)
   - `landing/tests/test_paginas_legales.py` (TC-02 a TC-11, `unittest` + `html.parser`)
 - **Modificar:**
   - Pie de página de la landing de TT-WEB-01 (solo los enlaces a `/privacidad/` y `/eliminar-cuenta/`)
@@ -19,7 +19,9 @@
 - **Analítica:** el aviso declara que el sitio no usa cookies ni analítica (regla compartida R2). Si otra tarea agrega Google Analytics sin actualizar el aviso, el aviso miente; esa tarea debe cambiar la sección `cookies-y-analitica` en el mismo PR.
 - **Coordinación con TT-WEB-01:** va en paralelo en otra rama; si cambia carpeta, rutas o estilos, hay conflicto en el pie de página. Mitigación: fusionar después de TT-WEB-01 o rebasar sobre ella antes del PR.
 - **Trazabilidad y CI:** hoy el CI no detecta `landing/` y `--trace` no busca pruebas ahí (spec §8 decisión 5). Sin ese cambio, las pruebas se corren a mano y su salida va en el PR.
-- **Datos del equipo:** el responsable es Team Knock, sin domicilio particular de ninguna persona, y el contacto es `soporte@tdevs.com.mx` (spec §8 dudas 1 y 2).
+- **Primera subida a la prueba cerrada:** el texto debe ser real, sin `[PENDIENTE` ni `[DECISIÓN`, y TT-MOB-06 debe ir en ese AAB con el enlace al aviso (spec §8 decisión 2 y duda 4). Si el texto del líder o las decisiones abiertas se retrasan, se retrasa esa subida. Cómo encaja con R1: spec §8 duda 27.
+- **Datos del equipo:** el nombre legal y el domicilio del responsable, y el número de WhatsApp del canal sin app, los decide el líder (spec §8 dudas 1, 21 y 25); mientras tanto, marcadores `[DECISIÓN: …]`. El contacto es `soporte@tdevs.com.mx` (duda 2). Si el domicilio o el número fueran de una persona del equipo, se publicaría un dato personal.
+- **Claves internas:** los marcadores y comentarios del HTML no citan `TT-`, `HU-` ni `KNOCK-` (TC-08).
 - **Sin abogado:** el texto legal no tiene revisión de abogado; riesgo aceptado por el líder (spec §8 duda 14 y `Memoria.md`).
 - **Dependencias:** ninguna nueva.
 
@@ -38,15 +40,15 @@
 | TC-TT-WEB-02-10 | `test_TC_TT_WEB_02_10_inventario_completo_en_el_aviso` | `landing/tests/test_paginas_legales.py` |
 | TC-TT-WEB-02-11 | `test_TC_TT_WEB_02_11_datos_fijados_por_el_lider` | `landing/tests/test_paginas_legales.py` |
 
-Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha, el aviso de borrador o un dato fijado por el líder, o si se agrega un `<script>`, un `<form>` o un recurso de otro origen (comprobarlo una vez rompiendo un archivo a propósito y anotarlo en el PR).
+Cada prueba debe fallar si se quita una sección, un `data-categoria`, la fecha, el aviso de borrador o un dato fijado por el líder, si queda un `[PENDIENTE` o un `[DECISIÓN` en una página `vigente`, si vuelven los `id` `transferencias-con-consentimiento` o `como-negarse` al simplificado, si aparece «contraseña» en `/eliminar-cuenta/` o una clave interna (`TT-`, `HU-`, `KNOCK-`) en cualquier página, o si se agrega un `<script>`, un `<form>` o un recurso de otro origen (comprobarlo una vez rompiendo un archivo a propósito y anotarlo en el PR).
 
 ## 4. Secuencia
 1. Esperar o rebasar sobre TT-WEB-01 (carpeta, estilos, servidor y dominio).
-2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"`, los datos que el líder ya fijó (TC-11) y marcadores `[PENDIENTE: …]`.
+2. Estructura de las 3 páginas con encabezados, `id`, índice, versión, fecha, `data-estado="borrador"`, los datos que el líder ya fijó (TC-11), marcadores `[PENDIENTE: …]` para su texto y `[DECISIÓN: …]` para las decisiones abiertas (responsable, domicilio, número de WhatsApp, `sin-tu-numero`), sin claves internas.
 3. Pruebas TC-02 a TC-11 en `landing/tests/` (primero en rojo contra páginas incompletas, luego en verde).
 4. Enlaces en el pie de la landing.
 5. Texto del líder: lo aporta él en un commit aparte (A10). Además del comentario obligatorio de par, Alexis y Guillermo comentan el texto final; después, solo el líder cambia el estado a `vigente` y la versión a `1.0` en un commit propio.
-6. Despliegue en Railway y comandos de TC-01, TC-02, TC-07 y TC-09 contra la URL real.
+6. Despliegue en Railway (sigue `develop` de forma temporal, spec §8 duda 5) y comandos de TC-01, TC-02, TC-07 y TC-09 contra la URL real. Antes de la primera subida a la prueba cerrada, el conteo de `[PENDIENTE` y `[DECISIÓN` de las tres páginas es 0.
 7. Gates + `Memoria.md` + informe final con «Uso de IA».
 
 ## 5. Verificación (comandos exactos)
@@ -58,6 +60,7 @@ curl -sS -o /dev/null -w "%{http_code} %{content_type} %{url_effective}\n" https
 curl -sSI http://<dominio>/privacidad/                     # 301/308 y Location: https://…
 curl -sS https://<dominio>/ | grep -oE 'href="/(privacidad|eliminar-cuenta)/"'
 curl -sS https://<dominio>/privacidad/ | grep -o 'data-estado="[a-z]*"'
+for r in privacidad/ privacidad/simplificado/ eliminar-cuenta/; do curl -sS "https://<dominio>/$r" | grep -cE '\[(PENDIENTE|DECISIÓN)'; done   # 0 antes de la primera subida a la prueba cerrada
 # Accesibilidad (regla compartida R3): axe-core 4.14.0, etiquetas wcag2a, wcag2aa, wcag21a y wcag21aa, 0 violaciones
 npx --yes @axe-core/cli@4.14.0 https://<dominio>/privacidad/ https://<dominio>/privacidad/simplificado/ https://<dominio>/eliminar-cuenta/ --tags wcag2a,wcag2aa,wcag21a,wcag21aa --exit
 # Tema oscuro: axe DevTools con prefers-color-scheme: dark emulado; captura en el PR
