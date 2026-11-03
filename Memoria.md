@@ -248,6 +248,12 @@
 - Revisión de pares (Alexis, en el PR #88 de knock-backend): TT-API-04 pide confirmar que Azure DocumentDB y documentdb-local soportan transacciones de varios documentos (plan B: evento en el mismo documento) y que la reserva atómica lleve expiración (lease); se agregaron a la ficha (V6 y V7) y se quitó el «Día sugerido».
 - A evitar: editar una ficha en un repositorio sin llevar el mismo cambio al otro; dar por hecho que las transacciones de varios documentos funcionan sin comprobarlo.
 
+## 2026-11-02 — TT-MOB-04 (KNOCK-39): el SCA falla por minimatch 10.x en el panel; se fuerza minimatch 11.0.1
+- Decisión (líder): se agrega `"minimatch": "11.0.1"` a `overrides` de `panel/package.json` y se actualizan solo tres entradas de `panel/package-lock.json` (minimatch, su dependencia nueva `@isaacs/nonrecursive-glob-match` y el rango de `brace-expansion`).
+- Porqué: OSV-Scanner reporta GHSA-g3hv-75wg-m249 (denegación de servicio, severidad media) en `minimatch` 10.2.6, que llega como dependencia de desarrollo de eslint y typescript-eslint. Todas las versiones 10.x están afectadas y la corrección es 11.0.1. Desde el 2026-11-02 el job SCA fallaba en `sprint-02` y en todos los PR del frontend.
+- Verificado en una copia limpia: `npm ci`, `ng lint`, 4 pruebas y `ng build` pasan, y ninguna dependencia queda en minimatch 10.x. No es una excepción: el aviso se corrige, no se suprime.
+- A evitar: regenerar el lockfile entero con otro npm (quita las marcas `peer` y ensucia el diff); dejar el override cuando eslint y typescript-eslint ya pidan minimatch 11 (quitarlo entonces).
+
 ## 2026-10-26 — TT-WEB-02 (KNOCK-159): spec de las páginas de privacidad (borrador)
 - Hecho: spec en Borrador en `specs/TT-WEB-02-paginas-de-aviso-de-privacidad-y-manejo-de-datos/` con tres páginas estáticas en `landing/` (`/privacidad/`, `/privacidad/simplificado/` y `/eliminar-cuenta/`), 10 casos, inventario de datos con la fuente de cada fila y 14 dudas para el líder.
 - Decisión propuesta: el texto legal lo entrega o aprueba José Julián. Mientras no lo apruebe, la página se publica con `data-estado="borrador"` y un aviso visible de texto provisional. El enlace desde la app va en TT-MOB-06, porque hace falta evaluar `url_launcher` y Mi cuenta todavía está vacía. Esto choca con el «Terminada cuando» de Jira, y lo decide el líder.
