@@ -1,10 +1,6 @@
 # Mapa de código
 
-<<<<<<< HEAD
-> Generado por `scripts/codemap.py` el 2026-11-03T03:48:59Z. No editar a mano.
-=======
-> Generado por `scripts/codemap.py` el 2026-11-02T19:44:45Z. No editar a mano.
->>>>>>> origin/sprint-02
+> Generado por `scripts/codemap.py` el 2026-11-03T20:25:10Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -12,13 +8,8 @@
 | Módulo | Capas | Archivos | Tipos | Métodos públicos |
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
-<<<<<<< HEAD
-| `app` | - | 2 | 1 | 2 |
-| `cuenta` | presentation | 3 | 5 | 5 |
-=======
 | `app` | - | 3 | 2 | 4 |
-| `cuenta` | presentation | 2 | 4 | 4 |
->>>>>>> origin/sprint-02
+| `cuenta` | presentation | 3 | 5 | 5 |
 | `errores` | core | 1 | 3 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
@@ -50,13 +41,9 @@
 - `app/lib/app.dart` — class `KnockApp`
   - `build()`:16
 - `app/lib/main.dart` — —
-<<<<<<< HEAD
   - `main()`:9
-=======
-  - `main()`:5
 - `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
   - `main()`:11, `build()`:20
->>>>>>> origin/sprint-02
 
 ### cuenta
 
