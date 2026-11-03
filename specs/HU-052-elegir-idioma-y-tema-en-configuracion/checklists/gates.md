@@ -13,7 +13,7 @@
 - [x] Radios con semántica, encabezados, 48 dp, contraste ≥ 4.5:1 en claro y oscuro, texto al 200 % sin desbordes
 - [x] Textos nuevos en `app_es.arb` y `app_en.arb` con prefijo `configuracion`; claves `pruebaTema…`/`pruebaIdioma…` retiradas; generados de `gen-l10n` al día
 - [ ] `shared_preferences` evaluada (incluido el estado vigente del API clásico) y registrada en `Memoria.md` y en el PR; OSV-Scanner sin hallazgos altos
-- [ ] Pruebas de TT-MOB-02 ajustadas solo en camino y claves (declarado en el PR); TT-MOB-01 y TT-PRU-02 sin cambios y en verde
+- [ ] Pruebas de TT-MOB-02 ajustadas solo en camino y claves (declarado en el PR); TT-PRU-02 sin cambios, TT-MOB-01 solo con `await knock.main();` (aceptado por el líder) y en verde
 - [x] `dart format --set-exit-if-changed`, `flutter analyze --fatal-infos` y `flutter test --coverage` con resultado real; cobertura ≥ 50 %
 - [x] `codemap.py --check`, `check_exceptions.py`, `sdd_lint.py` y `sync_agents.py --check` en OK
 - [ ] `security-reviewer` LIBERA · `traceability-clerk` sin drift

@@ -26,7 +26,7 @@
 ## T4 — Ajustar pruebas de TT-MOB-02 y respaldo al español [Pruebas]
 - **Crear:** `test/l10n/respaldo_espanol_test.dart` y `test/l10n/respaldo/app_es.arb`, `app_en.arb`.
 - **Modificar:** `test/features/cuenta/menu_de_prueba_test.dart` y `test/l10n/textos_desde_arb_test.dart` (solo el camino a los selectores y las claves; aserciones e IDs iguales, spec §8 decisión 2; el caso del tooltip Atrás, en «Límites conocidos», se declara en el PR); `test/soporte/montar_app.dart` solo si hace falta.
-- **Verificar:** TC-HU-052-02; TC-TT-MOB-02-01, 02 y 04 siguen verdes; las pruebas de TT-MOB-01 y TT-PRU-02 sin cambios.
+- **Verificar:** TC-HU-052-02; TC-TT-MOB-02-01, 02 y 04 siguen verdes; las pruebas de TT-PRU-02 sin cambios; en el E2E de TT-MOB-01 solo `await knock.main();` (aceptado por el líder, PR #44, 2026-11-03).
 - **No hacer:** quitar una traducción de `app_en.arb` para probar el respaldo; relajar la comparación de claves de TC-TT-MOB-02-02; borrar o renombrar casos de otra spec.
 - **Agente:** flutter-builder.
 
