@@ -20,6 +20,7 @@ dependencies:
   go_router: ^18.0.2
   # Misma restricción que fija flutter_localizations en Flutter 3.47.7 (TT-MOB-02).
   intl: ^0.20.3
+  shared_preferences: ^2.5.6
 
 dev_dependencies:
   flutter_test:
