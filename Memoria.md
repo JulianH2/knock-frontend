@@ -260,6 +260,15 @@
 - Límite conocido: el action compara por ecosistema y nombre e ignora la versión, así que una versión nueva de estos 15 queda exenta y su licencia se revisa a mano mientras la excepción exista.
 - A evitar: bajar o quitar `deny-licenses`, desactivar el job de SCA o agregar paquetes a la lista sin leer su LICENSE; renovar la excepción sin volver a evaluar si el action ya normaliza las licencias de pub.
 
+## 2026-10-24 — TT-GES-06 (KNOCK-144): quién aprueba specs y explicación del PR con IA (propuesta)
+- Decisión (propuesta del líder, pendiente de que el equipo la acepte el lunes 26): la spec la aprueba el Tech Lead o Guillermo, en menos de 24 horas y nunca el autor; el Tech Lead firma las críticas (sesión, datos sensibles, nube y constitución). La plantilla de PR pide, en «Uso de IA», explicar en 2 o 3 frases qué hace el código y cómo se validó. Porqué: las specs esperaban días por firma, y cualquier integrante puede ser interrogado sobre su código.
+- No cambia la constitución: ya dice que aprueba «una persona» con revisor. Cambian `docs/FLUJO_EQUIPO.md`, el ADR-005 y la plantilla de PR.
+- A evitar: que el autor apruebe su propia spec; que el agente firme; fusionar esto antes de que el equipo lo acepte. Conflicto con backend #63 y frontend #37 (también tocan FLUJO_EQUIPO y el ADR-005): el que se fusione segundo hace rebase.
+
+## 2026-11-03 — TT-GES-09 (KNOCK-181): DECISION_TECNICA.md alineado con el backend
+- Decisión (líder): este documento es idéntico en `knock-backend` y `knock-frontend`; se copia el mismo cambio de la nota de actualización (revocación de tokens: `jti` en Redis y huella del refresh en MongoDB, ADR-002 regla 4) que hace el PR de backend de KNOCK-181.
+- A evitar: que los dos repositorios digan cosas distintas en un documento que se declara idéntico.
+
 ## 2026-10-28 — TT-MOB-08 (KNOCK-191): spec en Borrador de la API simulada desde el contrato
 - Estado: spec, plan, task y gates en `specs/TT-MOB-08-api-simulada-desde-el-contrato/` (15 casos, Borrador, sin revisor); sin código.
 - Propuesta (pendiente del líder): API simulada en memoria en `app/lib/core/red/simulada/` detrás de una interfaz `ClienteApi` y un único `clienteApiProvider` (punto de inyección para TT-MOB-03); URL por `--dart-define=KNOCK_API_URL` sin URL real en el repositorio (sin valor = simulado, nunca en release) y escenarios 4xx/5xx por `KNOCK_API_ESCENARIO`; mocks ficticios como texto JSON en constantes de Dart; tabla `app/test/contrato/contrato_s4.json` copiada de la §4 con el commit de origen y una prueba que compara mocks y tabla en las dos direcciones; la pantalla de oficios de TT-PRU-02 pasa a `OficiosRepositoryApi` cambiando solo `oficios_providers.dart`. Porqué: sin dependencias nuevas, sin proceso aparte y sin esperar a TT-CI-02.
