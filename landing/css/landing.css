@@ -1,0 +1,126 @@
+/* Landing de Knock (TT-WEB-01). Tokens y pares de contraste de TT-MOB-02. */
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("/fonts/nunito-400-latin.woff2") format("woff2");
+}
+
+@font-face {
+  font-family: "Nunito";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/nunito-700-latin.woff2") format("woff2");
+}
+
+:root {
+  --color-fondo: #fbf5e9;
+  --color-tarjeta: #ffffff;
+  --color-texto: #231a15;
+  --color-texto-2: #4a3c33;
+  --color-mut: #6b5d52;
+  --color-enlace: #8f3510;
+  --color-foco: #8f3510;
+  --color-boton-fondo: #e9682d;
+  --color-boton-texto: #231a15;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-fondo: #14110f;
+    --color-tarjeta: #1e1b18;
+    --color-texto: #f6eee3;
+    --color-texto-2: #dcd0c2;
+    --color-mut: #b5a798;
+    --color-enlace: #e9682d;
+    --color-foco: #e9682d;
+    --color-boton-fondo: #e9682d;
+    --color-boton-texto: #14110f;
+  }
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  min-height: 100vh;
+  max-width: 45rem;
+  margin: 0 auto;
+  padding: 1.5rem 1rem;
+  background-color: var(--color-fondo);
+  color: var(--color-texto);
+  font-family: "Nunito", system-ui, sans-serif;
+  font-size: 1.0625rem;
+  line-height: 1.6;
+  overflow-wrap: break-word;
+}
+
+main {
+  flex: 1;
+}
+
+.marca {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0 0 1rem;
+  font-size: 2rem;
+  line-height: 1.2;
+}
+
+.descripcion {
+  margin: 0 0 1.5rem;
+  color: var(--color-texto-2);
+}
+
+.play {
+  margin: 0;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  background-color: var(--color-tarjeta);
+  color: var(--color-texto);
+  font-weight: 700;
+}
+
+a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 3rem;
+  color: var(--color-enlace);
+  text-decoration: underline;
+}
+
+a:focus-visible {
+  outline: 2px solid var(--color-foco);
+  outline-offset: 2px;
+}
+
+/* Solo cuando el bloque de Play está en «disponible» (ver README). */
+.play-boton {
+  justify-content: center;
+  padding: 0.5rem 1.5rem;
+  border: 2px solid currentcolor;
+  border-radius: 0.75rem;
+  background-color: var(--color-boton-fondo);
+  color: var(--color-boton-texto);
+}
+
+footer p {
+  margin: 0;
+}
+
+.nota {
+  color: var(--color-mut);
+  font-size: 0.9375rem;
+}

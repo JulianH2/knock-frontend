@@ -1,0 +1,8 @@
+# Solo entran al contexto de build los archivos públicos que copia el Dockerfile.
+*
+!nginx.conf
+!index.html
+!404.html
+!css/
+!fonts/
+!privacidad/
