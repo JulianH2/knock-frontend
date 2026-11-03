@@ -5,7 +5,7 @@
 > **Ficha:** no hay ficha `.docx`; la fuente es el issue de Jira KNOCK-159 («Terminada cuando: páginas publicadas y enlazadas desde la landing y desde la app»; comentario «Reasignada por carga del Sprint 2 (ADR-005)»).
 > **Fuentes:** constitución 2.2.0 §1, §4 (Landing), §6, §13, §14 y principios 5, 13 y 14 · `docs/PLAN_ADAPTACION.md` A10, C13, líneas TT-WEB-02 y TT-MOB-06, Ola 1 · `docs/decisiones/ADR-004`, `ADR-005`, `ADR-006` · `docs/referencia/DECISIONES.md` #4, #11, #22, §6 y §10 · `docs/referencia/FUNCIONES_Y_FLUJOS.md` §3.2–3.11, §4.2, §4.4, §6, §7.2, §7.4 · `docs/CUMPLIMIENTO_LINEAMIENTOS.md` filas 16d y 17 · `docs/VERSIONAMIENTO.md` (Landing) · fichas `docs/backlog/HU-001`, `HU-006`, `HU-021`, `HU-022`, `HU-055`, `TT-TIE-03`, `TT-OBS-01` · knock-backend (solo lectura): specs HU-001 (KNOCK-43, PR #65), TT-API-12 (KNOCK-187) y TT-API-05 (KNOCK-42) · revisión de pares de Alexis en el PR #43 (2026-10-27) · respuestas del líder en el PR #43 (2026-10-28, 2026-11-02 y 2026-11-03; si dos respuestas se contradicen, manda la más reciente)
 > **Skills:** spec-first-writing, story-workflow, security-core, testing-strategy-frontend, reuse-before-create, traceability
-> **Estado:** Borrador
+> **Estado:** Aprobada
 
 ## 1. Objetivo
 Publicar en la landing (Railway, HTTPS) las páginas legales que exigen la ley mexicana de datos personales y Google Play, con una **estructura fija y verificable**, para que:
@@ -233,6 +233,6 @@ Tres páginas web estáticas, sin JavaScript, con el estilo de la landing (TT-WE
 29. **Propuestas del agente del 2026-11-03. Resuelto (2026-11-03):** el líder acepta el `id` `lo-que-compartes-tu` (el integral queda en 17 secciones), `data-finalidad="necesarias"` y `data-finalidad="con-consentimiento"` en TC-05, y conservar `como-negarse` en el integral (solo sale del simplificado).
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-03
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador (agente) → Aprobada (persona; habilita el código) → Firmada (tras el merge)
