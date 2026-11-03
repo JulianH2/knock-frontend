@@ -1,0 +1,21 @@
+# Checklist — TT-WEB-02
+
+- [ ] spec con 8 secciones + Aprobación, estado Aprobada y clave KNOCK-N
+- [ ] Cada caso TC-TT-WEB-02-KK de este repo tiene prueba con su ID o comando con salida en el PR
+- [ ] Amenazas de §6 con control y prueba
+- [ ] Contrato y docs vivos actualizados (URLs de §4 comunicadas a TT-WEB-01, TT-MOB-06 y TT-TIE-03)
+- [ ] Pruebas de `landing/tests/` en verde (resultados reales)
+- [ ] Sin supresiones sin EXC-NNN; sin dependencias nuevas
+- [ ] Texto legal aportado por el líder en un commit aparte; `data-estado="vigente"` puesto solo por él en un commit propio antes de subir un AAB a cualquier pista de Google Play, prueba interna incluida (regla compartida R1); mientras tanto, `borrador` con su aviso visible, solo para pruebas del equipo fuera de Google Play y nunca en ninguna pista
+- [ ] Además del comentario obligatorio de par, Alexis y Guillermo comentaron el texto final antes de pasarlo a `vigente`
+- [ ] Sin datos personales del equipo (correo, teléfono o domicilio particular) en las páginas (nombre legal y domicilio del responsable, proveedores del canal de atención y número desde el que se envía la confirmación: los fija el líder; contacto `soporte@tdevs.com.mx`)
+- [ ] Sin claves internas (`TT-`, `HU-`, `KNOCK-`) en el HTML público, ni en marcadores ni en comentarios (TC-08)
+- [ ] Las tres páginas en `vigente`, sin `[PENDIENTE` ni `[DECISIÓN`, antes de subir un AAB a cualquier pista de Google Play, prueba interna incluida (estado y conteo en el PR; regla compartida R1), y TT-MOB-06 en el AAB de la primera subida a la prueba cerrada
+- [ ] Páginas publicadas por HTTPS y enlazadas desde la landing (salida de `curl` en el PR)
+- [ ] axe-core 4.14.0 con `wcag2a`, `wcag2aa`, `wcag21a` y `wcag21aa`: 0 violaciones en claro y oscuro (salida en el PR)
+- [ ] Reglas compartidas R1 a R3 (confirmadas por el líder en el PR #43) idénticas en TT-WEB-01 (R1 corregida el 2026-11-03 en las dos specs a la vez y, tras la firma, explícita sobre la prueba interna)
+- [ ] `/eliminar-cuenta/` dice que la persona confirma el mensaje en 7 días y que, sin confirmación, la solicitud se cancela y no se borra nada (TC-12); el líder no ejecuta ningún borrado sin esa confirmación
+- [ ] Decisiones del líder de las dudas 1, 21, 24, 25 (número) y 26 de la spec §8 fijadas antes de pasar a `vigente` (hasta entonces, marcadores `[DECISIÓN: …]`, que no bloquean la estructura ni el código); la decisión 2 y las dudas 4, 5, 6, 12, 19, 20, 22, 23, 25 (plazo de 7 días), 27, 28, 29 y 30 ya las respondió en el PR #43; la pregunta 31 sigue abierta
+- [ ] Inventario §5 coherente con el backend (HU-001, TT-API-12, TT-API-05) y columnas de Google Play revisadas en TT-TIE-03
+- [ ] `security-reviewer` LIBERA · `traceability-clerk` sin drift
+- [ ] `Memoria.md` actualizado · informe final en el PR
