@@ -62,9 +62,12 @@ No aplica a la API. Interfaces que fija: el nombre del archivo de configuración
 - **`gh` en lugar de un MCP de GitHub:** ya funciona y no agrega superficie.
 - **Solo lectura por defecto:** una escritura equivocada en Jira es difícil de revertir.
 
-## 9. Riesgos y dudas abiertas
-- La dirección oficial del servidor MCP de Atlassian y el nombre exacto de sus herramientas se confirman al implementar; pueden cambiar.
-- Cada agente guarda su configuración en un archivo distinto; se evalúa si se genera desde una sola fuente con `scripts/sync_agents.py`.
+## 9. Decisiones de la revisión, riesgos y dudas
+Decisiones tomadas en la revisión del 2026-11-04. Quien aprueba la spec las acepta; si alguna no convence, se cambia aquí antes de aprobar.
+
+- **Dirección y herramientas del servidor de Atlassian (decidido): se confirman con la documentación oficial al implementar;** no bloquea la aprobación.
+- **MCP de Dart y Flutter (decidido): no se activa en esta etapa;** se evalúa cuando el equipo lo pida.
+- **Figma (decidido):** no se usa.
 
 ## Aprobación
 - [ ] Revisor 1 — nombre: ________ fecha: ________
