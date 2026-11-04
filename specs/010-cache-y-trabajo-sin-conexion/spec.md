@@ -59,7 +59,7 @@ Consume `ETag`/`If-None-Match` y el encabezado `Idempotency-Key` del backend.
 
 ## 9. Riesgos y dudas abiertas
 - Una base local con datos de conversaciones exige borrado fiable al cerrar sesión.
-- Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
+- El encabezado `Idempotency-Key` que consume esta spec no está definido en ninguna spec del backend (ver spec 010 del backend); hasta decidirlo, la app no depende de él.
 
 ## Aprobación
 - [ ] Revisor 1 — nombre: ________ fecha: ________

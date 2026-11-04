@@ -21,7 +21,7 @@ Dejar configurados en el repositorio los servidores MCP que usan los agentes de 
 ## 3. Requisitos
 - **R-01:** Jira se consulta con el servidor MCP oficial de Atlassian (remoto, con OAuth). Cada persona se autentica con su propia cuenta; ni el repositorio ni la configuración guardan tokens.
 - **R-02:** GitHub se usa con la CLI `gh` ya instalada; no se agrega un servidor MCP de GitHub.
-- **R-03:** Si se usa un MCP de MongoDB, apunta solo al contenedor local de desarrollo, en solo lectura; nunca a una cadena de conexión de la nube.
+- **R-03:** Ningún MCP del frontend se conecta a bases de datos ni a servicios en la nube con datos reales; los que consulten el backend apuntan solo a un entorno local y en solo lectura.
 - **R-04:** Los archivos de configuración de MCP no contienen secretos: solo referencias a variables de entorno o el flujo OAuth del servidor.
 - **R-05:** Todo servidor MCP nuevo requiere un cambio a esta spec y a `docs/mcp.md` con su propósito, sus permisos y quién lo aprobó.
 - **R-06:** Ningún agente usa un MCP para firmar o aprobar una spec, fusionar un PR, cambiar archivos protegidos ni escribir en Jira sin la aprobación de una persona.
@@ -64,7 +64,6 @@ No aplica a la API. Interfaces que fija: el nombre del archivo de configuración
 
 ## 9. Riesgos y dudas abiertas
 - La dirección oficial del servidor MCP de Atlassian y el nombre exacto de sus herramientas se confirman al implementar; pueden cambiar.
-- ¿Se activa el MCP de MongoDB? Hoy es opcional: se decide al implementar.
 - Cada agente guarda su configuración en un archivo distinto; se evalúa si se genera desde una sola fuente con `scripts/sync_agents.py`.
 
 ## Aprobación
