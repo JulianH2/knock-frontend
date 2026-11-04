@@ -21,14 +21,15 @@ Fijar cómo está organizado el repositorio, cómo se nombran las ramas y los co
 - **R-01:** `main` contiene solo código listo para publicar y `develop` integra los cambios.
 - **R-02:** Cada cambio vive en una rama `<tipo>/<descripcion-en-ingles>` creada desde `develop`.
 - **R-03:** Los commits siguen Conventional Commits en inglés.
-- **R-04:** Todo cambio entra por pull request con descripción, pruebas ejecutadas y revisión de otra persona.
+- **R-04:** Todo cambio entra por pull request con descripción, pruebas ejecutadas y **una** revisión de otra persona, que es obligatoria; una segunda revisión es opcional. Los pull request del líder técnico los puede aprobar él mismo, y la revisión es opcional cuando el cambio es urgente o no hay nadie disponible; en ese caso el PR anota el motivo.
 - **R-05:** Una spec aprobada precede al código de cada cambio.
 - **R-06:** `Memoria.md` se actualiza al cerrar cada cambio.
 - **R-07:** La plantilla de pull request tiene las secciones Descripción, Pruebas, Seguridad, Riesgos y «Uso de IA» (qué generó la IA y qué revisó una persona).
 
 ## 4. Criterios de aceptación
 - **CA-01:** Dado un commit con otro formato, cuando se valida, entonces se rechaza.
-- **CA-02:** Dado un PR sin revisión, cuando se intenta fusionar, entonces no se permite.
+- **CA-02:** Dado un PR de una persona distinta del líder técnico sin ninguna revisión, cuando se intenta fusionar, entonces no se permite.
+- **CA-06:** Dado un PR del líder técnico, urgente o sin nadie disponible para revisarlo, cuando lo aprueba y fusiona él mismo, entonces el PR anota el motivo.
 - **CA-03:** Dado el repositorio, cuando se abre `README.md`, entonces explica cómo ejecutar la app y el panel.
 - **CA-04:** Dado un PR sin la sección «Uso de IA», cuando corre la comprobación de la plantilla, entonces falla.
 
@@ -54,6 +55,7 @@ No aplica. Interfaces que fija: el formato `tipo(alcance): descripcion` de los c
 ## 8. Decisiones
 - **Un repositorio de frontend:** contiene la app, el panel y la landing, que comparten reglas, versión del contrato y revisión.
 - **Flujo con `develop`:** integra y prueba antes de tocar `main`.
+- **Una revisión obligatoria, la segunda opcional (2026-11-04):** pedir dos revisiones frenaba el flujo con cuatro personas; con una basta para detectar lo importante y la segunda queda a criterio de quien abre el PR. El líder técnico puede aprobar sus propios cambios para no bloquear lo urgente; queda el rastro en el PR.
 
 ## 9. Riesgos y dudas abiertas
 - Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
