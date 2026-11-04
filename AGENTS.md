@@ -42,3 +42,28 @@ cd panel && npm ci && npm run lint && npm test && npm run build
 
 ## Dónde está cada cosa
 - Reglas: `constitution.md` · Memoria del proyecto: `Memoria.md` · Specs: `specs/` · Descripción del proyecto en palabras comunes (de ella salen la constitución y las specs): `docs/descripcion-del-proyecto.md`
+
+<!-- skills-index:start -->
+## 12. Índice de skills, agentes y reglas (generado)
+
+> Si tu herramienta no carga skills por sí sola, abre el `SKILL.md` indicado cuando la tarea coincida con su descripción.
+
+| Skill | Cuándo usarla | Archivo |
+|---|---|---|
+
+| Agente | Para qué | Archivo |
+|---|---|---|
+| `docs-keeper` | Mantiene vivos los Markdown de Knock (README, docs, índice de specs y Memoria) al cerrar un issue, sin tocar código. | `.agents/agents/docs-keeper.md` |
+| `flutter-builder` | Implementa la capa [Mobile] de un issue aprobado en la app Flutter de Knock (casos de uso, repositorio, controlador, pantallas, ARB, accesibilidad y pruebas) usando el cliente generado y siguiendo story-workflow. | `.agents/agents/flutter-builder.md` |
+| `panel-builder` | Implementa la capa [Panel] de un issue aprobado en el panel Angular de Knock (páginas, componentes, servicios de feature, guardas por permiso, accesibilidad y pruebas) usando el cliente TypeScript generado y siguiendo story-workflow. | `.agents/agents/panel-builder.md` |
+| `security-reviewer` | Audita sin editar la seguridad y privacidad del cambio de un issue de Knock (OWASP Top 10 y API Top 10, amenazas de la spec, datos sensibles, cadena de suministro) y entrega PASS/FAIL; un FAIL bloquea. | `.agents/agents/security-reviewer.md` |
+| `spec-writer` | Refina el borrador de spec de un issue de Knock (HU, TT o BUG) - clave de Jira, verificación por caso, alcance por capa, contrato, amenazas y plan de pruebas - sin tocar código. Úsalo antes de implementar. | `.agents/agents/spec-writer.md` |
+| `traceability-clerk` | Reporta sin editar el drift entre la spec, el código y las pruebas de un issue de Knock antes del PR. | `.agents/agents/traceability-clerk.md` |
+
+| Regla | Aplica a | Archivo |
+|---|---|---|
+| `angular-ts` | `panel/src/**/*.ts`, `panel/src/**/*.html`, `panel/src/**/*.scss`, `panel/e2e/**/*.ts` | `.agents/rules/angular-ts.md` |
+| `flutter-dart` | `app/lib/**/*.dart`, `app/test/**/*.dart`, `app/integration_test/**/*.dart` | `.agents/rules/flutter-dart.md` |
+| `specs` | `specs/**` | `.agents/rules/specs.md` |
+| `tests-frontend` | `app/test/**`, `app/integration_test/**`, `panel/src/**/*.spec.ts`, `panel/e2e/**` | `.agents/rules/tests-frontend.md` |
+<!-- skills-index:end -->
