@@ -1,0 +1,11 @@
+{
+  "@@locale": "es",
+  "respaldoSaludo": "Hola",
+  "@respaldoSaludo": {
+    "description": "Clave de prueba traducida en los dos ARB (HU-052 TC-02)."
+  },
+  "respaldoSinTraducir": "Este texto solo está en español",
+  "@respaldoSinTraducir": {
+    "description": "Clave de prueba que falta a propósito en app_en.arb (HU-052 TC-02)."
+  }
+}
