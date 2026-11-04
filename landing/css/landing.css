@@ -124,3 +124,56 @@ footer p {
   color: var(--color-mut);
   font-size: 0.9375rem;
 }
+
+/* Páginas legales (TT-WEB-02): solo tokens --color-*, sin JavaScript. */
+.saltar {
+  position: absolute;
+  left: -999rem;
+}
+
+.saltar:focus {
+  left: 1rem;
+  top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: var(--color-tarjeta);
+}
+
+.provisional {
+  margin: 0 0 1.5rem;
+  padding: 1rem;
+  border: 2px solid var(--color-enlace);
+  border-radius: 0.75rem;
+  background-color: var(--color-tarjeta);
+  color: var(--color-texto);
+  font-weight: 700;
+}
+
+.version {
+  margin: 0 0 1.5rem;
+  color: var(--color-mut);
+  font-size: 0.9375rem;
+}
+
+h2 {
+  margin: 2rem 0 0.75rem;
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+main ul,
+main ol {
+  margin: 0 0 1rem;
+  padding-left: 1.5rem;
+}
+
+main p {
+  margin: 0 0 1rem;
+}
+
+nav.indice ol {
+  margin: 0 0 1.5rem;
+}
+
+nav.indice a {
+  min-height: 2.75rem;
+}
