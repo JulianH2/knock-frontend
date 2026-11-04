@@ -1,0 +1,71 @@
+{
+  "@@locale": "es",
+  "appTitle": "Knock",
+  "@appTitle": {
+    "description": "Nombre de la app (título de la tarea en el sistema). Es una marca: no se traduce."
+  },
+  "tabInicio": "Inicio",
+  "@tabInicio": {
+    "description": "Pestaña de la barra inferior y título de la pantalla de inicio."
+  },
+  "tabExplorar": "Explorar",
+  "@tabExplorar": {
+    "description": "Pestaña de la barra inferior y título de la pantalla para buscar técnicos."
+  },
+  "explorarOficios": "Oficios",
+  "@explorarOficios": {
+    "description": "Acceso temporal de Explorar a la pantalla de oficios (TT-PRU-02); lo reemplaza la historia de Explorar."
+  },
+  "tabActividad": "Actividad",
+  "@tabActividad": {
+    "description": "Pestaña de la barra inferior y título de la pantalla con las solicitudes y su historial."
+  },
+  "tabTrabajo": "Trabajo",
+  "@tabTrabajo": {
+    "description": "Pestaña de la barra inferior y título de la pantalla de trabajo; solo la ven los técnicos."
+  },
+  "tabCuenta": "Mi cuenta",
+  "@tabCuenta": {
+    "description": "Pestaña de la barra inferior y título de la pantalla con los datos y la configuración de la cuenta."
+  },
+  "pruebaModoTecnico": "Modo técnico (prueba)",
+  "@pruebaModoTecnico": {
+    "description": "Interruptor de prueba (solo fuera de la versión de tienda) que da el rol de técnico."
+  },
+  "configuracionTitulo": "Configuración",
+  "@configuracionTitulo": {
+    "description": "Entrada de Mi cuenta y título de la pantalla para elegir idioma y tema."
+  },
+  "configuracionIdioma": "Idioma",
+  "@configuracionIdioma": {
+    "description": "Encabezado del selector de idioma en Configuración."
+  },
+  "configuracionIdiomaEspanol": "Español",
+  "@configuracionIdiomaEspanol": {
+    "description": "Opción del selector de idioma. Se escribe siempre en español, en cualquier idioma."
+  },
+  "configuracionIdiomaIngles": "English",
+  "@configuracionIdiomaIngles": {
+    "description": "Opción del selector de idioma. Se escribe siempre en inglés, en cualquier idioma."
+  },
+  "configuracionTema": "Tema",
+  "@configuracionTema": {
+    "description": "Encabezado del selector de tema en Configuración."
+  },
+  "configuracionTemaAutomatico": "Automático",
+  "@configuracionTemaAutomatico": {
+    "description": "Opción del selector de tema: seguir el tema claro u oscuro del teléfono."
+  },
+  "configuracionTemaAutomaticoDetalle": "Igual que el teléfono",
+  "@configuracionTemaAutomaticoDetalle": {
+    "description": "Subtítulo de la opción Automático del selector de tema."
+  },
+  "configuracionTemaClaro": "Claro",
+  "@configuracionTemaClaro": {
+    "description": "Opción del selector de tema: tema claro."
+  },
+  "configuracionTemaOscuro": "Oscuro",
+  "@configuracionTemaOscuro": {
+    "description": "Opción del selector de tema: tema oscuro."
+  }
+}

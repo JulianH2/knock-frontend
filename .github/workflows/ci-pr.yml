@@ -1,0 +1,318 @@
+name: ci-pr
+
+# Nivel rápido: cada PR y cada push a las ramas fijas. El job `gate` es el check requerido.
+# App Flutter y panel Angular se validan solo si existen y si cambiaron (o en push a ramas fijas).
+# Seguridad del workflow: pull_request (no pull_request_target), permisos mínimos, acciones fijadas a SHA.
+# Repos privados sin GitHub Advanced Security: la revisión de dependencias y la subida de SARIF se saltan
+# (no se quitan los escáneres); con la variable de repositorio GHAS_ENABLED=true se activan.
+
+on:
+  pull_request:
+    branches: [main, release, develop, "sprint-*"]
+  push:
+    branches: [main, release, develop, "sprint-*"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  detect:
+    name: Detectar proyectos, cambios y spec
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    outputs:
+      app: ${{ steps.d.outputs.app }}
+      panel: ${{ steps.d.outputs.panel }}
+      contract: ${{ steps.d.outputs.contract }}
+      spec: ${{ steps.d.outputs.spec }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: d
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          EVENT: ${{ github.event_name }}
+        run: |
+          changed() { [ "$EVENT" != "pull_request" ] || git diff --name-only "$BASE_SHA" HEAD | grep -qE "$1"; }
+          [ -f app/pubspec.yaml ] && changed '^(app/|contracts/)' && echo "app=true" >> "$GITHUB_OUTPUT" || echo "app=false" >> "$GITHUB_OUTPUT"
+          [ -f panel/angular.json ] && changed '^(panel/|contracts/)' && echo "panel=true" >> "$GITHUB_OUTPUT" || echo "panel=false" >> "$GITHUB_OUTPUT"
+          [ -f contracts/openapi.v1.json ] && echo "contract=true" >> "$GITHUB_OUTPUT" || echo "contract=false" >> "$GITHUB_OUTPUT"
+          KEY=$(echo "$HEAD_REF" | grep -oE 'KNOCK-[0-9]+' || true)
+          SPEC=""
+          if [ -n "$KEY" ]; then
+            SPEC=$(grep -lE "\b$KEY\b" specs/*/spec.md 2>/dev/null | head -1 | cut -d/ -f2 | grep -oE '^(HU-[0-9]{3}|TT-[A-Z]+-[0-9]{2}|BUG-[0-9]{3})' || true)
+          fi
+          # La trazabilidad caso ↔ prueba solo tiene sentido si el PR toca código o pruebas; los PR de configuración,
+          # documentación o gobierno de una tarea con spec no deben fallar por «casos sin prueba».
+          CHANGED=$(git diff --name-only "$BASE_SHA" HEAD 2>/dev/null || true)
+          if [ -n "$SPEC" ] && [ -n "$BASE_SHA" ] && ! grep -qE '^(app|panel)/' <<<"$CHANGED"; then
+            echo "::notice::PR sin cambios de código ni pruebas: se omite la trazabilidad de $SPEC."
+            SPEC=""
+          fi
+          echo "spec=$SPEC" >> "$GITHUB_OUTPUT"
+
+  pr-meta:
+    name: Rama, commits y PR (branch-name)
+    # Desactivado en la migración a Demo Base: exige ramas KNOCK-n de Jira. Se activa poniendo la variable del repositorio ENFORCE_BRANCH_RULES=true.
+    if: github.event_name == 'pull_request' && vars.ENFORCE_BRANCH_RULES == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - name: Nombre de rama y combinación origen → destino
+        run: python scripts/ci/branch_rules.py branch --head "$HEAD_REF" --base "$BASE_REF"
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          BASE_REF: ${{ github.base_ref }}
+      - name: Mensajes de commit
+        run: python scripts/ci/branch_rules.py commits --range "origin/$BASE_REF..HEAD"
+        env:
+          BASE_REF: ${{ github.base_ref }}
+      - name: Título y plantilla del PR (incluye «Uso de IA»)
+        env:
+          HEAD_REF: ${{ github.head_ref }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          printf '%s' "$PR_BODY" > pr_body.md
+          python scripts/ci/branch_rules.py pr --head "$HEAD_REF" --title "$PR_TITLE" --body-file pr_body.md
+
+  governance:
+    needs: detect
+    uses: ./.github/workflows/_governance.yml
+    with:
+      spec: ${{ needs.detect.outputs.spec }}
+
+  contract:
+    name: Contrato y clientes generados
+    needs: detect
+    if: needs.detect.outputs.contract == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+          cache: true
+      - name: Regenerar clientes y comparar (nadie los edita a mano)
+        run: |
+          bash scripts/gen_clients.sh all
+          git diff --exit-code -- app/packages/knock_api panel/src/app/api || { echo "::error::Los clientes generados no coinciden con contracts/openapi.v1.json. Corre bash scripts/gen_clients.sh all."; exit 1; }
+      - name: Cambios incompatibles respecto a la rama destino (oasdiff)
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          git show "$BASE_SHA:contracts/openapi.v1.json" > base.json 2>/dev/null || { echo "Contrato nuevo"; exit 0; }
+          docker run --rm -v "$PWD":/w -w /w tufin/oasdiff breaking base.json contracts/openapi.v1.json --fail-on ERR
+
+  app:
+    name: App — formato, análisis, pruebas y build
+    needs: detect
+    if: needs.detect.outputs.app == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: app
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter pub get --enforce-lockfile
+      - name: Traducciones generadas (gen-l10n) al día
+        run: |
+          if [ ! -f l10n.yaml ]; then
+            echo "::notice::Aún no hay l10n.yaml (TT-MOB-02): no hay traducciones generadas que comprobar."
+            exit 0
+          fi
+          flutter gen-l10n
+          if [ -n "$(git status --porcelain -- lib/l10n/generado)" ]; then
+            git status --short -- lib/l10n/generado
+            echo "::error::Los archivos de lib/l10n/generado no coinciden con los ARB. Corre «flutter gen-l10n» en app/ y sube el resultado."
+            exit 1
+          fi
+      - name: Formato
+        run: dart format --set-exit-if-changed --output=none lib test integration_test
+      - name: Análisis estático (lints estrictos, tipos)
+        run: flutter analyze --fatal-infos --fatal-warnings
+      - name: Unitarias, widget, accesibilidad y capas (con cobertura)
+        run: flutter test --coverage
+      - name: Umbral de cobertura
+        run: python3 ../scripts/check_coverage.py --lcov coverage/lcov.info --min 50 --exclude packages/knock_api --exclude .g.dart --exclude .freezed.dart
+      - name: Build Android (debug) — detecta roturas de compilación nativa
+        run: flutter build apk --debug
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: app-coverage
+          path: app/coverage/
+          if-no-files-found: ignore
+
+  panel:
+    name: Panel — lint, tipos, pruebas, build y E2E de humo
+    needs: detect
+    if: needs.detect.outputs.panel == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: panel
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: panel/package-lock.json
+      - run: npm ci --ignore-scripts
+      - name: ESLint (angular-eslint)
+        run: npx ng lint
+      - name: Tipos (TypeScript strict)
+        run: npx tsc -p tsconfig.app.json --noEmit
+      - name: Unitarias y componentes (con cobertura)
+        run: npx ng test --watch=false --coverage --coverage-reporters=json-summary --coverage-reporters=text-summary
+      - name: Umbral de cobertura (líneas y ramas)
+        run: python3 ../scripts/check_coverage.py --istanbul coverage/panel/coverage-summary.json --min 60 --min-branch 50
+      - name: Build de producción
+        run: npx ng build --configuration production
+      - name: npm audit (altas y críticas de producción)
+        run: npm audit --omit=dev --audit-level=high
+      # La configuración de Playwright + axe llega con TT-QA-01 (KNOCK-41). Mientras no exista
+      # panel/playwright.config.*, el paso se omite con un aviso; en cuanto se agregue, corre solo.
+      - name: E2E de humo + accesibilidad (Playwright + axe, chromium)
+        if: hashFiles('panel/playwright.config.*') != ''
+        run: |
+          npx playwright install --with-deps chromium
+          npx playwright test --project=chromium --grep @smoke
+      - name: E2E omitido (aún no hay configuración de Playwright)
+        if: hashFiles('panel/playwright.config.*') == ''
+        run: |
+          echo "::notice::E2E de humo omitido, no existe panel/playwright.config.* (llega con TT-QA-01, KNOCK-41)."
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        if: always()
+        with:
+          name: panel-reports
+          path: |
+            panel/coverage/
+            panel/playwright-report/
+          if-no-files-found: ignore
+
+  sast:
+    name: SAST (Semgrep — Dart, TypeScript, secretos)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      security-events: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: "3.12"
+      - run: pip install --quiet semgrep
+      - name: Semgrep (bloquea hallazgos ERROR)
+        run: semgrep scan --config .semgrep/semgrep.yaml --config p/typescript --config p/secrets --config p/owasp-top-ten --error --severity ERROR --sarif-output=semgrep.sarif --exclude app/packages/knock_api --exclude panel/src/app/api
+      - uses: github/codeql-action/upload-sarif@24c54180a607b1449ed407dd24f251e4e9147c8d # v4
+        if: always() && hashFiles('semgrep.sarif') != '' && (github.event.repository.private == false || vars.GHAS_ENABLED == 'true')
+        with:
+          sarif_file: semgrep.sarif
+          category: semgrep
+
+  sca:
+    name: SCA (dependencias vulnerables y licencias)
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          persist-credentials: false
+      - name: Revisión de dependencias del PR
+        if: github.event_name == 'pull_request' && (github.event.repository.private == false || vars.GHAS_ENABLED == 'true')
+        uses: actions/dependency-review-action@a1d282b36b6f3519aa1f3fc636f609c47dddb294 # v5
+        with:
+          fail-on-severity: high
+          deny-licenses: AGPL-3.0, GPL-3.0, GPL-2.0, SSPL-1.0
+          # EXC-002 (security/exceptions.yaml, vence 2027-01-30): dependency-review recibe las licencias de pub en minúsculas
+          # (mit, bsd-3-clause, mpl-2.0) y no las reconoce como SPDX. Solo estos 19 paquetes de pub, con la licencia revisada a mano,
+          # quedan fuera de esa comprobación. El action compara por ecosistema y nombre e IGNORA la versión (las versiones de abajo
+          # documentan lo revisado): una versión nueva de estos paquetes sigue exenta, así que hay que revisar su licencia a mano.
+          allow-dependencies-licenses: >-
+            pkg:pub/dbus@0.7.15, pkg:pub/jni@1.1.1, pkg:pub/shared_preferences@2.5.6, pkg:pub/shared_preferences_android@2.5.4, pkg:pub/shared_preferences_foundation@2.5.7, pkg:pub/geolocator@14.1.2, pkg:pub/geolocator_android@5.2.1, pkg:pub/geolocator_apple@2.4.2, pkg:pub/geolocator_platform_interface@4.4.1, pkg:pub/geolocator_windows@0.2.5, pkg:pub/google_maps_flutter@2.19.0, pkg:pub/google_maps_flutter_android@2.21.0, pkg:pub/google_maps_flutter_ios@2.18.7, pkg:pub/google_maps_flutter_platform_interface@2.17.0, pkg:pub/gsettings@0.2.8, pkg:pub/petitparser@7.0.2, pkg:pub/stream_transform@2.1.2, pkg:pub/win32@6.4.0, pkg:pub/xml@7.0.1
+      - name: OSV-Scanner (pub, npm, GitHub Actions)
+        run: |
+          # Sin archivos de dependencias OSV-Scanner sale con 128 («No package sources found»): no hay nada que analizar.
+          # Cualquier otro error, o hallazgos, siguen fallando el job.
+          code=0
+          out=$(docker run --rm -v "$PWD":/src ghcr.io/google/osv-scanner:latest scan source -r /src 2>&1) || code=$?
+          echo "$out"
+          if [ "$code" -eq 128 ] && grep -q "No package sources found" <<<"$out"; then
+            echo "::notice::OSV-Scanner: el repositorio aún no tiene archivos de dependencias."
+            exit 0
+          fi
+          exit "$code"
+
+  secrets:
+    name: Secretos (Gitleaks)
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pull-requests: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Gitleaks (CLI fijada por versión y suma de verificación; la acción exige licencia en organizaciones)
+        run: |
+          curl -sSfL -o gitleaks.tgz https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz
+          echo "551f6fc83ea457d62a0d98237cbad105af8d557003051f41f3e7ca7b3f2470eb  gitleaks.tgz" | sha256sum -c -
+          tar -xzf gitleaks.tgz gitleaks
+          ./gitleaks detect --source . --config .gitleaks.toml --redact --verbose --exit-code 1
+
+  gate:
+    name: gate
+    if: always()
+    needs: [detect, pr-meta, governance, contract, app, panel, sast, sca, secrets]
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Verificaciones bloqueantes en verde (o saltadas por no aplicar)
+        env:
+          NEEDS: ${{ toJSON(needs) }}
+        run: |
+          python3 - <<'EOF'
+          import json, os, sys
+          needs = json.loads(os.environ["NEEDS"])
+          for k, v in needs.items():
+              print(f"{k}: {v['result']}")
+          bad = {k: v["result"] for k, v in needs.items() if v["result"] not in ("success", "skipped")}
+          sys.exit(f"Fallaron: {bad}" if bad else 0)
+          EOF

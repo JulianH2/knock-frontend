@@ -1,0 +1,117 @@
+# Reglas de Semgrep propias de knock-frontend (se suman a p/typescript, p/secrets y p/owasp-top-ten).
+# Severidad ERROR bloquea el merge.
+rules:
+  # ---------------- Panel (Angular / TypeScript)
+  - id: knock-angular-innerhtml
+    languages: [generic]
+    severity: ERROR
+    message: "[innerHTML] abre la puerta a XSS. Usa interpolación; si es imprescindible, registra una excepción EXC-NNN."
+    paths:
+      include: ["panel/src/**/*.html"]
+    pattern-regex: \[innerHTML\]
+
+  - id: knock-angular-bypass-sanitizer
+    languages: [typescript]
+    severity: ERROR
+    message: bypassSecurityTrust* desactiva la protección XSS de Angular.
+    paths:
+      include: ["panel/src/**"]
+    pattern-regex: bypassSecurityTrust(Html|Script|Style|Url|ResourceUrl)
+
+  - id: knock-componente-con-httpclient
+    languages: [typescript]
+    severity: ERROR
+    message: Los componentes no usan HttpClient; llaman al servicio de su feature (que usa el cliente generado).
+    paths:
+      include: ["panel/src/**/*.component.ts"]
+    pattern-regex: \bHttpClient\b
+
+  - id: knock-token-en-localstorage
+    languages: [typescript]
+    severity: ERROR
+    message: No guardes tokens en localStorage/sessionStorage (robables por XSS). Mantén la sesión en memoria con renovación.
+    paths:
+      include: ["panel/src/**"]
+    pattern-either:
+      - pattern: localStorage.setItem("$K", ...)
+      - pattern: sessionStorage.setItem("$K", ...)
+      - pattern-regex: |-
+          (localStorage|sessionStorage)\.setItem\(\s*['"][^'"]*(token|jwt|refresh)[^'"]*['"]
+
+  - id: knock-eval
+    languages: [typescript]
+    severity: ERROR
+    message: eval/new Function ejecutan código arbitrario.
+    pattern-either:
+      - pattern: eval(...)
+      - pattern: new Function(...)
+
+  - id: knock-pruebas-desactivadas-ts
+    languages: [typescript]
+    severity: ERROR
+    message: No dejes pruebas desactivadas o enfocadas (xit, fit, xdescribe, fdescribe, .skip, .only).
+    paths:
+      include: ["panel/**/*.spec.ts", "panel/e2e/**"]
+    pattern-regex: \b(xit|fit|xdescribe|fdescribe)\s*\(|\b(it|describe|test)\.(skip|only)\s*\(
+
+  # ---------------- App (Flutter / Dart) — Semgrep genérico por patrones de texto
+  - id: knock-dart-token-en-shared-preferences
+    languages: [generic]
+    severity: ERROR
+    message: Los tokens van en flutter_secure_storage, no en SharedPreferences.
+    paths:
+      include: ["app/lib/**/*.dart"]
+    pattern-regex: |-
+      (?i)prefs?\.set(String|StringList)\(\s*['"][^'"]*(token|jwt|refresh|session)
+
+  - id: knock-dart-domain-impuro
+    languages: [generic]
+    severity: ERROR
+    message: domain/ es Dart puro (sin flutter, dio, riverpod ni knock_api).
+    paths:
+      include: ["app/lib/features/*/domain/**/*.dart"]
+    pattern-regex: |-
+      import\s+['"]package:(flutter|dio|knock_api|flutter_riverpod|riverpod)/
+
+  - id: knock-dart-presentacion-http
+    languages: [generic]
+    severity: ERROR
+    message: presentation/ no llama HTTP; usa un caso de uso.
+    paths:
+      include: ["app/lib/features/*/presentation/**/*.dart"]
+    pattern-regex: |-
+      import\s+['"]package:(dio|knock_api|http)/
+
+  - id: knock-dart-http-inseguro
+    languages: [generic]
+    severity: ERROR
+    message: Solo HTTPS (salvo localhost en desarrollo).
+    paths:
+      include: ["app/lib/**/*.dart"]
+    pattern-regex: |-
+      ['"]http://(?!localhost|127\.0\.0\.1|10\.0\.2\.2)
+
+  - id: knock-dart-certificado-sin-validar
+    languages: [generic]
+    severity: ERROR
+    message: No se desactiva la validación de certificados TLS.
+    paths:
+      include: ["app/lib/**/*.dart"]
+    pattern-regex: badCertificateCallback\s*=\s*\([^)]*\)\s*=>\s*true
+
+  - id: knock-dart-print
+    languages: [generic]
+    severity: WARNING
+    message: Usa el logger de core (sin datos personales) en lugar de print/debugPrint.
+    paths:
+      include: ["app/lib/**/*.dart"]
+    pattern-regex: (^|\s)(print|debugPrint)\(
+
+  - id: knock-dart-pruebas-desactivadas
+    languages: [generic]
+    severity: ERROR
+    message: No desactives pruebas con skip.
+    paths:
+      include: ["app/test/**/*.dart", "app/integration_test/**/*.dart"]
+    pattern-regex: |-
+      \bskip\s*:\s*(true|['"])

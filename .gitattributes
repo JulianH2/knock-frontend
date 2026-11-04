@@ -1,0 +1,5 @@
+# Los scripts de shell y los git hooks deben quedar con LF aunque Git en Windows convierta saltos de línea.
+*.sh text eol=lf
+.githooks/* text eol=lf
+# Licencia de una fuente de terceros: se conserva tal cual, sin revisar espacios al final de línea.
+landing/fonts/OFL.txt -whitespace

@@ -1,0 +1,20 @@
+{
+  "@@locale": "en",
+  "appTitle": "Knock",
+  "tabInicio": "Home",
+  "tabExplorar": "Explore",
+  "explorarOficios": "Trades",
+  "tabActividad": "Activity",
+  "tabTrabajo": "Work",
+  "tabCuenta": "My account",
+  "pruebaModoTecnico": "Technician mode (test)",
+  "configuracionTitulo": "Settings",
+  "configuracionIdioma": "Language",
+  "configuracionIdiomaEspanol": "Español",
+  "configuracionIdiomaIngles": "English",
+  "configuracionTema": "Theme",
+  "configuracionTemaAutomatico": "Automatic",
+  "configuracionTemaAutomaticoDetalle": "Same as your phone",
+  "configuracionTemaClaro": "Light",
+  "configuracionTemaOscuro": "Dark"
+}

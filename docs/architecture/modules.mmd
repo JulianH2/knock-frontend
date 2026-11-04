@@ -1,0 +1,26 @@
+graph LR
+  actividad["actividad"]
+  app["app"]
+  cuenta["cuenta"]
+  errores["errores"]
+  explorar["explorar"]
+  home["home"]
+  inicio["inicio"]
+  l10n["l10n"]
+  layout["layout"]
+  oficios["oficios"]
+  panel["panel"]
+  preferencias["preferencias"]
+  router["router"]
+  sesion["sesion"]
+  tema["tema"]
+  trabajo["trabajo"]
+  widgets["widgets"]
+  app -->|1| inicio
+  panel -->|1| home
+  router -->|1| actividad
+  router -->|2| cuenta
+  router -->|1| explorar
+  router -->|1| inicio
+  router -->|1| oficios
+  router -->|1| trabajo
