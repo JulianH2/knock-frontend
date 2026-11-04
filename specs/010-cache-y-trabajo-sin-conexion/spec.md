@@ -1,6 +1,6 @@
 # Spec 010 — Caché y trabajo sin conexión
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir cómo la app responde bien con señal irregular: caché local con revalidación, borradores y una base local con sincronización en alcance mínimo.
@@ -33,7 +33,7 @@ Definir cómo la app responde bien con señal irregular: caché local con revali
 - **CA-04:** Dado un mensaje repetido por reintento, cuando llega al servidor, entonces no se duplica.
 
 ## 5. Contrato
-Consume `ETag`/`If-None-Match` y el encabezado `Idempotency-Key` del backend.
+Consume `ETag`/`If-None-Match`. El encabezado `Idempotency-Key` no se usa en esta etapa (spec 010 del backend).
 
 ## 6. Amenazas y controles
 | Amenaza | Control |
@@ -57,11 +57,13 @@ Consume `ETag`/`If-None-Match` y el encabezado `Idempotency-Key` del backend.
 - **Base local en alcance mínimo:** refuerza la caché sin sincronizar lo que siempre debe consultarse en línea.
 - **No cachear lo personal que cambia al crear algo:** evita mostrar datos viejos.
 
-## 9. Riesgos y dudas abiertas
-- Una base local con datos de conversaciones exige borrado fiable al cerrar sesión.
-- Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
+## 9. Decisiones de la revisión, riesgos y dudas
+Decisiones tomadas en la revisión del 2026-11-04. Quien aprueba la spec las acepta; si alguna no convence, se cambia aquí antes de aprobar.
+
+- **`Idempotency-Key` (decidido): la app no lo usa en esta etapa.** Se retoma cuando el backend lo defina para el primer endpoint que lo necesite.
+- **Riesgo:** una base local con datos de conversaciones exige borrado fiable al cerrar sesión.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)

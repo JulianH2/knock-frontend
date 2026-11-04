@@ -8,6 +8,9 @@
 | T-02 | Configurar el almacenamiento seguro de la sesión y su borrado | R-02 · CA-02 | pendiente |
 | T-03 | Configurar HTTPS estricto y la política de contenido del panel | R-03, R-06 | pendiente |
 | T-04 | Escribir las pruebas de permisos negados y de seguridad negativa | R-04, R-05 · CA-03 | pendiente |
+| T-05 | Generar y guardar el identificador de dispositivo y enviarlo al iniciar sesión | R-07 · CA-04 | pendiente |
+| T-06 | Mostrar el aviso de privacidad antes del primer inicio de sesión y enviar `aceptaAviso` | R-08 · CA-05 | pendiente |
+| T-07 | Manejar la respuesta 429 con `Retry-After` en el cliente de la API | R-09 · CA-06 | pendiente |
 
 ## Definición de terminado
 - Los criterios de aceptación de `spec.md` están cubiertos por pruebas en verde.

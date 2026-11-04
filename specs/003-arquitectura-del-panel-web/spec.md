@@ -1,6 +1,6 @@
 # Spec 003 — Arquitectura del panel web
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir la arquitectura del panel interno Angular y su estructura de carpetas, sin implementar pantallas de negocio.
@@ -60,6 +60,6 @@ Consume el cliente TypeScript generado del contrato OpenAPI. Fija las rutas del 
 - Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)
