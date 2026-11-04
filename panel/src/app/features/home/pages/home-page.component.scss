@@ -1,0 +1,22 @@
+:host {
+  display: block;
+}
+
+.panel-layout {
+  min-height: 100vh;
+}
+
+.panel-sidebar {
+  width: 16rem;
+  padding: 1rem;
+  border-right: 1px solid var(--mat-sys-outline-variant);
+}
+
+.panel-content {
+  padding: 2rem;
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+}
