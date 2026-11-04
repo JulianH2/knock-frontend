@@ -6,3 +6,54 @@ build/
 .env
 *.local
 local.properties
+
+# Migrado del repositorio del equipo (secretos, editores y reportes)
+# .NET
+*.user
+TestResults/
+coverage*/
+StrykerOutput/
+# Flutter / Dart
+.flutter-plugins
+.flutter-plugins-dependencies
+**/android/app/google-services.json
+**/ios/Runner/GoogleService-Info.plist
+*.keystore
+*.jks
+key.properties
+# Secretos y entorno
+.env.*
+!.env.example
+*.pfx
+*.pem
+# Editores y SO
+.vs/
+.idea/
+.DS_Store
+Thumbs.db
+# Reportes
+reports/
+# knock-frontend
+panel/node_modules/
+panel/dist/
+panel/.angular/
+panel/coverage/
+panel/playwright-report/
+panel/test-results/
+panel/reports/
+app/coverage/
+app/mutation-test-report/
+app/android/key.properties
+# Por máquina; aquí va MAPS_API_KEY (TT-MOB-04). También lo ignora app/android/.gitignore.
+app/android/local.properties
+app/android/*.jks
+app/ios/Runner/GoogleService-Info.plist
+# Python y herramientas locales
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.orig
+*.rej
+# Configuracion local de agentes (cada persona la suya)
+.claude/settings.local.json
