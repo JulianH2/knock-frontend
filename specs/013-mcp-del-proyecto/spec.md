@@ -1,6 +1,6 @@
 # Spec 013 — MCP del proyecto (móvil y panel)
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 > **Requisito del profesor:** RP-72 (establecer MCP al final, en backend y en móvil) y RP-16 (usar MCP donde el servicio externo lo ofrezca). Va al final de la secuencia de specs, como pidió.
 
 ## 1. Objetivo
@@ -70,6 +70,6 @@ Decisiones tomadas en la revisión del 2026-11-04. Quien aprueba la spec las ace
 - **Figma (decidido):** no se usa.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)

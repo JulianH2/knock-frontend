@@ -1,6 +1,6 @@
 # Spec 001 — Arquitectura de la app móvil
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir cómo está hecha la app Flutter: su organización por función y capas, su estado, su navegación y su estructura de carpetas, sin implementar pantallas de negocio.
@@ -58,6 +58,6 @@ No consume endpoints todavía. Interfaces que fija: la estructura de funciones y
 - Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)

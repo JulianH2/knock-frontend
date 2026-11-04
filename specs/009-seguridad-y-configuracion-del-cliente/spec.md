@@ -1,6 +1,6 @@
 # Spec 009 — Seguridad y configuración del cliente
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir los controles de seguridad comunes a la app, el panel y la landing, y cómo se manejan las claves y los entornos.
@@ -67,6 +67,6 @@ Decisiones tomadas en la revisión del 2026-11-04. Quien aprueba la spec las ace
 - **429 (decidido).** La app obedece `Retry-After` (spec 009 del backend) y no reintenta antes.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)

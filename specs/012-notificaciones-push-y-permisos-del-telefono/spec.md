@@ -1,6 +1,6 @@
 # Spec 012 — Notificaciones push y permisos del teléfono
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir la infraestructura común de las notificaciones y de los permisos del teléfono, sin implementar los avisos concretos de negocio.
@@ -62,6 +62,6 @@ Consume el endpoint de registro de dispositivos del backend y fija el formato de
 - Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)

@@ -1,6 +1,6 @@
 # Spec 011 — Versionamiento por puntos
 
-> **Estado:** Borrador · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
+> **Estado:** Aprobada · **Repositorio:** knock-frontend · **Rector:** `constitution.md`
 
 ## 1. Objetivo
 Definir cómo se numeran las versiones de la app, del panel y de la landing, y cómo se calcula el número interno que exige Google Play.
@@ -57,6 +57,6 @@ Fija la etiqueta de PR `puntos-<componente>-N`, el formato de la etiqueta de Git
 - Ninguna duda abierta por ahora; se agregan aquí las que surjan al revisar la spec.
 
 ## Aprobación
-- [ ] Revisor 1 — nombre: ________ fecha: ________
-- [ ] Sin conflicto con la constitución
+- [x] Revisor 1 — nombre: José Julián Hernández Hernández fecha: 2026-11-04
+- [x] Sin conflicto con la constitución
 - **Estados:** Borrador → Aprobada (una persona; habilita el código) → Implementada (tras el merge)
