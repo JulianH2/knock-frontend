@@ -1,0 +1,13 @@
+{
+  "threshold": 3,
+  "minLines": 12,
+  "minTokens": 70,
+  "reporters": ["console", "markdown"],
+  "output": "reports/jscpd",
+  "format": ["dart", "typescript", "markup", "css", "scss", "yaml"],
+  "ignore": ["**/node_modules/**", "**/.dart_tool/**", "**/build/**", "**/dist/**", "**/.angular/**", "**/coverage/**",
+             "app/packages/knock_api/**", "panel/src/app/api/**", "**/*.g.dart", "**/*.freezed.dart", "contracts/**",
+             "docs/**", ".claude/**", ".opencode/**", ".github/agents/**", ".github/instructions/**", ".cursor/**"],
+  "absolute": false,
+  "exitCode": 1
+}
