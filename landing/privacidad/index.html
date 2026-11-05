@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es-MX" data-estado="en-preparacion">
+<html lang="es-MX" data-estado="borrador" data-version="0.1">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -13,9 +13,58 @@
     <p class="marca">Knock</p>
   </header>
   <main>
+    <p class="aviso-borrador" role="note"><strong>Borrador por revisar.</strong> Texto provisional: aún no es el aviso de privacidad vigente de Knock. Los datos marcados con «POR COMPLETAR POR JOSÉ» faltan y los decide el responsable del proyecto.</p>
     <h1>Aviso de privacidad</h1>
-    <p>Estamos preparando el aviso de privacidad de Knock. Lo publicaremos aquí antes de abrir la app al público.</p>
+    <p class="meta">Versión 0.1 (borrador) · Última actualización: <time datetime="2026-11-04">4 de noviembre de 2026</time></p>
+    <p>Knock conecta a personas con técnicos de confianza en mecánica, plomería y electricidad. Este aviso describe los datos personales que la aplicación recopila y guarda hoy. Si la aplicación cambia, este aviso cambia y se publica una versión nueva.</p>
+
+    <h2 id="responsable">Responsable</h2>
+    <p>[POR COMPLETAR POR JOSÉ: nombre legal y domicilio del responsable del tratamiento de los datos personales]</p>
+
+    <h2 id="datos-tratados">Datos que se tratan</h2>
+    <ul>
+      <li><strong>Número de celular.</strong> Sirve para crear tu cuenta e iniciar sesión. La verificación se hace con un código SMS que gestiona Firebase (Google) desde tu teléfono. En nuestros sistemas el celular se guarda cifrado y, para poder buscarlo, se guarda además una huella calculada con una llave distinta.</li>
+      <li><strong>Aceptaciones.</strong> Cada vez que inicias sesión la aplicación confirma que aceptaste el aviso de privacidad. Al crear tu cuenta se registran tus consentimientos del aviso de privacidad y de los términos, con la versión vigente, la fecha y el identificador del dispositivo que genera la aplicación.</li>
+      <li><strong>Datos de la sesión.</strong> El nombre del teléfono (hasta 80 caracteres), un identificador del dispositivo y un token de renovación de sesión que dura 30 días y se guarda solo como huella. Una cuenta puede tener hasta 10 sesiones abiertas.</li>
+      <li><strong>Perfil.</strong> Tu nombre y, si decides darlos, tu foto, tu colonia y tu código postal.</li>
+      <li><strong>Ubicación del teléfono.</strong> Es un permiso opcional que la aplicación pide cuando lo necesita, con una explicación previa. Se usa para encontrar técnicos cercanos. Si no lo concedes, la aplicación funciona y te pide tu código postal. [POR COMPLETAR POR JOSÉ: si la ubicación es aproximada o precisa y si se guarda o solo se usa para calcular la colonia]</li>
+      <li><strong>Fotos y textos de tus solicitudes.</strong> Lo que escribes y las fotos que eliges se envían a un servicio de moderación de contenido (Azure AI Content Safety) antes de guardarse; si se marca como inapropiado, no se guarda. Las fotos se suben directamente al almacenamiento con un enlace temporal de 5 minutos, se les quitan los metadatos de ubicación y se reduce su tamaño. Las fotos privadas se entregan solo con enlaces temporales. La aplicación no admite video.</li>
+      <li><strong>Identificador para notificaciones.</strong> El identificador de notificaciones de tu teléfono se registra al iniciar sesión y se desregistra al cerrar sesión. Tú eliges qué avisos recibir.</li>
+      <li><strong>Registros técnicos.</strong> Los registros de operación de la aplicación y de la API no incluyen celulares, correos, direcciones ni documentos. [POR COMPLETAR POR JOSÉ: cuánto tiempo se conservan]</li>
+    </ul>
+    <p>[POR COMPLETAR POR JOSÉ: otros datos que la aplicación trate y que aún no estén aquí, por ejemplo los de verificación de identidad de técnicos]</p>
+
+    <h2 id="finalidades">Para qué se usan</h2>
+    <p>Para crear y proteger tu cuenta, mantener tu sesión, mostrarte técnicos y servicios de tu zona, procesar tus solicitudes y enviarte los avisos que elegiste. [POR COMPLETAR POR JOSÉ: finalidades que requieran consentimiento adicional y cómo negarse a ellas, si las hay]</p>
+
+    <h2 id="alojamiento">Dónde se guardan los datos</h2>
+    <p>Los datos se alojan en la región West US de Microsoft Azure, en Estados Unidos. No se cambia de región sin avisarte en una versión nueva de este aviso.</p>
+
+    <h2 id="proveedores">Proveedores que intervienen</h2>
+    <p>Firebase (Google), para verificar tu celular y enviar notificaciones; Microsoft Azure, para alojar los datos, almacenar fotos y moderar contenido; y Railway, que aloja este sitio web. [POR COMPLETAR POR JOSÉ: confirmar la lista completa de proveedores]</p>
+
+    <h2 id="derechos">Tus derechos</h2>
+    <p>Puedes pedir acceso, rectificación, cancelación u oposición sobre tus datos. [POR COMPLETAR POR JOSÉ: medio de contacto y plazos de respuesta]</p>
+
+    <h2 id="eliminacion">Eliminación de tu cuenta</h2>
+    <p>Consulta la página <a href="/eliminar-cuenta/">Eliminar mi cuenta y mis datos</a>.</p>
+
+    <h2 id="sitio-web">Este sitio web</h2>
+    <p>Este sitio es estático: no usa cookies ni analítica y no carga recursos de otros sitios. El servicio de hosting puede conservar registros técnicos de las visitas. [POR COMPLETAR POR JOSÉ: plazo de esos registros]</p>
+
+    <h2 id="menores">Menores de edad</h2>
+    <p>[POR COMPLETAR POR JOSÉ: edad mínima para usar Knock]</p>
+
+    <h2 id="cambios">Cambios a este aviso</h2>
+    <p>La versión y la fecha de este aviso están al inicio de la página. [POR COMPLETAR POR JOSÉ: cómo se avisará de los cambios]</p>
+
+    <h2 id="contacto">Contacto</h2>
+    <p>[POR COMPLETAR POR JOSÉ: correo de contacto para privacidad]</p>
+
     <p><a href="/">Volver al inicio</a></p>
   </main>
+  <footer>
+    <p><a href="/eliminar-cuenta/">Eliminar mi cuenta y mis datos</a></p>
+  </footer>
 </body>
 </html>
