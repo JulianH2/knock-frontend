@@ -20,3 +20,38 @@ final class DatosInvalidosFailure extends Failure {
 final class ServicioNoDisponibleFailure extends Failure {
   const ServicioNoDisponibleFailure();
 }
+
+/// La app se compiló sin `--dart-define=KNOCK_API_URL=...` (spec 006).
+final class ApiNoConfiguradaFailure extends Failure {
+  const ApiNoConfiguradaFailure();
+}
+
+/// La API rechazó la credencial (401).
+final class NoAutorizadoFailure extends Failure {
+  const NoAutorizadoFailure();
+}
+
+/// La cuenta está suspendida (403 con `code = account_suspended`).
+final class CuentaSuspendidaFailure extends Failure {
+  const CuentaSuspendidaFailure();
+}
+
+/// La API negó el acceso por otro motivo (403).
+final class AccesoDenegadoFailure extends Failure {
+  const AccesoDenegadoFailure();
+}
+
+/// Conflicto con otra cuenta o con el estado actual (409).
+final class ConflictoFailure extends Failure {
+  const ConflictoFailure();
+}
+
+/// La API rechazó los datos enviados (400, 413 o 422).
+final class DatosRechazadosFailure extends Failure {
+  const DatosRechazadosFailure();
+}
+
+/// Demasiados intentos en poco tiempo (429).
+final class DemasiadosIntentosFailure extends Failure {
+  const DemasiadosIntentosFailure();
+}
