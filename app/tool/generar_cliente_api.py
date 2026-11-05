@@ -160,10 +160,11 @@ def obtener_generador() -> Path:
 
 def manifiesto(carpeta: Path, sha_contrato: str) -> dict:
     archivos = {}
-    for ruta in sorted(carpeta.rglob("*")):
-        if ruta.is_file() and ruta.name != MANIFIESTO:
-            relativa = ruta.relative_to(carpeta).as_posix()
-            archivos[relativa] = _sha256(_contenido_lf(ruta))
+    # Orden por la ruta como texto: sorted(Path) no distingue mayúsculas en Windows y sí en Linux, y el manifiesto
+    # cambiaba de orden según el sistema que lo generaba (el CI corre en Linux).
+    rutas = sorted((r.relative_to(carpeta).as_posix(), r) for r in carpeta.rglob("*") if r.is_file() and r.name != MANIFIESTO)
+    for relativa, ruta in rutas:
+        archivos[relativa] = _sha256(_contenido_lf(ruta))
     return {
         "aviso": "Generado por app/tool/generar_cliente_api.py. No editar a mano.",
         "generador": f"openapi-generator-cli {GENERADOR_VERSION} (dart)",
