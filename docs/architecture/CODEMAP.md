@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T19:37:18Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:37:55Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,16 +10,18 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cache` | core | 2 | 7 | 9 |
-| `cuenta` | presentation | 3 | 5 | 5 |
+| `cuenta` | presentation | 4 | 7 | 7 |
 | `errores` | core | 2 | 11 | 2 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | -, components, pages | 3 | 2 | 0 |
-| `inicio` | -, data, domain, presentation | 11 | 18 | 17 |
+| `inicio` | -, data, domain, presentation | 13 | 26 | 22 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
+| `notificaciones` | core | 7 | 17 | 20 |
 | `oficios` | -, data, domain, presentation | 10 | 17 | 16 |
 | `panel` | - | 3 | 1 | 0 |
-| `preferencias` | core | 3 | 5 | 12 |
+| `permisos` | core | 2 | 4 | 4 |
+| `preferencias` | core | 4 | 9 | 17 |
 | `red` | core | 5 | 4 | 9 |
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 7 | 13 | 22 |
@@ -65,11 +67,13 @@
 **presentation**
 
 - `app/lib/features/cuenta/presentation/configuracion_screen.dart` — class `ConfiguracionScreen`, class `_Encabezado`, class `_Opcion`
-  - `build()`:16, `build()`:69, `build()`:86
+  - `build()`:17, `build()`:79, `build()`:96
 - `app/lib/features/cuenta/presentation/cuenta_screen.dart` — class `CuentaScreen`
   - `build()`:16
 - `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`
   - `build()`:15
+- `app/lib/features/cuenta/presentation/widgets/seccion_avisos.dart` — class `SeccionAvisos`, class `_SeccionAvisosState`
+  - `initState()`:28, `build()`:55
 
 ### errores
 
@@ -106,6 +110,8 @@
 **-**
 
 - `app/lib/features/inicio/inicio_providers.dart` — —
+- `app/lib/features/inicio/zona_providers.dart` — class `EstadoZona`, class `ZonaSinElegir`, class `ZonaPideCodigoPostal`, class `ZonaPorUbicacion`, class `ZonaPorCodigoPostal`, class `ZonaController`
+  - `esCodigoPostalValido()`:31, `build()`:40, `usarCodigoPostal()`:60
 
 **data**
 
@@ -135,13 +141,15 @@
   - `build()`:30, `Scaffold()`:31
 - `app/lib/features/inicio/presentation/spike/pines_de_prueba.dart` — —
   - `pinesDePrueba()`:28
+- `app/lib/features/inicio/presentation/zona/selector_de_zona.dart` — class `SelectorDeZona`, class `_SelectorDeZonaState`
+  - `dispose()`:30, `build()`:53
 
 ### l10n
 
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:269, `isSupported()`:274, `shouldReload()`:278, `lookupAppLocalizations()`:281
+  - `of()`:70, `load()`:383, `isSupported()`:388, `shouldReload()`:392, `lookupAppLocalizations()`:395
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
@@ -150,6 +158,25 @@
 **core**
 
 - `panel/src/app/core/layout/app-shell.component.ts` — class `AppShellComponent`
+
+### notificaciones
+
+**core**
+
+- `app/lib/core/notificaciones/avisos_provider.dart` — class `PreferenciasAvisos`, class `AvisosNotifier`, class `ConversacionAbiertaNotifier`
+  - `recibe()`:28, `build()`:33, `elegir()`:42, `build()`:67, `abrir()`:69
+- `app/lib/core/notificaciones/carga_notificacion.dart` — enum `DestinoNotificacion`, class `CargaNotificacion`
+  - `desde()`:39, `toString()`:82
+- `app/lib/core/notificaciones/contenido_notificacion.dart` — enum `MotivoSensible`
+  - `revisarTextoDeNotificacion()`:27, `esTextoSeguro()`:34
+- `app/lib/core/notificaciones/navegacion_notificaciones.dart` — —
+  - `abrirPantallaDesdeNotificaciones()`:13, `abrir()`:14
+- `app/lib/core/notificaciones/registro_dispositivo_controller.dart` — class `EstadoRegistro`, class `SinRegistrar`, class `SinPermisoDeNotificaciones`, class `SinIdentificador`, class `RegistroFallido`, class `Registrado`, class `RegistroDispositivoController`
+  - `toString()`:38, `build()`:48, `alIniciarSesion()`:52, `alCerrarSesion()`:86
+- `app/lib/core/notificaciones/registro_dispositivos.dart` — class `RegistroDispositivosRepository`, class `RegistroDispositivosSimulado`
+  - `registrar()`:21, `desregistrar()`:27
+- `app/lib/core/notificaciones/servicio_notificaciones.dart` — class `ServicioNotificaciones`, class `ServicioNotificacionesNoDisponible`
+  - `obtenerIdentificador()`:30, `borrarIdentificador()`:33, `toqueInicial()`:39
 
 ### oficios
 
@@ -188,12 +215,23 @@
 - `panel/src/app/app.ts` — class `App`
 - `panel/src/main.ts` — —
 
+### permisos
+
+**core**
+
+- `app/lib/core/permisos/explicacion_permiso.dart` — —
+  - `explicarPermiso()`:10
+- `app/lib/core/permisos/gestor_permisos.dart` — enum `PermisoApp`, enum `EstadoPermiso`, class `GestorPermisos`, class `GestorPermisosNoDisponible`
+  - `estado()`:39, `pedir()`:43, `abrirAjustes()`:47
+
 ### preferencias
 
 **core**
 
+- `app/lib/core/preferencias/almacen_avisos.dart` — enum `TipoAviso`, class `AlmacenAvisos`, mixin `AvisosSobreShared`, mixin `AvisosEnMemoria`
+  - `claveDeAviso()`:28, `leerAviso()`:34, `guardarAviso()`:40, `leerAviso()`:48, `guardarAviso()`:51
 - `app/lib/core/preferencias/almacen_preferencias.dart` — class `AlmacenPreferencias`, class `AlmacenPreferenciasShared`, class `AlmacenPreferenciasEnMemoria`
-  - `leerTema()`:41, `leerIdioma()`:44, `guardarTema()`:47, `guardarIdioma()`:51, `leerTema()`:65, `leerIdioma()`:68, `guardarTema()`:71, `guardarIdioma()`:74
+  - `leerTema()`:47, `leerIdioma()`:50, `guardarTema()`:53, `guardarIdioma()`:57, `leerTema()`:73, `leerIdioma()`:76, `guardarTema()`:79, `guardarIdioma()`:82
 - `app/lib/core/preferencias/arranque.dart` — —
 - `app/lib/core/preferencias/preferencias_provider.dart` — class `Preferencias`, class `PreferenciasNotifier`
   - `copyWith()`:25, `build()`:47, `cambiarTema()`:55, `cambiarIdioma()`:61
