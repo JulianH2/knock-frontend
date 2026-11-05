@@ -5,7 +5,7 @@ App de Knock para clientes y técnicos. Base creada en TT-MOB-01 (KNOCK-24): Cle
 ## Requisitos
 - **Flutter 3.47.7 (canal stable) · Dart 3.13.5.** Es la versión con la que se creó el proyecto; el CI (TT-CI-01) usa la misma.
 - Android SDK con un emulador (la verificación de TT-MOB-01 es en Android). iOS se genera, pero compilarlo requiere macOS.
-- Sin Firebase ni API todavía: no hace falta ningún archivo de configuración ni secreto.
+- Para llamar a la API: `--dart-define=KNOCK_API_URL=...` (ver «API y cliente generado»). Java 11+ solo si regeneras el cliente.
 
 ## Correr la app
 ```bash
@@ -43,6 +43,22 @@ flutter test --coverage                         # unitarias y widget; cobertura 
 flutter test integration_test                   # E2E de humo; requiere un emulador o dispositivo Android encendido
 ```
 
+## API y cliente generado (spec 006)
+- El contrato vive en `../contracts/openapi.v1.json` (copiado de knock-backend, hoy el de Identity) y el cliente Dart en `packages/knock_api/`. **Ninguno se edita a mano.**
+- Regenerar tras actualizar el contrato (desde la raíz del repositorio; Python 3.11+ y Java 11+):
+  ```bash
+  python app/tool/generar_cliente_api.py          # escribe app/packages/knock_api/
+  python app/tool/generar_cliente_api.py --check  # exit 1 si el cliente no corresponde al contrato
+  python -m unittest app/tool/test_generar_cliente_api.py
+  ```
+  El script descarga openapi-generator-cli 7.27.0 (verificado por SHA-256) y normaliza el contrato de OpenAPI 3.2 a 3.1 en memoria, porque el generador no acepta 3.2.
+- `test/api/cliente_generado_test.dart` falla en `flutter test` si el cliente se editó a mano o el contrato cambió sin regenerar.
+- La URL base se pasa al compilar; sin ella las llamadas fallan con un error claro:
+  ```bash
+  flutter run --dart-define=KNOCK_API_URL=https://knock-gateway.happyground-f62473c9.westus.azurecontainerapps.io
+  ```
+  Solo se acepta `https` (o `http` hacia `localhost`, `127.0.0.1` o `10.0.2.2` para el backend local). HTTP solo por `lib/core/red/` (`clienteApiProvider`, `authApiProvider`).
+
 ## Spike de Google Maps (TT-MOB-04, desechable)
 Pantalla de prueba con 50 pines ficticios alrededor de Tula de Allende, agrupación nativa y botón «Mi ubicación». No está en el router ni en `main.dart`: tiene su propio punto de entrada.
 
@@ -71,7 +87,8 @@ lib/
     sesion/            esTecnicoProvider (indicador «es técnico», en memoria)
     tema/              paleta, ThemeData claro y oscuro, contraste WCAG
     widgets/           widgets compartidos entre features
-    errores/ red/      vacíos: TT-MOB-03
+    errores/           Failure tipados (incluye los errores de la API)
+    red/               cliente generado, URL base y mapeo de errores (spec 006)
   l10n/                ARB es/en y generado/ (salida de gen-l10n)
   features/<función>/  inicio · explorar · actividad · trabajo · cuenta
     presentation/      pantallas (hoy vacías, con su título)

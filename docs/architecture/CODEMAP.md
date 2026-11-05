@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-03T20:25:10Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T12:48:28Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,7 +10,7 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cuenta` | presentation | 3 | 5 | 5 |
-| `errores` | core | 1 | 3 | 1 |
+| `errores` | core | 1 | 10 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | data, domain, presentation | 10 | 18 | 17 |
@@ -19,6 +19,7 @@
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 3 | 5 | 12 |
+| `red` | core | 3 | 0 | 2 |
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
 | `tema` | core | 3 | 3 | 1 |
@@ -60,7 +61,7 @@
 
 **core**
 
-- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`
   - `toString()`:10
 
 ### explorar
@@ -169,6 +170,16 @@
 - `app/lib/core/preferencias/arranque.dart` — —
 - `app/lib/core/preferencias/preferencias_provider.dart` — class `Preferencias`, class `PreferenciasNotifier`
   - `copyWith()`:25, `build()`:47, `cambiarTema()`:55, `cambiarIdioma()`:61
+
+### red
+
+**core**
+
+- `app/lib/core/red/cliente_api_provider.dart` — —
+- `app/lib/core/red/configuracion_api.dart` — —
+  - `normalizarUrlApi()`:15
+- `app/lib/core/red/errores_api.dart` — —
+  - `mapearErrorApi()`:10
 
 ### router
 
