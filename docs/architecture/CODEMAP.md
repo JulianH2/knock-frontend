@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T19:36:10Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:37:18Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -9,6 +9,7 @@
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
+| `cache` | core | 2 | 7 | 9 |
 | `cuenta` | presentation | 3 | 5 | 5 |
 | `errores` | core | 2 | 11 | 2 |
 | `explorar` | presentation | 1 | 1 | 1 |
@@ -16,7 +17,7 @@
 | `inicio` | -, data, domain, presentation | 11 | 18 | 17 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
-| `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
+| `oficios` | -, data, domain, presentation | 10 | 17 | 16 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 3 | 5 | 12 |
 | `red` | core | 5 | 4 | 9 |
@@ -25,6 +26,10 @@
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
+
+## Tipos con el mismo nombre en varios lugares
+
+- `EntradaCache`: `app/lib/core/cache/almacen_cache.dart:8`, `app/lib/core/red/cache_respuestas.dart:7`
 
 ## Índice por módulo
 
@@ -45,6 +50,15 @@
   - `main()`:9
 - `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
   - `main()`:11, `build()`:20
+
+### cache
+
+**core**
+
+- `app/lib/core/cache/almacen_cache.dart` — class `EntradaCache`, class `AlmacenCache`, class `AlmacenCacheEnMemoria`, class `AlmacenCacheShared`
+  - `conFecha()`:19, `esClaveCacheable()`:34, `leer()`:53, `guardar()`:56, `borrarTodo()`:62, `leer()`:78, `guardar()`:99, `borrarTodo()`:112
+- `app/lib/core/cache/revalidador_etag.dart` — enum `OrigenCache`, class `RespuestaCache`, class `RevalidadorEtag`
+  - `leerGuardado()`:52
 
 ### cuenta
 
@@ -147,6 +161,8 @@
 
 - `app/lib/features/oficios/data/oficio_mapper.dart` — class `OficioMapper`
   - `listaDesdeContrato()`:13, `desdeContrato()`:21
+- `app/lib/features/oficios/data/oficios_repository_api.dart` — class `OficiosRepositoryApi`
+  - `listar()`:25, `observar()`:28
 - `app/lib/features/oficios/data/oficios_repository_de_prueba.dart` — class `OficiosRepositoryDePrueba`
   - `listar()`:24
 
@@ -155,13 +171,14 @@
 - `app/lib/features/oficios/domain/modalidad.dart` — class `Modalidad`
 - `app/lib/features/oficios/domain/oficio.dart` — class `Oficio`
 - `app/lib/features/oficios/domain/oficios_repository.dart` — class `OficiosRepository`
+- `app/lib/features/oficios/domain/resultado_oficios.dart` — class `ResultadoOficios`, class `OficiosRepositoryConCache`
 
 **presentation**
 
-- `app/lib/features/oficios/presentation/oficios_controller.dart` — class `OficiosController`
-  - `build()`:9, `reintentar()`:13
-- `app/lib/features/oficios/presentation/oficios_screen.dart` — class `OficiosScreen`, class `_Cargando`, class `_Vacio`, class `_ConError`, class `_Lista`, class `_FilaOficio`
-  - `build()`:15, `build()`:39, `build()`:48, `build()`:65, `build()`:93, `build()`:105
+- `app/lib/features/oficios/presentation/oficios_controller.dart` — class `OficiosSinConexion`, class `OficiosController`
+  - `build()`:12, `fijar()`:14, `build()`:26, `reintentar()`:53
+- `app/lib/features/oficios/presentation/oficios_screen.dart` — class `OficiosScreen`, class `_AvisoSinConexion`, class `_Cargando`, class `_Vacio`, class `_ConError`, class `_Lista`, class `_FilaOficio`
+  - `build()`:15, `build()`:54, `build()`:71, `build()`:80, `build()`:97, `build()`:125, `build()`:137
 
 ### panel
 
