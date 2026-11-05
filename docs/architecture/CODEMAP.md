@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T12:48:28Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T15:47:11Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -12,7 +12,7 @@
 | `cuenta` | presentation | 3 | 5 | 5 |
 | `errores` | core | 1 | 10 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
-| `home` | components, pages | 2 | 2 | 0 |
+| `home` | -, components, pages | 3 | 2 | 0 |
 | `inicio` | data, domain, presentation | 10 | 18 | 17 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
@@ -72,6 +72,10 @@
   - `build()`:15
 
 ### home
+
+**-**
+
+- `panel/src/app/features/home/home.routes.ts` — —
 
 **components**
 
