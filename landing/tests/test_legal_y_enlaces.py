@@ -1,4 +1,4 @@
-"""Páginas legales en borrador y revisión de enlaces (spec 004, KNOCK-218).
+"""Páginas legales vigentes y revisión de enlaces (spec 004, KNOCK-218).
 
 Solo biblioteca estándar y sin red. Corre con
 `python -m unittest discover -s landing/tests -v` desde la raíz del repositorio.
@@ -17,6 +17,8 @@ import check_links  # noqa: E402
 from test_landing import LANDING, analizar, enlaces_externos, leer  # noqa: E402
 
 PAGINAS_LEGALES = ("privacidad/index.html", "eliminar-cuenta/index.html")
+CORREO = "soporte@tdevs.com.mx"
+RESPONSABLE = ("José Julián Hernández Hernández", "Alonso de Borja 92", "Aviación", "42506", "Actopan", "Hidalgo")
 
 
 class PaginasLegales(unittest.TestCase):
@@ -40,17 +42,18 @@ class PaginasLegales(unittest.TestCase):
             hrefs = [e["attrs"].get("href") for e in analizar(leer("index.html")).enlaces]
             self.assertIn(ruta, hrefs)
 
-    def test_borrador_visible_noindex_version_y_fecha(self):
+    def test_vigente_indexable_version_y_fecha(self):
         for nombre in PAGINAS_LEGALES:
             pagina = analizar(leer(nombre))
             html = pagina.de("html")[0]
             self.assertEqual(html.get("lang"), "es-MX", nombre)
-            self.assertEqual(html.get("data-estado"), "borrador", nombre)
-            self.assertRegex(html.get("data-version", ""), r"^\d+\.\d+$", nombre)
-            self.assertIn({"name": "robots", "content": "noindex"}, pagina.de("meta"), nombre)
+            self.assertEqual(html.get("data-estado"), "vigente", nombre)
+            self.assertEqual(html.get("data-version"), "1.0", nombre)
+            self.assertNotIn({"name": "robots", "content": "noindex"}, pagina.de("meta"), nombre)
             texto = pagina.texto_visible()
-            self.assertIn("Borrador por revisar", texto, nombre)
-            self.assertIn("Texto provisional", texto, nombre)
+            for ausente in ("Borrador por revisar", "Texto provisional", "(borrador)"):
+                self.assertNotIn(ausente, texto, nombre)
+            self.assertEqual([a for t, a in pagina.etiquetas if "aviso-borrador" in a.get("class", "")], [], nombre)
             self.assertRegex(texto, rf"Versión {re.escape(html['data-version'])}\b", nombre)
             fechas = [a for a in pagina.de("time") if re.fullmatch(r"\d{4}-\d{2}-\d{2}", a.get("datetime", ""))]
             self.assertEqual(len(fechas), 1, nombre)
@@ -58,14 +61,19 @@ class PaginasLegales(unittest.TestCase):
             for region in ("header", "main", "footer"):
                 self.assertEqual(len(pagina.de(region)), 1, f"<{region}> en {nombre}")
 
-    def test_marcadores_por_completar_y_sin_claves_internas(self):
+    def test_sin_marcadores_con_responsable_y_correo_de_contacto(self):
         for nombre in PAGINAS_LEGALES:
             html = leer(nombre)
-            self.assertIn("[POR COMPLETAR POR JOSÉ", html, nombre)
+            for marcador in ("POR COMPLETAR", "POR CONFIRMAR"):
+                self.assertNotIn(marcador, html, nombre)
+            self.assertNotRegex(html, r"\[[A-ZÁÉÍÓÚÑ ]{6,}[^\]]*\]", nombre)
             self.assertNotRegex(html, r"\b(TT|HU|KNOCK)-[A-Za-z0-9]", nombre)
-            # No se inventan contactos ni razón social.
-            self.assertNotRegex(html, r"@[A-Za-z0-9-]+\.[a-z]{2,}", nombre)
+            # El único contacto es el correo de soporte del proyecto, en texto (un mailto: contaría como enlace externo).
+            self.assertEqual(set(re.findall(r"[\w.+-]+@[\w-]+(?:\.[\w-]+)+", html)), {CORREO}, nombre)
             self.assertNotRegex(html, r"https?://", nombre)
+        privacidad = analizar(leer("privacidad/index.html")).texto_visible()
+        for dato in RESPONSABLE:
+            self.assertIn(dato, privacidad)
 
     def test_sin_scripts_formularios_ni_terceros(self):
         for nombre in PAGINAS_LEGALES:

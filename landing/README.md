@@ -1,6 +1,6 @@
 # landing/ — sitio estático de Knock
 
-> Spec vigente: [`specs/004-landing-page-estructura-y-publicacion/spec.md`](../specs/004-landing-page-estructura-y-publicacion/spec.md) (KNOCK-218, Aprobada). La estructura base viene de TT-WEB-01 (KNOCK-148, ahora en `specs/_legacy/`). El texto legal de `/privacidad/` y `/eliminar-cuenta/` es un **borrador por revisar** (ver «Textos legales»).
+> Spec vigente: [`specs/004-landing-page-estructura-y-publicacion/spec.md`](../specs/004-landing-page-estructura-y-publicacion/spec.md) (KNOCK-218, Aprobada). La estructura base viene de TT-WEB-01 (KNOCK-148, ahora en `specs/_legacy/`). El texto legal de `/privacidad/` y `/eliminar-cuenta/` está **vigente** desde la versión 1.0 (5 de noviembre de 2026), con la revisión legal pendiente (ver «Textos legales»).
 
 HTML y CSS sin JavaScript ni build, servidos por nginx sin root (`nginxinc/nginx-unprivileged`, fijada por versión y digest) en el puerto 8080. Railway construye la imagen con el `Dockerfile` de esta carpeta. El `Dockerfile` aplica con `apk upgrade` los parches de Alpine que la imagen base aún no trae (lista en su comentario); al subir el digest base, revisa con Trivy si esa línea sigue haciendo falta.
 
@@ -8,8 +8,8 @@ HTML y CSS sin JavaScript ni build, servidos por nginx sin root (`nginxinc/nginx
 | Ruta | Archivo | Nota |
 |---|---|---|
 | `/` | `index.html` | Inicio, bloque de Google Play y pie con la versión |
-| `/privacidad/` | `privacidad/index.html` | Aviso de privacidad en **borrador** (`data-estado="borrador"`, `noindex`) |
-| `/eliminar-cuenta/` | `eliminar-cuenta/index.html` | Eliminación de cuenta y datos en **borrador** (`data-estado="borrador"`, `noindex`); sin formularios |
+| `/privacidad/` | `privacidad/index.html` | Aviso de privacidad **vigente** (`data-estado="vigente"`, versión 1.0, indexable) |
+| `/eliminar-cuenta/` | `eliminar-cuenta/index.html` | Eliminación de cuenta y datos **vigente** (`data-estado="vigente"`, versión 1.0, indexable); sin formularios |
 | cualquier otra | `404.html` | 404 propio (también para carpetas sin `index.html`) |
 | `/favicon.ico` | — | 204 hasta tener el icono de la app |
 | `/terminos/` | — | No la pide la spec 004; todavía no existe (el consentimiento de términos se registra en el backend) |
@@ -70,12 +70,12 @@ pyftsubset app/assets/fonts/nunito/Nunito-Bold.ttf --unicodes="U+0020-007E,U+00A
 | `nunito-400-latin.woff2` | 13 200 | `117502c8a30d28bec3fdebf04a6375e2cc6f1f43410bbaba55a5ac5af355dc2c` |
 | `nunito-700-latin.woff2` | 13 144 | `af6534af220df798e5d1bef74283cfc989d5d516de268e61cd550ed1665f1710` |
 
-## Textos legales: borrador por revisar
-- `/privacidad/` y `/eliminar-cuenta/` están en `data-estado="borrador"` (versión `0.1`, `noindex`) y muestran un aviso visible de «Borrador por revisar». No son el aviso de privacidad vigente.
+## Textos legales: vigentes (versión 1.0)
+- `/privacidad/` y `/eliminar-cuenta/` están en `data-estado="vigente"` (versión `1.0`, 5 de noviembre de 2026), sin aviso de borrador y sin `noindex`. Ya se puede dar la URL de `/privacidad/` a Google Play cuando el sitio esté publicado y la revisión legal esté hecha.
 - Solo afirman lo que dicen las specs aprobadas: celular cifrado con huella para buscarlo (backend 009 R-07 y 015), consentimientos de aviso y términos con versión, fecha y dispositivo (015 R-04), sesiones (015), perfil (017), ubicación como permiso opcional con código postal como alternativa (frontend 012), fotos con moderación, enlaces de 5 minutos y sin metadatos de ubicación (013), región West US de Azure (backend 003 R-09), notificaciones (012) y sitio sin cookies ni analítica.
-- Todo dato que ninguna spec fija queda como `[POR COMPLETAR POR JOSÉ: ...]`: responsable y domicilio, correo de contacto, plazos (derechos, conservación, registros), edad mínima, pasos de eliminación, finalidades con consentimiento, lista completa de proveedores y precisión de la ubicación.
-- Para pasar a «vigente» José completa los marcadores, cambia `data-estado` a `vigente`, sube `data-version`, la versión visible y el `<time>`, y quita el aviso de borrador y el `noindex`. `test_legal_y_enlaces.py` hoy exige el estado borrador: se actualiza en ese mismo PR.
-- Mientras el estado sea `borrador`, esta URL no debería ir como política de privacidad en Google Play salvo decisión expresa del líder (la spec 004 deja el texto fuera de alcance).
+- Los demás datos salen del diseño del proyecto (`docs/descripcion-del-proyecto.md`, `docs/DECISION_TECNICA.md`, HU-006 y HU-055) y de valores típicos de un proyecto escolar mexicano (plazo de respuesta de 20 días hábiles, registros de 30 días, edad mínima de 18 años). El responsable y su contacto son los que dio José el 5 de noviembre de 2026: José Julián Hernández Hernández, Alonso de Borja 92, colonia Aviación, C.P. 42506, Actopan, Hidalgo, y `soporte@tdevs.com.mx`. El correo va como texto: un `mailto:` contaría como enlace externo en las pruebas.
+- Pendiente fuera de este cambio: confirmar el domicilio, que una persona con criterio legal revise los textos, y que la aplicación cumpla lo que prometen (eliminar con «ELIMINAR» o código SMS en 7 días, descarga de datos y fotos de verificación destruidas a los 7 días). Si cambia algo, se sube `data-version`, la versión visible y el `<time>` en el mismo PR.
+- `test_legal_y_enlaces.py` exige el estado vigente: sin marcadores `POR CONFIRMAR`, sin aviso de borrador, sin `noindex`, versión `1.0`, el responsable y el único correo de contacto.
 
 ## Versión de la landing (spec 004, R-05)
 La versión vive en el pie de `index.html` como `landing-vX.Y.Z` (hoy `landing-v1.0.0`, valor inicial). La regla de puntos y la etiqueta de Git `landing-vX.Y.Z` las rige la spec 011 y `docs/VERSIONAMIENTO.md`; aquí no se define otra regla.

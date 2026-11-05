@@ -37,6 +37,19 @@ class QuitarIgnores(unittest.TestCase):
         self.assertEqual(g.quitar_ignores(codigo), "a = 1;\nb = 2; // comentario\n")
 
 
+class Manifiesto(unittest.TestCase):
+    def test_ca_006_02_el_orden_no_depende_del_sistema(self):
+        # Mayúsculas y minúsculas mezcladas: antes Windows y Linux producían un orden distinto.
+        with tempfile.TemporaryDirectory() as tmp:
+            carpeta = Path(tmp)
+            for nombre in ("README.md", "analysis_options.yaml", "doc/AuthApi.md", "lib/api.dart"):
+                ruta = carpeta / nombre
+                ruta.parent.mkdir(parents=True, exist_ok=True)
+                ruta.write_text("x", encoding="utf-8")
+            claves = list(g.manifiesto(carpeta, "0" * 64)["archivos"])
+        self.assertEqual(claves, sorted(claves))
+
+
 class Comparar(unittest.TestCase):
     def test_ca_006_02_detecta_edicion_falta_y_sobra(self):
         with tempfile.TemporaryDirectory() as tmp:
