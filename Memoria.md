@@ -130,3 +130,8 @@
 - **Porqué:** José dio los datos que faltaban y pidió publicar y cerrar KNOCK-218 antes de la clase; la URL de privacidad es lo que pide Google Play (KNOCK-230).
 - **Pendiente:** confirmar el domicilio (el estado «Hidalgo» se dedujo del C.P. 42506), la revisión legal antes de dar la URL a Google Play, que la aplicación cumpla lo que el texto promete (eliminar con «ELIMINAR» o SMS en 7 días, descarga de datos en 48 horas y fotos de verificación destruidas a los 7 días), publicar en Railway y la revisión de par de Erick.
 - **A evitar:** dar por vigente un texto legal que describe funciones que la app todavía no tiene, o dejar un domicilio personal en un sitio público sin que su dueño lo haya confirmado.
+
+## 2026-11-05 — Gitleaks en los PR de Erick: huella del token ficticio (EXC-004, KNOCK-223)
+- **Decisión:** `.gitleaksignore` en la raíz con una sola huella, `8735cb22dc6095acc63cccea48ad253f6688f589:app/test/core/sesion/sesion_segura_test.dart:generic-api-key:20`, y la excepción EXC-004 en `security/exceptions.yaml` (vence 2027-02-03).
+- **Porqué:** el valor `'refresco-ficticio-xyz789'` de una prueba es ficticio, pero Gitleaks recorre el historial de todas las ramas (`fetch-depth: 0`), así que cambiarlo en un commit nuevo no quita el hallazgo del commit 8735cb2 y ese único check mantenía en rojo los PR #14 al #21. No se reescribe el historial ni se hace force-push. Comprobado con gitleaks v8.30.1 (imagen oficial) sobre un clon con esa rama: 1 hallazgo sin el archivo, 0 con él.
+- **A evitar:** ampliar `.gitleaksignore` con comodines o con más huellas sin su propia excepción, o poner tokens con aspecto de llave (`xyz789`) en las pruebas; usar valores cortos o claramente no secretos.
