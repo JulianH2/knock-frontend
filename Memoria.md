@@ -69,3 +69,9 @@
 - **Porqué:** el guardián no encontraba ninguna de las 13 specs y bloqueaba todo cambio en `app/` y `panel/`; el mismo arreglo ya se hizo en el backend (PR #7).
 - **Pendiente:** la cabecera `> **Jira:** KNOCK-N` en las specs (hasta entonces, `KNOCK_SPEC=<número>`), y que `ci-pr.yml` y `branch_rules.py` acepten también las specs numeradas.
 - **A evitar:** pasar `KNOCK_SPEC` con un prefijo corto (`00`): resuelve en silencio la primera spec que coincida.
+
+## 2026-11-05 — Arquitectura del panel web (KNOCK-217, spec 003)
+- **Estado:** el panel ya compila en modo estricto, con rutas diferidas (un `chunk` por función), reglas de lint de frontera (sin `HttpClient` en componentes, sin `innerHTML` ni `bypassSecurityTrust*`), `noindex` y publicación en Railway con Dockerfile y Caddy (CSP y demás encabezados verificados con `curl` sobre la imagen). Documentado en `docs/arquitectura-panel.md`.
+- **Decisión:** el build desactiva `inlineCritical` de los estilos porque el script en línea que genera Angular lo bloquearía la CSP (`script-src 'self'`) y la página quedaría sin estilos.
+- **Pendiente:** el acceso del personal autenticado (R-03) y el doble factor dependen de un inicio de sesión del panel que la spec deja fuera; sin él no se debe agregar ninguna función con datos. La prueba de humo con Playwright (spec §7) no se hizo. Falta la publicación real en Railway (la hace quien aporta el espacio).
+- **A evitar:** servir el panel sin los encabezados de `Caddyfile`; importar `HttpClient` fuera de un servicio.
