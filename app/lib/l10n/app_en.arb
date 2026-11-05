@@ -16,5 +16,15 @@
   "configuracionTemaAutomatico": "Automatic",
   "configuracionTemaAutomaticoDetalle": "Same as your phone",
   "configuracionTemaClaro": "Light",
-  "configuracionTemaOscuro": "Dark"
+  "configuracionTemaOscuro": "Dark",
+  "errorSinConexion": "We couldn't reach Knock. Check your connection and try again.",
+  "errorSesionVencida": "Your session is no longer valid. Please sign in again.",
+  "errorCuentaSuspendida": "Your account is suspended. Contact support if you think this is a mistake.",
+  "errorAccesoDenegado": "You don't have permission to do this.",
+  "errorConflicto": "This action conflicts with another account or the current state. Check the data and try again.",
+  "errorDatosRechazados": "Check the information you entered and try again.",
+  "errorDemasiadosIntentos": "Too many attempts. Wait a moment and try again.",
+  "errorDatosInvalidos": "We received information we couldn't read. Please try again later.",
+  "errorApiNoConfigurada": "The app isn't connected to a server. Install an official version.",
+  "errorInesperado": "Something went wrong. Please try again."
 }

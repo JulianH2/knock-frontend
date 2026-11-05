@@ -199,6 +199,66 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Oscuro'**
   String get configuracionTemaOscuro;
+
+  /// Error común: sin conexión o servicio no disponible (5xx).
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos conectar con Knock. Revisa tu conexión e inténtalo de nuevo.'**
+  String get errorSinConexion;
+
+  /// Error común: la API rechazó la credencial (401) y no se pudo renovar.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu sesión ya no es válida. Inicia sesión de nuevo.'**
+  String get errorSesionVencida;
+
+  /// Error común: cuenta suspendida (403 account_suspended).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está suspendida. Contacta a soporte si crees que es un error.'**
+  String get errorCuentaSuspendida;
+
+  /// Error común: acceso negado (403).
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permiso para hacer esto.'**
+  String get errorAccesoDenegado;
+
+  /// Error común: conflicto (409).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta acción choca con otra cuenta o con el estado actual. Revisa los datos e inténtalo de nuevo.'**
+  String get errorConflicto;
+
+  /// Error común: datos rechazados (400, 413 o 422).
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos que escribiste e inténtalo de nuevo.'**
+  String get errorDatosRechazados;
+
+  /// Error común: límite de intentos (429).
+  ///
+  /// In es, this message translates to:
+  /// **'Hiciste demasiados intentos. Espera un momento e inténtalo de nuevo.'**
+  String get errorDemasiadosIntentos;
+
+  /// Error común: la respuesta no cumple el contrato.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibimos información que no pudimos leer. Inténtalo más tarde.'**
+  String get errorDatosInvalidos;
+
+  /// Error común: falta KNOCK_API_URL al compilar.
+  ///
+  /// In es, this message translates to:
+  /// **'La app no está conectada a un servidor. Instala una versión oficial.'**
+  String get errorApiNoConfigurada;
+
+  /// Error común: cualquier fallo no previsto; nunca muestra detalles técnicos.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal. Inténtalo de nuevo.'**
+  String get errorInesperado;
 }
 
 class _AppLocalizationsDelegate

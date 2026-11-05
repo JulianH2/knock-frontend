@@ -59,4 +59,42 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get configuracionTemaOscuro => 'Oscuro';
+
+  @override
+  String get errorSinConexion =>
+      'No pudimos conectar con Knock. Revisa tu conexión e inténtalo de nuevo.';
+
+  @override
+  String get errorSesionVencida =>
+      'Tu sesión ya no es válida. Inicia sesión de nuevo.';
+
+  @override
+  String get errorCuentaSuspendida =>
+      'Tu cuenta está suspendida. Contacta a soporte si crees que es un error.';
+
+  @override
+  String get errorAccesoDenegado => 'No tienes permiso para hacer esto.';
+
+  @override
+  String get errorConflicto =>
+      'Esta acción choca con otra cuenta o con el estado actual. Revisa los datos e inténtalo de nuevo.';
+
+  @override
+  String get errorDatosRechazados =>
+      'Revisa los datos que escribiste e inténtalo de nuevo.';
+
+  @override
+  String get errorDemasiadosIntentos =>
+      'Hiciste demasiados intentos. Espera un momento e inténtalo de nuevo.';
+
+  @override
+  String get errorDatosInvalidos =>
+      'Recibimos información que no pudimos leer. Inténtalo más tarde.';
+
+  @override
+  String get errorApiNoConfigurada =>
+      'La app no está conectada a un servidor. Instala una versión oficial.';
+
+  @override
+  String get errorInesperado => 'Algo salió mal. Inténtalo de nuevo.';
 }
