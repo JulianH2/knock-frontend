@@ -68,6 +68,82 @@
   "@configuracionTemaOscuro": {
     "description": "Opción del selector de tema: tema oscuro."
   },
+  "permisoContinuar": "Continuar",
+  "@permisoContinuar": {
+    "description": "Botón del aviso previo a un permiso: seguir y ver la petición del sistema."
+  },
+  "permisoAhoraNo": "Ahora no",
+  "@permisoAhoraNo": {
+    "description": "Botón del aviso previo a un permiso: no pedirlo ahora."
+  },
+  "permisoNotificacionesTitulo": "¿Activar las notificaciones?",
+  "@permisoNotificacionesTitulo": {
+    "description": "Título del aviso previo al permiso de notificaciones."
+  },
+  "permisoNotificacionesCuerpo": "Te avisamos cuando haya novedades en tus solicitudes, mensajes y visitas. Los avisos no muestran códigos ni direcciones.",
+  "@permisoNotificacionesCuerpo": {
+    "description": "Explicación previa al permiso de notificaciones: para qué sirve."
+  },
+  "permisoUbicacionTitulo": "¿Usar tu ubicación?",
+  "@permisoUbicacionTitulo": {
+    "description": "Título del aviso previo al permiso de ubicación."
+  },
+  "permisoUbicacionCuerpo": "La usamos una sola vez para mostrarte técnicos de tu colonia. No la guardamos. Si prefieres, puedes escribir tu código postal.",
+  "@permisoUbicacionCuerpo": {
+    "description": "Explicación previa al permiso de ubicación: para qué sirve y la alternativa."
+  },
+  "avisosTitulo": "Avisos",
+  "@avisosTitulo": {
+    "description": "Encabezado de la sección de Configuración para elegir qué avisos recibir."
+  },
+  "avisosCotizaciones": "Cotizaciones",
+  "@avisosCotizaciones": {
+    "description": "Interruptor: avisos de cotizaciones."
+  },
+  "avisosMensajes": "Mensajes",
+  "@avisosMensajes": {
+    "description": "Interruptor: avisos de mensajes."
+  },
+  "avisosVisitas": "Visitas",
+  "@avisosVisitas": {
+    "description": "Interruptor: avisos de visitas."
+  },
+  "avisosActivar": "Activar notificaciones",
+  "@avisosActivar": {
+    "description": "Botón que inicia la petición del permiso de notificaciones."
+  },
+  "avisosApagadas": "Las notificaciones están apagadas en tu teléfono. La app sigue funcionando; puedes activarlas cuando quieras.",
+  "@avisosApagadas": {
+    "description": "Mensaje cuando no hay permiso de notificaciones."
+  },
+  "avisosAbrirAjustes": "Abrir ajustes",
+  "@avisosAbrirAjustes": {
+    "description": "Botón que abre los ajustes del teléfono para cambiar un permiso negado."
+  },
+  "avisosActivadas": "Notificaciones activadas",
+  "@avisosActivadas": {
+    "description": "Mensaje cuando el permiso de notificaciones está concedido."
+  },
+  "zonaUsarUbicacion": "Usar mi ubicación",
+  "@zonaUsarUbicacion": {
+    "description": "Botón para elegir la zona con la ubicación del teléfono."
+  },
+  "zonaPideCodigoPostal": "Sin la ubicación, escribe tu código postal para continuar.",
+  "@zonaPideCodigoPostal": {
+    "description": "Mensaje cuando no hay ubicación y se ofrece el código postal."
+  },
+  "zonaCodigoPostal": "Código postal",
+  "@zonaCodigoPostal": {
+    "description": "Etiqueta del campo del código postal."
+  },
+  "zonaCodigoPostalInvalido": "Escribe los 5 números de tu código postal.",
+  "@zonaCodigoPostalInvalido": {
+    "description": "Error del campo de código postal."
+  },
+  "zonaContinuar": "Continuar",
+  "@zonaContinuar": {
+    "description": "Botón que confirma el código postal."
+  },
   "errorSinConexion": "No pudimos conectar con Knock. Revisa tu conexión e inténtalo de nuevo.",
   "@errorSinConexion": {
     "description": "Error común: sin conexión o servicio no disponible (5xx)."

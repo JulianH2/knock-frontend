@@ -61,6 +61,68 @@ class AppLocalizationsEn extends AppLocalizations {
   String get configuracionTemaOscuro => 'Dark';
 
   @override
+  String get permisoContinuar => 'Continue';
+
+  @override
+  String get permisoAhoraNo => 'Not now';
+
+  @override
+  String get permisoNotificacionesTitulo => 'Turn on notifications?';
+
+  @override
+  String get permisoNotificacionesCuerpo =>
+      'We let you know about updates to your requests, messages and visits. Notifications never show codes or addresses.';
+
+  @override
+  String get permisoUbicacionTitulo => 'Use your location?';
+
+  @override
+  String get permisoUbicacionCuerpo =>
+      'We use it once to show you technicians in your area. We don\'t store it. If you prefer, you can type your postal code.';
+
+  @override
+  String get avisosTitulo => 'Notifications';
+
+  @override
+  String get avisosCotizaciones => 'Quotes';
+
+  @override
+  String get avisosMensajes => 'Messages';
+
+  @override
+  String get avisosVisitas => 'Visits';
+
+  @override
+  String get avisosActivar => 'Turn on notifications';
+
+  @override
+  String get avisosApagadas =>
+      'Notifications are turned off on your phone. The app keeps working; you can turn them on whenever you like.';
+
+  @override
+  String get avisosAbrirAjustes => 'Open settings';
+
+  @override
+  String get avisosActivadas => 'Notifications are on';
+
+  @override
+  String get zonaUsarUbicacion => 'Use my location';
+
+  @override
+  String get zonaPideCodigoPostal =>
+      'Without your location, type your postal code to continue.';
+
+  @override
+  String get zonaCodigoPostal => 'Postal code';
+
+  @override
+  String get zonaCodigoPostalInvalido =>
+      'Type the 5 digits of your postal code.';
+
+  @override
+  String get zonaContinuar => 'Continue';
+
+  @override
   String get errorSinConexion =>
       'We couldn\'t reach Knock. Check your connection and try again.';
 

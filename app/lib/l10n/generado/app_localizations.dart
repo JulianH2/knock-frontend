@@ -200,6 +200,120 @@ abstract class AppLocalizations {
   /// **'Oscuro'**
   String get configuracionTemaOscuro;
 
+  /// Botón del aviso previo a un permiso: seguir y ver la petición del sistema.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar'**
+  String get permisoContinuar;
+
+  /// Botón del aviso previo a un permiso: no pedirlo ahora.
+  ///
+  /// In es, this message translates to:
+  /// **'Ahora no'**
+  String get permisoAhoraNo;
+
+  /// Título del aviso previo al permiso de notificaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Activar las notificaciones?'**
+  String get permisoNotificacionesTitulo;
+
+  /// Explicación previa al permiso de notificaciones: para qué sirve.
+  ///
+  /// In es, this message translates to:
+  /// **'Te avisamos cuando haya novedades en tus solicitudes, mensajes y visitas. Los avisos no muestran códigos ni direcciones.'**
+  String get permisoNotificacionesCuerpo;
+
+  /// Título del aviso previo al permiso de ubicación.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Usar tu ubicación?'**
+  String get permisoUbicacionTitulo;
+
+  /// Explicación previa al permiso de ubicación: para qué sirve y la alternativa.
+  ///
+  /// In es, this message translates to:
+  /// **'La usamos una sola vez para mostrarte técnicos de tu colonia. No la guardamos. Si prefieres, puedes escribir tu código postal.'**
+  String get permisoUbicacionCuerpo;
+
+  /// Encabezado de la sección de Configuración para elegir qué avisos recibir.
+  ///
+  /// In es, this message translates to:
+  /// **'Avisos'**
+  String get avisosTitulo;
+
+  /// Interruptor: avisos de cotizaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Cotizaciones'**
+  String get avisosCotizaciones;
+
+  /// Interruptor: avisos de mensajes.
+  ///
+  /// In es, this message translates to:
+  /// **'Mensajes'**
+  String get avisosMensajes;
+
+  /// Interruptor: avisos de visitas.
+  ///
+  /// In es, this message translates to:
+  /// **'Visitas'**
+  String get avisosVisitas;
+
+  /// Botón que inicia la petición del permiso de notificaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Activar notificaciones'**
+  String get avisosActivar;
+
+  /// Mensaje cuando no hay permiso de notificaciones.
+  ///
+  /// In es, this message translates to:
+  /// **'Las notificaciones están apagadas en tu teléfono. La app sigue funcionando; puedes activarlas cuando quieras.'**
+  String get avisosApagadas;
+
+  /// Botón que abre los ajustes del teléfono para cambiar un permiso negado.
+  ///
+  /// In es, this message translates to:
+  /// **'Abrir ajustes'**
+  String get avisosAbrirAjustes;
+
+  /// Mensaje cuando el permiso de notificaciones está concedido.
+  ///
+  /// In es, this message translates to:
+  /// **'Notificaciones activadas'**
+  String get avisosActivadas;
+
+  /// Botón para elegir la zona con la ubicación del teléfono.
+  ///
+  /// In es, this message translates to:
+  /// **'Usar mi ubicación'**
+  String get zonaUsarUbicacion;
+
+  /// Mensaje cuando no hay ubicación y se ofrece el código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin la ubicación, escribe tu código postal para continuar.'**
+  String get zonaPideCodigoPostal;
+
+  /// Etiqueta del campo del código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Código postal'**
+  String get zonaCodigoPostal;
+
+  /// Error del campo de código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 5 números de tu código postal.'**
+  String get zonaCodigoPostalInvalido;
+
+  /// Botón que confirma el código postal.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar'**
+  String get zonaContinuar;
+
   /// Error común: sin conexión o servicio no disponible (5xx).
   ///
   /// In es, this message translates to:

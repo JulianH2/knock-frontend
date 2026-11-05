@@ -61,6 +61,68 @@ class AppLocalizationsEs extends AppLocalizations {
   String get configuracionTemaOscuro => 'Oscuro';
 
   @override
+  String get permisoContinuar => 'Continuar';
+
+  @override
+  String get permisoAhoraNo => 'Ahora no';
+
+  @override
+  String get permisoNotificacionesTitulo => '¿Activar las notificaciones?';
+
+  @override
+  String get permisoNotificacionesCuerpo =>
+      'Te avisamos cuando haya novedades en tus solicitudes, mensajes y visitas. Los avisos no muestran códigos ni direcciones.';
+
+  @override
+  String get permisoUbicacionTitulo => '¿Usar tu ubicación?';
+
+  @override
+  String get permisoUbicacionCuerpo =>
+      'La usamos una sola vez para mostrarte técnicos de tu colonia. No la guardamos. Si prefieres, puedes escribir tu código postal.';
+
+  @override
+  String get avisosTitulo => 'Avisos';
+
+  @override
+  String get avisosCotizaciones => 'Cotizaciones';
+
+  @override
+  String get avisosMensajes => 'Mensajes';
+
+  @override
+  String get avisosVisitas => 'Visitas';
+
+  @override
+  String get avisosActivar => 'Activar notificaciones';
+
+  @override
+  String get avisosApagadas =>
+      'Las notificaciones están apagadas en tu teléfono. La app sigue funcionando; puedes activarlas cuando quieras.';
+
+  @override
+  String get avisosAbrirAjustes => 'Abrir ajustes';
+
+  @override
+  String get avisosActivadas => 'Notificaciones activadas';
+
+  @override
+  String get zonaUsarUbicacion => 'Usar mi ubicación';
+
+  @override
+  String get zonaPideCodigoPostal =>
+      'Sin la ubicación, escribe tu código postal para continuar.';
+
+  @override
+  String get zonaCodigoPostal => 'Código postal';
+
+  @override
+  String get zonaCodigoPostalInvalido =>
+      'Escribe los 5 números de tu código postal.';
+
+  @override
+  String get zonaContinuar => 'Continuar';
+
+  @override
   String get errorSinConexion =>
       'No pudimos conectar con Knock. Revisa tu conexión e inténtalo de nuevo.';
 

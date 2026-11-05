@@ -1,3 +1,4 @@
+import 'package:app/core/notificaciones/navegacion_notificaciones.dart';
 import 'package:app/core/router/app_shell.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
@@ -60,6 +61,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       ),
     ],
   );
+
+  abrirPantallaDesdeNotificaciones(ref, router);
 
   ref.onDispose(() {
     router.dispose();
