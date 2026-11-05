@@ -68,6 +68,70 @@
   "@configuracionTemaOscuro": {
     "description": "Opción del selector de tema: tema oscuro."
   },
+  "inicioSaludo": "Hola",
+  "@inicioSaludo": {
+    "description": "Saludo de Inicio; el nombre de la persona va en un texto aparte."
+  },
+  "inicioZonaTitulo": "Tu zona",
+  "@inicioZonaTitulo": {
+    "description": "Título de la tarjeta de colonia en Inicio."
+  },
+  "inicioZonaSinPedir": "Descubre si tu zona tiene cobertura.",
+  "@inicioZonaSinPedir": {
+    "description": "Texto inicial de la tarjeta de colonia en Inicio."
+  },
+  "inicioZonaBuscando": "Buscando tu colonia…",
+  "@inicioZonaBuscando": {
+    "description": "Estado cargando de la tarjeta de colonia."
+  },
+  "inicioZonaFuera": "Todavía no llegamos a tu zona.",
+  "@inicioZonaFuera": {
+    "description": "La ubicación está fuera de la cobertura."
+  },
+  "inicioZonaSinUbicacion": "Necesitamos tu ubicación para ubicar tu colonia.",
+  "@inicioZonaSinUbicacion": {
+    "description": "Sin permiso de ubicación o servicio apagado."
+  },
+  "inicioVerColonia": "Ver mi colonia",
+  "@inicioVerColonia": {
+    "description": "Botón que consulta la colonia de la persona."
+  },
+  "inicioActualizar": "Actualizar",
+  "@inicioActualizar": {
+    "description": "Botón que vuelve a consultar la colonia."
+  },
+  "inicioReintentar": "Reintentar",
+  "@inicioReintentar": {
+    "description": "Botón tras un error al consultar la colonia o un intento fallido."
+  },
+  "inicioExplorarOficios": "Explorar oficios",
+  "@inicioExplorarOficios": {
+    "description": "Acceso de Inicio al catálogo de oficios."
+  },
+  "inicioExplorarOficiosDetalle": "Mira qué técnicos puedes encontrar",
+  "@inicioExplorarOficiosDetalle": {
+    "description": "Detalle del acceso a oficios en Inicio."
+  },
+  "cuentaEditarPerfil": "Editar perfil",
+  "@cuentaEditarPerfil": {
+    "description": "Detalle bajo el nombre en Mi cuenta."
+  },
+  "cuentaCerrarSesion": "Cerrar sesión",
+  "@cuentaCerrarSesion": {
+    "description": "Entrada de Mi cuenta y botón de confirmación del diálogo."
+  },
+  "cuentaCerrarSesionTitulo": "¿Cerrar sesión?",
+  "@cuentaCerrarSesionTitulo": {
+    "description": "Título del diálogo de cierre de sesión."
+  },
+  "cuentaCerrarSesionCuerpo": "Tendrás que volver a entrar para usar tu cuenta.",
+  "@cuentaCerrarSesionCuerpo": {
+    "description": "Cuerpo del diálogo de cierre de sesión."
+  },
+  "cuentaCancelar": "Cancelar",
+  "@cuentaCancelar": {
+    "description": "Botón que cierra el diálogo sin hacer nada."
+  },
   "permisoContinuar": "Continuar",
   "@permisoContinuar": {
     "description": "Botón del aviso previo a un permiso: seguir y ver la petición del sistema."

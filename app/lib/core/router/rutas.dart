@@ -12,6 +12,9 @@ abstract final class Rutas {
 
   /// Subruta de Mi cuenta (HU-052): conserva la barra inferior.
   static const configuracion = '/cuenta/configuracion';
+
+  /// Completar el perfil la primera vez (HU-002); fuera de la barra inferior.
+  static const completarPerfil = '/completar-perfil';
 }
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.
@@ -25,3 +28,11 @@ String? redireccionPorRol({
       ubicacion == Rutas.trabajo || ubicacion.startsWith('${Rutas.trabajo}/');
   return !esTecnico && esRutaTrabajo ? Rutas.inicio : null;
 }
+
+/// Con el perfil incompleto (cuenta nueva) todo lleva a completar el perfil.
+String? redireccionPorPerfil({
+  required bool perfilPendiente,
+  required String ubicacion,
+}) => perfilPendiente && ubicacion != Rutas.completarPerfil
+    ? Rutas.completarPerfil
+    : null;

@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T19:37:55Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:38:01Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,20 +10,20 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cache` | core | 2 | 7 | 9 |
-| `cuenta` | presentation | 4 | 7 | 7 |
-| `errores` | core | 2 | 11 | 2 |
+| `cuenta` | -, data, domain, presentation | 11 | 15 | 19 |
+| `errores` | core | 3 | 11 | 3 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | -, components, pages | 3 | 2 | 0 |
-| `inicio` | -, data, domain, presentation | 13 | 26 | 22 |
+| `inicio` | -, data, domain, presentation | 19 | 41 | 28 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
 | `notificaciones` | core | 7 | 17 | 20 |
-| `oficios` | -, data, domain, presentation | 10 | 17 | 16 |
+| `oficios` | -, data, domain, presentation | 11 | 18 | 17 |
 | `panel` | - | 3 | 1 | 0 |
 | `permisos` | core | 2 | 4 | 4 |
 | `preferencias` | core | 4 | 9 | 17 |
-| `red` | core | 5 | 4 | 9 |
-| `router` | core | 3 | 3 | 4 |
+| `red` | core | 6 | 4 | 10 |
+| `router` | core | 3 | 3 | 5 |
 | `sesion` | core | 7 | 13 | 22 |
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
@@ -64,12 +64,33 @@
 
 ### cuenta
 
+**-**
+
+- `app/lib/features/cuenta/cuenta_providers.dart` — —
+
+**data**
+
+- `app/lib/features/cuenta/data/perfil_repository_simulado.dart` — class `PerfilRepositorySimulado`
+  - `obtener()`:22, `guardarNombre()`:25, `cerrarSesion()`:29
+
+**domain**
+
+- `app/lib/features/cuenta/domain/perfil.dart` — class `Perfil`
+  - `validarNombre()`:31
+- `app/lib/features/cuenta/domain/perfil_repository.dart` — class `PerfilRepository`
+
 **presentation**
 
+- `app/lib/features/cuenta/presentation/avatar_iniciales.dart` — class `AvatarIniciales`
+  - `build()`:12
+- `app/lib/features/cuenta/presentation/completar_perfil_screen.dart` — class `CompletarPerfilScreen`, class `_EstadoCompletar`, class `_Listo`
+  - `dispose()`:26, `build()`:51, `build()`:103
 - `app/lib/features/cuenta/presentation/configuracion_screen.dart` — class `ConfiguracionScreen`, class `_Encabezado`, class `_Opcion`
   - `build()`:17, `build()`:79, `build()`:96
 - `app/lib/features/cuenta/presentation/cuenta_screen.dart` — class `CuentaScreen`
-  - `build()`:16
+  - `build()`:43
+- `app/lib/features/cuenta/presentation/perfil_controller.dart` — class `PerfilController`
+  - `build()`:11, `guardarNombre()`:14, `cerrarSesion()`:22, `reintentar()`:31
 - `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`
   - `build()`:15
 - `app/lib/features/cuenta/presentation/widgets/seccion_avisos.dart` — class `SeccionAvisos`, class `_SeccionAvisosState`
@@ -83,6 +104,8 @@
   - `toString()`:10
 - `app/lib/core/errores/mensaje_failure.dart` — —
   - `mensajeDeError()`:10
+- `app/lib/core/errores/mensajes_failure.dart` — —
+  - `mensajeDeFailure()`:7
 
 ### explorar
 
@@ -115,11 +138,19 @@
 
 **data**
 
+- `app/lib/features/inicio/data/colonia_mapper.dart` — class `ColoniaMapper`
+  - `desdeContrato()`:7
+- `app/lib/features/inicio/data/colonias_repository_http.dart` — class `ColoniasRepositoryHttp`
+  - `enPunto()`:19
+- `app/lib/features/inicio/data/colonias_repository_simulado.dart` — class `ColoniasRepositorySimulado`
+  - `enPunto()`:11
 - `app/lib/features/inicio/data/ubicacion_geolocator_repository.dart` — class `UbicacionGeolocatorRepository`
   - `obtenerUnaVez()`:19, `abrirAjustes()`:64
 
 **domain**
 
+- `app/lib/features/inicio/domain/colonia.dart` — class `Colonia`, class `ResultadoColonia`
+- `app/lib/features/inicio/domain/colonias_repository.dart` — class `ColoniasRepository`
 - `app/lib/features/inicio/domain/punto_mapa.dart` — class `PuntoMapa`
   - `toString()`:28
 - `app/lib/features/inicio/domain/ubicacion_repository.dart` — class `ResultadoUbicacion`, class `Concedida`, class `Denegada`, class `DenegadaParaSiempre`, class `ServicioDesactivado`, class `UbicacionRepository`
@@ -127,8 +158,10 @@
 
 **presentation**
 
-- `app/lib/features/inicio/presentation/inicio_screen.dart` — class `InicioScreen`
-  - `build()`:11
+- `app/lib/features/inicio/presentation/colonia_controller.dart` — class `EstadoColonia`, class `ColoniaSinPedir`, class `ColoniaConsultando`, class `ColoniaEncontrada`, class `ColoniaFueraDeCobertura`, class `ColoniaSinUbicacion`, class `ColoniaConError`, class `ColoniaController`
+  - `build()`:44, `consultar()`:46
+- `app/lib/features/inicio/presentation/inicio_screen.dart` — class `InicioScreen`, class `_TarjetaColonia`
+  - `build()`:17, `build()`:57
 - `app/lib/features/inicio/presentation/mapa/boton_mi_ubicacion.dart` — class `BotonMiUbicacion`
   - `build()`:23, `FloatingActionButton()`:43
 - `app/lib/features/inicio/presentation/mapa/mapa_con_pines.dart` — class `MapaConPines`, class `_MapaConPinesState`, class `_CamaraGoogleMap`
@@ -149,7 +182,7 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:383, `isSupported()`:388, `shouldReload()`:392, `lookupAppLocalizations()`:395
+  - `of()`:70, `load()`:479, `isSupported()`:484, `shouldReload()`:488, `lookupAppLocalizations()`:491
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
@@ -192,6 +225,8 @@
   - `listar()`:25, `observar()`:28
 - `app/lib/features/oficios/data/oficios_repository_de_prueba.dart` — class `OficiosRepositoryDePrueba`
   - `listar()`:24
+- `app/lib/features/oficios/data/oficios_repository_http.dart` — class `OficiosRepositoryHttp`
+  - `listar()`:15
 
 **domain**
 
@@ -249,6 +284,8 @@
   - `mapearErrorApi()`:10
 - `app/lib/core/red/espera_por_limite.dart` — class `ClienteConEspera`
   - `send()`:32, `close()`:75
+- `app/lib/core/red/obtener_json.dart` — —
+  - `obtenerJson()`:15
 
 ### router
 
@@ -258,7 +295,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:35, `build()`:48, `Scaffold()`:53
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:20
+  - `redireccionPorRol()`:23, `redireccionPorPerfil()`:33
 
 ### sesion
 

@@ -200,6 +200,102 @@ abstract class AppLocalizations {
   /// **'Oscuro'**
   String get configuracionTemaOscuro;
 
+  /// Saludo de Inicio; el nombre de la persona va en un texto aparte.
+  ///
+  /// In es, this message translates to:
+  /// **'Hola'**
+  String get inicioSaludo;
+
+  /// Título de la tarjeta de colonia en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Tu zona'**
+  String get inicioZonaTitulo;
+
+  /// Texto inicial de la tarjeta de colonia en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Descubre si tu zona tiene cobertura.'**
+  String get inicioZonaSinPedir;
+
+  /// Estado cargando de la tarjeta de colonia.
+  ///
+  /// In es, this message translates to:
+  /// **'Buscando tu colonia…'**
+  String get inicioZonaBuscando;
+
+  /// La ubicación está fuera de la cobertura.
+  ///
+  /// In es, this message translates to:
+  /// **'Todavía no llegamos a tu zona.'**
+  String get inicioZonaFuera;
+
+  /// Sin permiso de ubicación o servicio apagado.
+  ///
+  /// In es, this message translates to:
+  /// **'Necesitamos tu ubicación para ubicar tu colonia.'**
+  String get inicioZonaSinUbicacion;
+
+  /// Botón que consulta la colonia de la persona.
+  ///
+  /// In es, this message translates to:
+  /// **'Ver mi colonia'**
+  String get inicioVerColonia;
+
+  /// Botón que vuelve a consultar la colonia.
+  ///
+  /// In es, this message translates to:
+  /// **'Actualizar'**
+  String get inicioActualizar;
+
+  /// Botón tras un error al consultar la colonia o un intento fallido.
+  ///
+  /// In es, this message translates to:
+  /// **'Reintentar'**
+  String get inicioReintentar;
+
+  /// Acceso de Inicio al catálogo de oficios.
+  ///
+  /// In es, this message translates to:
+  /// **'Explorar oficios'**
+  String get inicioExplorarOficios;
+
+  /// Detalle del acceso a oficios en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Mira qué técnicos puedes encontrar'**
+  String get inicioExplorarOficiosDetalle;
+
+  /// Detalle bajo el nombre en Mi cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar perfil'**
+  String get cuentaEditarPerfil;
+
+  /// Entrada de Mi cuenta y botón de confirmación del diálogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesión'**
+  String get cuentaCerrarSesion;
+
+  /// Título del diálogo de cierre de sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'¿Cerrar sesión?'**
+  String get cuentaCerrarSesionTitulo;
+
+  /// Cuerpo del diálogo de cierre de sesión.
+  ///
+  /// In es, this message translates to:
+  /// **'Tendrás que volver a entrar para usar tu cuenta.'**
+  String get cuentaCerrarSesionCuerpo;
+
+  /// Botón que cierra el diálogo sin hacer nada.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cuentaCancelar;
+
   /// Botón del aviso previo a un permiso: seguir y ver la petición del sistema.
   ///
   /// In es, this message translates to:
