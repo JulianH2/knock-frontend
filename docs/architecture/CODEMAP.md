@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T15:47:11Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:35:47Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -13,7 +13,7 @@
 | `errores` | core | 1 | 10 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | -, components, pages | 3 | 2 | 0 |
-| `inicio` | data, domain, presentation | 10 | 18 | 17 |
+| `inicio` | -, data, domain, presentation | 11 | 18 | 17 |
 | `l10n` | - | 3 | 4 | 5 |
 | `layout` | core | 1 | 1 | 0 |
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
@@ -87,10 +87,14 @@
 
 ### inicio
 
+**-**
+
+- `app/lib/features/inicio/inicio_providers.dart` — —
+
 **data**
 
 - `app/lib/features/inicio/data/ubicacion_geolocator_repository.dart` — class `UbicacionGeolocatorRepository`
-  - `obtenerUnaVez()`:20, `abrirAjustes()`:65
+  - `obtenerUnaVez()`:19, `abrirAjustes()`:64
 
 **domain**
 
