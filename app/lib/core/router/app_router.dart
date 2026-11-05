@@ -3,7 +3,9 @@ import 'package:app/core/router/app_shell.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
 import 'package:app/features/actividad/presentation/actividad_screen.dart';
+import 'package:app/features/cuenta/presentation/completar_perfil_screen.dart';
 import 'package:app/features/cuenta/presentation/configuracion_screen.dart';
+import 'package:app/features/cuenta/presentation/perfil_controller.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
 import 'package:app/features/explorar/presentation/explorar_screen.dart';
 import 'package:app/features/inicio/presentation/inicio_screen.dart';
@@ -21,15 +23,33 @@ import 'package:go_router/go_router.dart';
 final appRouterProvider = Provider<GoRouter>((ref) {
   final esTecnico = ValueNotifier<bool>(ref.read(esTecnicoProvider));
   ref.listen<bool>(esTecnicoProvider, (_, valor) => esTecnico.value = valor);
+  // Perfil incompleto (cuenta nueva) => completar perfil. Mientras carga no se
+  // redirige. El perfil es SIMULADO hasta que exista GET /me.
+  final perfilPendiente = ValueNotifier<bool>(
+    ref.read(perfilPendienteProvider),
+  );
+  ref.listen<bool>(
+    perfilPendienteProvider,
+    (_, valor) => perfilPendiente.value = valor,
+  );
 
   final router = GoRouter(
     initialLocation: Rutas.inicio,
-    refreshListenable: esTecnico,
-    redirect: (context, state) => redireccionPorRol(
-      esTecnico: esTecnico.value,
-      ubicacion: state.matchedLocation,
-    ),
+    refreshListenable: Listenable.merge([esTecnico, perfilPendiente]),
+    redirect: (context, state) =>
+        redireccionPorPerfil(
+          perfilPendiente: perfilPendiente.value,
+          ubicacion: state.matchedLocation,
+        ) ??
+        redireccionPorRol(
+          esTecnico: esTecnico.value,
+          ubicacion: state.matchedLocation,
+        ),
     routes: [
+      GoRoute(
+        path: Rutas.completarPerfil,
+        builder: (context, state) => const CompletarPerfilScreen(),
+      ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
             AppShell(navigationShell: navigationShell),
@@ -67,6 +87,7 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   ref.onDispose(() {
     router.dispose();
     esTecnico.dispose();
+    perfilPendiente.dispose();
   });
   return router;
 });

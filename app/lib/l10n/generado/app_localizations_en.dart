@@ -61,6 +61,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get configuracionTemaOscuro => 'Dark';
 
   @override
+  String get inicioSaludo => 'Hello';
+
+  @override
+  String get inicioZonaTitulo => 'Your area';
+
+  @override
+  String get inicioZonaSinPedir => 'Find out if your area is covered.';
+
+  @override
+  String get inicioZonaBuscando => 'Looking up your neighborhood…';
+
+  @override
+  String get inicioZonaFuera => 'We do not cover your area yet.';
+
+  @override
+  String get inicioZonaSinUbicacion =>
+      'We need your location to find your neighborhood.';
+
+  @override
+  String get inicioVerColonia => 'See my neighborhood';
+
+  @override
+  String get inicioActualizar => 'Refresh';
+
+  @override
+  String get inicioReintentar => 'Retry';
+
+  @override
+  String get inicioExplorarOficios => 'Browse trades';
+
+  @override
+  String get inicioExplorarOficiosDetalle =>
+      'See which technicians you can find';
+
+  @override
+  String get cuentaEditarPerfil => 'Edit profile';
+
+  @override
+  String get cuentaCerrarSesion => 'Sign out';
+
+  @override
+  String get cuentaCerrarSesionTitulo => 'Sign out?';
+
+  @override
+  String get cuentaCerrarSesionCuerpo =>
+      'You will need to sign in again to use your account.';
+
+  @override
+  String get cuentaCancelar => 'Cancel';
+
+  @override
   String get permisoContinuar => 'Continue';
 
   @override
