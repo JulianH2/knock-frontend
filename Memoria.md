@@ -69,3 +69,9 @@
 - **Porqué:** el guardián no encontraba ninguna de las 13 specs y bloqueaba todo cambio en `app/` y `panel/`; el mismo arreglo ya se hizo en el backend (PR #7).
 - **Pendiente:** la cabecera `> **Jira:** KNOCK-N` en las specs (hasta entonces, `KNOCK_SPEC=<número>`), y que `ci-pr.yml` y `branch_rules.py` acepten también las specs numeradas.
 - **A evitar:** pasar `KNOCK_SPEC` con un prefijo corto (`00`): resuelve en silencio la primera spec que coincida.
+
+## 2026-11-04 — Landing: estructura, enlaces en el CI y textos legales en borrador (spec 004, KNOCK-218)
+- **Decisión:** `landing/` ya existía de TT-WEB-01 (nginx sin root, cabeceras, `railway.json`, versión `landing-v1.0.0`); se completó con la ruta reservada `/eliminar-cuenta/`, un borrador de `/privacidad/` (versión 0.1, `noindex`, aviso visible de «Borrador por revisar») que solo afirma lo que dicen las specs aprobadas, `landing/tests/check_links.py` y el job `landing` del CI (pruebas, enlaces rotos y Gitleaks sobre `landing/`). Todo dato que ninguna spec fija quedó como `[POR COMPLETAR POR JOSÉ: ...]`. José autorizó `.github/**` solo para esta tarea.
+- **Porqué:** la spec 004 pide rutas reservadas y que el proceso revise enlaces y claves; el texto legal queda fuera de su alcance, pero Google Play necesita una URL de política de privacidad.
+- **Pendiente:** publicar en Railway (pasos de José en `landing/README.md`) y verificar CA-01 y CA-02; completar los marcadores y pasar a «vigente» antes de dar la URL a Google Play; decidir si el job `landing` entra en `needs` de `gate` (no se tocó para no chocar con KNOCK-225); la spec dice rama principal y el README sigue en `develop` por la excepción de la constitución §9; la spec 004 no menciona `/privacidad/simplificado/` ni los términos.
+- **A evitar:** dar el borrador como política vigente, inventar correo, razón social o plazos, y declarar `add_header` dentro de un `location` de nginx.
