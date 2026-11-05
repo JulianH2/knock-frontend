@@ -130,3 +130,9 @@
 - **Porqué:** José dio los datos que faltaban y pidió publicar y cerrar KNOCK-218 antes de la clase; la URL de privacidad es lo que pide Google Play (KNOCK-230).
 - **Pendiente:** confirmar el domicilio (el estado «Hidalgo» se dedujo del C.P. 42506), la revisión legal antes de dar la URL a Google Play, que la aplicación cumpla lo que el texto promete (eliminar con «ELIMINAR» o SMS en 7 días, descarga de datos en 48 horas y fotos de verificación destruidas a los 7 días), publicar en Railway y la revisión de par de Erick.
 - **A evitar:** dar por vigente un texto legal que describe funciones que la app todavía no tiene, o dejar un domicilio personal en un sitio público sin que su dueño lo haya confirmado.
+
+## 2026-11-05 — Pruebas de arquitectura de la app móvil (KNOCK-215, spec 001)
+- **Decisión:** `app/test/arquitectura/capas_test.dart` verifica en todas las funciones de `lib/features/` que `domain/` no importe Flutter, Riverpod, dio, http, `knock_api` ni `dart:ui`/`dart:io`, y que `presentation/` no importe `data/`; también prueba que la regla detecta un caso malo (CA_001_02). `navegacion_test.dart` cubre CA_001_03. Se corrigió la única violación real: `ubicacionRepositoryProvider` pasó de `inicio/data/` a `inicio/inicio_providers.dart` (raíz de composición, igual que `oficios_providers.dart`) y `mi_ubicacion_controller.dart` ya no importa `data/`.
+- **Porqué:** R-03 y R-06 exigían pruebas de capas en todo el código y solo `oficios` las tenía; Inicio se saltaba la regla.
+- **Pendiente:** el estado de pantalla de cuatro tipos (R-05) sigue sin un tipo común (oficios usa `AsyncValue`); falta `docs/arquitectura-app.md` (T-06); reiniciar controladores al cerrar sesión depende de la sesión real.
+- **A evitar:** declarar el `Provider` de un repositorio dentro de `data/` y leerlo desde `presentation/`; los providers van en `<funcion>_providers.dart`.
