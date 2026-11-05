@@ -157,5 +157,53 @@
   "entradaCambiarNumero": "Cambiar número",
   "@entradaCambiarNumero": {
     "description": "Botón para regresar a escribir el celular."
+  },
+  "entradaErrorCodigoIncorrecto": "El código no es correcto. Revísalo e inténtalo otra vez.",
+  "@entradaErrorCodigoIncorrecto": {
+    "description": "Firebase rechazó el código del SMS. (KNOCK-228)."
+  },
+  "entradaErrorCodigoVencido": "El código ya venció. Pide uno nuevo.",
+  "@entradaErrorCodigoVencido": {
+    "description": "El código del SMS venció. (KNOCK-228)."
+  },
+  "entradaErrorCelularRechazado": "No pudimos usar ese número. Revísalo e inténtalo otra vez.",
+  "@entradaErrorCelularRechazado": {
+    "description": "Firebase rechazó el número de celular. (KNOCK-228)."
+  },
+  "entradaErrorCuentaSuspendida": "Tu cuenta está suspendida. Si crees que es un error, escríbenos.",
+  "@entradaErrorCuentaSuspendida": {
+    "description": "La API respondió 403 account_suspended. (KNOCK-228)."
+  },
+  "entradaErrorConflicto": "Este número ya está ligado a otra cuenta. Escríbenos para revisarlo.",
+  "@entradaErrorConflicto": {
+    "description": "La API respondió 409 (conflicto de cuenta). (KNOCK-228)."
+  },
+  "entradaErrorDatos": "No pudimos procesar la entrada. Inténtalo otra vez.",
+  "@entradaErrorDatos": {
+    "description": "La API respondió 400, 413 o 422. (KNOCK-228)."
+  },
+  "entradaErrorDemasiadosIntentos": "Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.",
+  "@entradaErrorDemasiadosIntentos": {
+    "description": "La API o Firebase respondieron 429 / too-many-requests. (KNOCK-228)."
+  },
+  "entradaErrorSinConexion": "No pudimos conectarnos. Revisa tu internet e inténtalo otra vez.",
+  "@entradaErrorSinConexion": {
+    "description": "Sin red, servicio caído o 5xx. (KNOCK-228)."
+  },
+  "entradaErrorVerificacionNoDisponible": "La verificación por SMS no está disponible en esta versión de la app.",
+  "@entradaErrorVerificacionNoDisponible": {
+    "description": "La compilación no tiene la configuración de Firebase. (KNOCK-228)."
+  },
+  "entradaErrorApiNoConfigurada": "Esta versión de la app no tiene configurado el servidor.",
+  "@entradaErrorApiNoConfigurada": {
+    "description": "La compilación no trae KNOCK_API_URL. (KNOCK-228)."
+  },
+  "entradaErrorGenerico": "Algo salió mal. Inténtalo otra vez.",
+  "@entradaErrorGenerico": {
+    "description": "Cualquier otro error de la entrada. (KNOCK-228)."
+  },
+  "entradaCargando": "Cargando",
+  "@entradaCargando": {
+    "description": "Etiqueta accesible del indicador mientras se envía o verifica el código. (KNOCK-228)."
   }
 }

@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T12:52:09Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T13:12:10Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -8,10 +8,10 @@
 | Módulo | Capas | Archivos | Tipos | Métodos públicos |
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
-| `app` | - | 3 | 2 | 4 |
+| `app` | - | 3 | 2 | 5 |
 | `cuenta` | presentation | 3 | 5 | 5 |
-| `entrada` | domain, presentation | 5 | 8 | 15 |
-| `errores` | core | 1 | 10 | 1 |
+| `entrada` | domain, presentation | 7 | 12 | 24 |
+| `errores` | core | 1 | 14 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | data, domain, presentation | 10 | 18 | 17 |
@@ -22,7 +22,7 @@
 | `preferencias` | core | 3 | 5 | 12 |
 | `red` | core | 3 | 0 | 2 |
 | `router` | core | 3 | 3 | 5 |
-| `sesion` | core | 2 | 2 | 4 |
+| `sesion` | core | 8 | 14 | 23 |
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
@@ -43,7 +43,7 @@
 - `app/lib/app.dart` — class `KnockApp`
   - `build()`:16
 - `app/lib/main.dart` — —
-  - `main()`:9
+  - `main()`:13, `arrancar()`:18
 - `app/lib/main_spike_mapa.dart` — class `SpikeMapaApp`
   - `main()`:11, `build()`:20
 
@@ -68,19 +68,23 @@
 **presentation**
 
 - `app/lib/features/entrada/presentation/celular_screen.dart` — class `CelularScreen`, class `_CelularScreenState`, class `_CasillaDelAviso`
-  - `dispose()`:30, `build()`:49, `build()`:125, `CheckboxListTile()`:154
+  - `dispose()`:34, `build()`:58, `build()`:140, `CheckboxListTile()`:169
 - `app/lib/features/entrada/presentation/codigo_screen.dart` — class `CodigoScreen`, class `_CodigoScreenState`
-  - `dispose()`:32, `build()`:55
+  - `dispose()`:35, `build()`:67
 - `app/lib/features/entrada/presentation/cuenta_regresiva_controller.dart` — class `CuentaRegresivaNotifier`
   - `build()`:18, `reiniciar()`:25
-- `app/lib/features/entrada/presentation/widgets/marco_de_entrada.dart` — class `MarcoDeEntrada`, class `_Marca`
-  - `build()`:30, `build()`:95, `decoracionDeEntrada()`:132, `estiloBotonPrincipal()`:154
+- `app/lib/features/entrada/presentation/entrada_controller.dart` — class `EntradaUiState`, class `EntradaController`
+  - `copyWith()`:23, `build()`:41, `enviarCodigo()`:46, `reenviar()`:64, `verificar()`:82, `limpiarError()`:106
+- `app/lib/features/entrada/presentation/mensaje_de_error.dart` — —
+  - `mensajeDeErrorDeEntrada()`:5
+- `app/lib/features/entrada/presentation/widgets/marco_de_entrada.dart` — class `MarcoDeEntrada`, class `_Marca`, class `BotonPrincipalDeEntrada`, class `MensajeDeErrorDeEntrada`
+  - `build()`:30, `build()`:95, `decoracionDeEntrada()`:132, `estiloBotonPrincipal()`:154, `build()`:181, `build()`:203
 
 ### errores
 
 **core**
 
-- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`, class `CodigoIncorrectoFailure`, class `CodigoVencidoFailure`, class `CelularRechazadoFailure`, class `VerificacionNoDisponibleFailure`
   - `toString()`:10
 
 ### explorar
@@ -136,7 +140,7 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:317, `isSupported()`:322, `shouldReload()`:326, `lookupAppLocalizations()`:329
+  - `of()`:70, `load()`:389, `isSupported()`:394, `shouldReload()`:398, `lookupAppLocalizations()`:401
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
   - `entradaAceptoAviso()`:83, `entradaCodigoEnviadoA()`:100, `entradaReenviarEn()`:114
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
@@ -200,7 +204,7 @@
 - `app/lib/core/red/configuracion_api.dart` — —
   - `normalizarUrlApi()`:15
 - `app/lib/core/red/errores_api.dart` — —
-  - `mapearErrorApi()`:10
+  - `mapearErrorApi()`:11
 
 ### router
 
@@ -216,10 +220,22 @@
 
 **core**
 
+- `app/lib/core/sesion/almacen_sesion.dart` — class `AlmacenSesion`, class `AlmacenSesionSeguro`
+  - `guardarTokens()`:40, `tieneSesion()`:49, `borrarTokens()`:55, `idDeDispositivo()`:61
+- `app/lib/core/sesion/arranque_sesion.dart` — —
+  - `iniciarFirebase()`:16, `haySesionGuardada()`:35
+- `app/lib/core/sesion/canje_sesion.dart` — class `SesionEmitida`, class `CanjeSesion`, class `CanjeSesionApi`
+  - `toString()`:24, `canjear()`:46
 - `app/lib/core/sesion/es_tecnico_provider.dart` — class `EsTecnicoNotifier`
   - `build()`:13, `cambiar()`:16
+- `app/lib/core/sesion/servicio_entrada.dart` — class `ResultadoEntrada`, class `ServicioEntrada`, class `ServicioEntradaReal`
+  - `enviarCodigo()`:42, `verificarCodigo()`:48
 - `app/lib/core/sesion/sesion_provider.dart` — class `SesionNotifier`
-  - `build()`:13, `iniciar()`:16
+  - `build()`:27, `iniciar()`:30, `nombreDeDispositivo()`:54
+- `app/lib/core/sesion/verificador_celular.dart` — class `SolicitudCodigo`, class `VerificadorCelular`, class `VerificadorNoConfigurado`
+  - `toString()`:26, `enviarCodigo()`:52, `tokenDeId()`:58, `cerrarSesion()`:62
+- `app/lib/core/sesion/verificador_celular_firebase.dart` — class `VerificadorCelularFirebase`
+  - `enviarCodigo()`:21, `tokenDeId()`:66, `cerrarSesion()`:84, `mapearErrorFirebase()`:88
 
 ### tema
 

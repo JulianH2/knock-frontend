@@ -307,6 +307,78 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Cambiar número'**
   String get entradaCambiarNumero;
+
+  /// Firebase rechazó el código del SMS. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'El código no es correcto. Revísalo e inténtalo otra vez.'**
+  String get entradaErrorCodigoIncorrecto;
+
+  /// El código del SMS venció. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'El código ya venció. Pide uno nuevo.'**
+  String get entradaErrorCodigoVencido;
+
+  /// Firebase rechazó el número de celular. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos usar ese número. Revísalo e inténtalo otra vez.'**
+  String get entradaErrorCelularRechazado;
+
+  /// La API respondió 403 account_suspended. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta está suspendida. Si crees que es un error, escríbenos.'**
+  String get entradaErrorCuentaSuspendida;
+
+  /// La API respondió 409 (conflicto de cuenta). (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Este número ya está ligado a otra cuenta. Escríbenos para revisarlo.'**
+  String get entradaErrorConflicto;
+
+  /// La API respondió 400, 413 o 422. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos procesar la entrada. Inténtalo otra vez.'**
+  String get entradaErrorDatos;
+
+  /// La API o Firebase respondieron 429 / too-many-requests. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.'**
+  String get entradaErrorDemasiadosIntentos;
+
+  /// Sin red, servicio caído o 5xx. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'No pudimos conectarnos. Revisa tu internet e inténtalo otra vez.'**
+  String get entradaErrorSinConexion;
+
+  /// La compilación no tiene la configuración de Firebase. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'La verificación por SMS no está disponible en esta versión de la app.'**
+  String get entradaErrorVerificacionNoDisponible;
+
+  /// La compilación no trae KNOCK_API_URL. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta versión de la app no tiene configurado el servidor.'**
+  String get entradaErrorApiNoConfigurada;
+
+  /// Cualquier otro error de la entrada. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Algo salió mal. Inténtalo otra vez.'**
+  String get entradaErrorGenerico;
+
+  /// Etiqueta accesible del indicador mientras se envía o verifica el código. (KNOCK-228).
+  ///
+  /// In es, this message translates to:
+  /// **'Cargando'**
+  String get entradaCargando;
 }
 
 class _AppLocalizationsDelegate

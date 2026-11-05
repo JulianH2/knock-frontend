@@ -121,4 +121,50 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get entradaCambiarNumero => 'Cambiar número';
+
+  @override
+  String get entradaErrorCodigoIncorrecto =>
+      'El código no es correcto. Revísalo e inténtalo otra vez.';
+
+  @override
+  String get entradaErrorCodigoVencido =>
+      'El código ya venció. Pide uno nuevo.';
+
+  @override
+  String get entradaErrorCelularRechazado =>
+      'No pudimos usar ese número. Revísalo e inténtalo otra vez.';
+
+  @override
+  String get entradaErrorCuentaSuspendida =>
+      'Tu cuenta está suspendida. Si crees que es un error, escríbenos.';
+
+  @override
+  String get entradaErrorConflicto =>
+      'Este número ya está ligado a otra cuenta. Escríbenos para revisarlo.';
+
+  @override
+  String get entradaErrorDatos =>
+      'No pudimos procesar la entrada. Inténtalo otra vez.';
+
+  @override
+  String get entradaErrorDemasiadosIntentos =>
+      'Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.';
+
+  @override
+  String get entradaErrorSinConexion =>
+      'No pudimos conectarnos. Revisa tu internet e inténtalo otra vez.';
+
+  @override
+  String get entradaErrorVerificacionNoDisponible =>
+      'La verificación por SMS no está disponible en esta versión de la app.';
+
+  @override
+  String get entradaErrorApiNoConfigurada =>
+      'Esta versión de la app no tiene configurado el servidor.';
+
+  @override
+  String get entradaErrorGenerico => 'Algo salió mal. Inténtalo otra vez.';
+
+  @override
+  String get entradaCargando => 'Cargando';
 }

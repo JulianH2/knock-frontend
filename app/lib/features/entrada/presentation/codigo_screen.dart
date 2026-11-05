@@ -1,7 +1,8 @@
 import 'package:app/core/router/rutas.dart';
-import 'package:app/core/sesion/sesion_provider.dart';
 import 'package:app/features/entrada/domain/validacion_entrada.dart';
 import 'package:app/features/entrada/presentation/cuenta_regresiva_controller.dart';
+import 'package:app/features/entrada/presentation/entrada_controller.dart';
+import 'package:app/features/entrada/presentation/mensaje_de_error.dart';
 import 'package:app/features/entrada/presentation/widgets/marco_de_entrada.dart';
 import 'package:app/l10n/generado/app_localizations.dart';
 import 'package:flutter/material.dart';
@@ -9,11 +10,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// «Escribe el código» (`/entrar/codigo`, HU-001, diseño temporal).
+/// «Escribe el código» (`/entrar/codigo`, HU-001; conectada en KNOCK-228).
 ///
-/// Con 6 dígitos «Entrar» marca la sesión en memoria y el router lleva a
-/// Inicio. **No** verifica el código: no hay Firebase ni API todavía (spec
-/// §6, riesgo aceptado y temporal). El código no se guarda ni se registra.
+/// Con 6 dígitos «Entrar» verifica el código con Firebase, canjea el ID token
+/// en `POST /api/v1/auth/firebase` con el cliente generado y guarda los
+/// tokens en almacenamiento seguro; entonces el router lleva a Inicio.
+/// Estados: formulario, cargando y error (mensaje del ARB; se reintenta).
+/// El código no se guarda ni se registra.
 class CodigoScreen extends ConsumerStatefulWidget {
   const CodigoScreen({required this.celular, super.key});
 
@@ -34,13 +37,22 @@ class _CodigoScreenState extends ConsumerState<CodigoScreen> {
     super.dispose();
   }
 
-  void _entrar() {
+  Future<void> _entrar() async {
     if (!esCodigoValido(_codigo.text)) {
       setState(() => _error = true);
       return;
     }
     FocusScope.of(context).unfocus();
-    ref.read(sesionIniciadaProvider.notifier).iniciar();
+    await ref.read(entradaControllerProvider.notifier).verificar(_codigo.text);
+  }
+
+  Future<void> _reenviar() async {
+    final enviado = await ref
+        .read(entradaControllerProvider.notifier)
+        .reenviar();
+    if (enviado && mounted) {
+      ref.read(cuentaRegresivaProvider.notifier).reiniciar();
+    }
   }
 
   void _cambiarNumero() {
@@ -56,6 +68,8 @@ class _CodigoScreenState extends ConsumerState<CodigoScreen> {
     final textos = AppLocalizations.of(context);
     final tema = Theme.of(context);
     final segundos = ref.watch(cuentaRegresivaProvider);
+    final entrada = ref.watch(entradaControllerProvider);
+    final errorDeEntrada = entrada.error;
 
     return MarcoDeEntrada(
       titulo: textos.entradaCodigoTitulo,
@@ -82,15 +96,21 @@ class _CodigoScreenState extends ConsumerState<CodigoScreen> {
           ),
           onChanged: (_) {
             if (_error) setState(() => _error = false);
+            ref.read(entradaControllerProvider.notifier).limpiarError();
           },
           onSubmitted: (_) => _entrar(),
         ),
         const SizedBox(height: 20),
-        FilledButton(
+        BotonPrincipalDeEntrada(
+          texto: textos.entradaEntrar,
+          etiquetaCargando: textos.entradaCargando,
+          cargando: entrada.cargando,
           onPressed: _entrar,
-          style: estiloBotonPrincipal(context),
-          child: Text(textos.entradaEntrar),
         ),
+        if (errorDeEntrada != null)
+          MensajeDeErrorDeEntrada(
+            mensajeDeErrorDeEntrada(textos, errorDeEntrada),
+          ),
       ],
       pie: [
         if (segundos > 0)
@@ -108,7 +128,7 @@ class _CodigoScreenState extends ConsumerState<CodigoScreen> {
           )
         else
           TextButton(
-            onPressed: ref.read(cuentaRegresivaProvider.notifier).reiniciar,
+            onPressed: entrada.cargando ? null : _reenviar,
             child: Text(textos.entradaReenviarCodigo),
           ),
         TextButton(

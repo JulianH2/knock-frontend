@@ -1,26 +1,30 @@
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/tema/colores.dart';
 import 'package:app/features/entrada/domain/validacion_entrada.dart';
+import 'package:app/features/entrada/presentation/entrada_controller.dart';
+import 'package:app/features/entrada/presentation/mensaje_de_error.dart';
 import 'package:app/features/entrada/presentation/widgets/marco_de_entrada.dart';
 import 'package:app/l10n/generado/app_localizations.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-/// «Entra con tu celular» (`/entrar`, HU-001, diseño temporal).
+/// «Entra con tu celular» (`/entrar`, HU-001; conectada en KNOCK-228).
 ///
 /// Pide 10 dígitos con el prefijo fijo +52 y la aceptación del aviso de
-/// privacidad. No envía nada: el celular pasa a la pantalla del código en
-/// memoria (`extra` del router) y no se guarda ni se registra (spec §6).
-/// Siempre tiene datos (el formulario): no hay carga, vacío ni error de red.
-class CelularScreen extends StatefulWidget {
+/// privacidad; «Continuar» pide el SMS a Firebase. Estados: formulario
+/// (datos), cargando (botón con indicador) y error con su mensaje del ARB
+/// (se reintenta con el mismo botón). No hay estado vacío. El celular pasa a
+/// la pantalla del código en memoria y no se guarda ni se registra.
+class CelularScreen extends ConsumerStatefulWidget {
   const CelularScreen({super.key});
 
   @override
-  State<CelularScreen> createState() => _CelularScreenState();
+  ConsumerState<CelularScreen> createState() => _CelularScreenState();
 }
 
-class _CelularScreenState extends State<CelularScreen> {
+class _CelularScreenState extends ConsumerState<CelularScreen> {
   final _celular = TextEditingController();
   bool _aceptado = false;
   bool _errorCelular = false;
@@ -32,7 +36,7 @@ class _CelularScreenState extends State<CelularScreen> {
     super.dispose();
   }
 
-  void _continuar() {
+  Future<void> _continuar() async {
     final celular = _celular.text;
     setState(() {
       _errorCelular = !esCelularValido(celular);
@@ -42,13 +46,20 @@ class _CelularScreenState extends State<CelularScreen> {
       return;
     }
     FocusScope.of(context).unfocus();
-    context.go(Rutas.codigo, extra: celular);
+    final enviado = await ref
+        .read(entradaControllerProvider.notifier)
+        .enviarCodigo(celular);
+    if (enviado && mounted) {
+      context.go(Rutas.codigo, extra: celular);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     final textos = AppLocalizations.of(context);
     final tema = Theme.of(context);
+    final entrada = ref.watch(entradaControllerProvider);
+    final error = entrada.error;
 
     return MarcoDeEntrada(
       titulo: textos.entradaCelularTitulo,
@@ -84,6 +95,7 @@ class _CelularScreenState extends State<CelularScreen> {
           ),
           onChanged: (_) {
             if (_errorCelular) setState(() => _errorCelular = false);
+            ref.read(entradaControllerProvider.notifier).limpiarError();
           },
           onSubmitted: (_) => _continuar(),
         ),
@@ -97,11 +109,14 @@ class _CelularScreenState extends State<CelularScreen> {
           }),
         ),
         const SizedBox(height: 16),
-        FilledButton(
+        BotonPrincipalDeEntrada(
+          texto: textos.entradaContinuar,
+          etiquetaCargando: textos.entradaCargando,
+          cargando: entrada.cargando,
           onPressed: _continuar,
-          style: estiloBotonPrincipal(context),
-          child: Text(textos.entradaContinuar),
         ),
+        if (error != null)
+          MensajeDeErrorDeEntrada(mensajeDeErrorDeEntrada(textos, error)),
       ],
     );
   }

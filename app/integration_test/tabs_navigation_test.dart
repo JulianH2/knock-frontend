@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'soporte/entrada_ficticia.dart';
 import 'soporte/entrar.dart';
 
 /// Humo E2E de TT-MOB-01 en emulador Android:
@@ -20,7 +21,7 @@ void main() {
   testWidgets('TC-TT-MOB-01-01 abre la app y navega entre las 5 pestañas', (
     tester,
   ) async {
-    await knock.main();
+    await knock.arrancar(overrides: entradaFicticia);
     await tester.pumpAndSettle();
     // HU-001: la app abre en la entrada; se entra con datos ficticios.
     await entrarConCelularFicticio(tester);

@@ -34,5 +34,17 @@
   "entradaEntrar": "Sign in",
   "entradaReenviarEn": "Resend in {segundos} s",
   "entradaReenviarCodigo": "Resend code",
-  "entradaCambiarNumero": "Change number"
+  "entradaCambiarNumero": "Change number",
+  "entradaErrorCodigoIncorrecto": "That code isn't right. Check it and try again.",
+  "entradaErrorCodigoVencido": "The code has expired. Request a new one.",
+  "entradaErrorCelularRechazado": "We couldn't use that number. Check it and try again.",
+  "entradaErrorCuentaSuspendida": "Your account is suspended. If you think this is a mistake, contact us.",
+  "entradaErrorConflicto": "This number is already linked to another account. Contact us so we can check it.",
+  "entradaErrorDatos": "We couldn't process your sign-in. Please try again.",
+  "entradaErrorDemasiadosIntentos": "Too many attempts. Wait a moment and try again.",
+  "entradaErrorSinConexion": "We couldn't connect. Check your internet and try again.",
+  "entradaErrorVerificacionNoDisponible": "SMS verification isn't available in this version of the app.",
+  "entradaErrorApiNoConfigurada": "This version of the app has no server configured.",
+  "entradaErrorGenerico": "Something went wrong. Please try again.",
+  "entradaCargando": "Loading"
 }

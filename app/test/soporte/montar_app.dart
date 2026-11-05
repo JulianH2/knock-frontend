@@ -4,11 +4,14 @@ import 'dart:io';
 import 'package:app/app.dart';
 import 'package:app/core/router/app_router.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
+import 'package:app/core/sesion/servicio_entrada.dart';
 import 'package:app/core/sesion/sesion_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
+
+import 'entrada_falsa.dart';
 
 /// Indicador de técnico con valor inicial fijo; `cambiar` sigue funcionando.
 class _EsTecnicoInicial extends EsTecnicoNotifier {
@@ -43,10 +46,15 @@ Future<ProviderContainer> montarApp(
   required bool esTecnico,
   bool interruptorDePrueba = true,
   bool sesionIniciada = true,
+  ServicioEntrada? servicioEntrada,
 }) async {
   final container = ProviderContainer(
     overrides: [
       conSesion(iniciada: sesionIniciada),
+      // Entrada sin Firebase ni red (KNOCK-228).
+      servicioEntradaProvider.overrideWithValue(
+        servicioEntrada ?? ServicioEntradaFalso(),
+      ),
       esTecnicoProvider.overrideWith(() => _EsTecnicoInicial(esTecnico)),
       interruptorDePruebaProvider.overrideWithValue(interruptorDePrueba),
     ],

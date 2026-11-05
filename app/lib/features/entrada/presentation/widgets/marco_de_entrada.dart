@@ -160,3 +160,60 @@ ButtonStyle estiloBotonPrincipal(BuildContext context) =>
       textStyle: Theme.of(context).textTheme.titleMedium
           ?.copyWith(fontWeight: FontWeight.w700),
     );
+
+/// Botón principal que, mientras [cargando], se desactiva y muestra un
+/// indicador con etiqueta accesible (KNOCK-228).
+class BotonPrincipalDeEntrada extends StatelessWidget {
+  const BotonPrincipalDeEntrada({
+    required this.texto,
+    required this.etiquetaCargando,
+    required this.cargando,
+    required this.onPressed,
+    super.key,
+  });
+
+  final String texto;
+  final String etiquetaCargando;
+  final bool cargando;
+  final VoidCallback onPressed;
+
+  @override
+  Widget build(BuildContext context) => FilledButton(
+    onPressed: cargando ? null : onPressed,
+    style: estiloBotonPrincipal(context),
+    child: cargando
+        ? Semantics(
+            label: etiquetaCargando,
+            child: const SizedBox.square(
+              dimension: 24,
+              child: CircularProgressIndicator(strokeWidth: 3),
+            ),
+          )
+        : Text(texto),
+  );
+}
+
+/// Mensaje de error de la entrada, anunciado por el lector de pantalla.
+class MensajeDeErrorDeEntrada extends StatelessWidget {
+  const MensajeDeErrorDeEntrada(this.mensaje, {super.key});
+
+  final String mensaje;
+
+  @override
+  Widget build(BuildContext context) {
+    final tema = Theme.of(context);
+    return Semantics(
+      liveRegion: true,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 12),
+        child: Text(
+          mensaje,
+          textAlign: TextAlign.center,
+          style: tema.textTheme.bodyLarge?.copyWith(
+            color: tema.colorScheme.error,
+          ),
+        ),
+      ),
+    );
+  }
+}
