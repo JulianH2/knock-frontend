@@ -129,14 +129,14 @@ jobs:
         with:
           fetch-depth: 0
           persist-credentials: false
-      - uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
         with:
-          channel: stable
-          cache: true
-      - name: Regenerar clientes y comparar (nadie los edita a mano)
+          python-version: "3.12"
+      - name: Regenerar el cliente de la app y comparar (nadie lo edita a mano)
+        # Java 11+ ya viene en ubuntu-latest; el generador baja openapi-generator 7.27.0 de Maven Central y verifica su SHA-256.
         run: |
-          bash scripts/gen_clients.sh all
-          git diff --exit-code -- app/packages/knock_api panel/src/app/api || { echo "::error::Los clientes generados no coinciden con contracts/openapi.v1.json. Corre bash scripts/gen_clients.sh all."; exit 1; }
+          python -m unittest app/tool/test_generar_cliente_api.py
+          python app/tool/generar_cliente_api.py --check || { echo "::error::El cliente generado no coincide con contracts/openapi.v1.json. Corre python app/tool/generar_cliente_api.py y sube el resultado."; exit 1; }
       - name: Cambios incompatibles respecto a la rama destino (oasdiff)
         if: github.event_name == 'pull_request'
         env:
