@@ -69,3 +69,9 @@
 - **Porqué:** el guardián no encontraba ninguna de las 13 specs y bloqueaba todo cambio en `app/` y `panel/`; el mismo arreglo ya se hizo en el backend (PR #7).
 - **Pendiente:** la cabecera `> **Jira:** KNOCK-N` en las specs (hasta entonces, `KNOCK_SPEC=<número>`), y que `ci-pr.yml` y `branch_rules.py` acepten también las specs numeradas.
 - **A evitar:** pasar `KNOCK_SPEC` con un prefijo corto (`00`): resuelve en silencio la primera spec que coincida.
+
+## 2026-11-04 — Versionamiento por puntos: cálculo, etiqueta y tabla (KNOCK-225)
+- **Decisión:** `scripts/ci/version.py` calcula la versión `X.Y.Z` y el `versionCode` (`X × 1 000 000 + Y × 10 000 + Z × 100 + n`) de `app`, `panel` y `landing`, con pruebas `CA_011_NN` en `scripts/ci/test_version.py`; el job `pr-points` de `ci-pr.yml` exige una etiqueta `puntos-<componente>-N` (exentas `release-please--*` y `dependabot/*`) y entra en las dependencias del `gate`; la tabla de puntos está en `CONTRIBUTING.md` §9 y el registro, en `docs/VERSIONES_PUBLICADAS.md` (a mano).
+- **Porqué:** la spec 011 manda un cálculo reproducible y que un PR sin puntos no pase; es la misma lógica del backend (KNOCK-207), con otros componentes y con `versionCode`. El acarreo es a 10 (como en el backend) porque la spec no da otro umbral.
+- **Pendiente:** T-03 (integrar versión, `versionCode` y etiqueta de Git en la publicación; depende de KNOCK-221), así que CA-04 solo queda probado en el script. Reconciliar `docs/VERSIONAMIENTO.md` (primera versión `0.1.0`, `versionCode` = número de ejecución) con la spec 011 (`1.0.0`, `versionCode` derivado). Las etiquetas `puntos-*` no existen en el repositorio y las crea una persona con permiso. `sdd_lint.py --trace 011` marca FALTA hasta que `test_globs` de `.agents/knock.json` incluya `scripts/ci/test_*.py`.
+- **A evitar:** llevar el `versionCode` a mano o repetirlo (Google Play rechaza la subida); declarar puntos de menos para no subir de versión.
