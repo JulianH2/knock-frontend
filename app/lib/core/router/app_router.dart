@@ -1,9 +1,12 @@
+import 'package:app/core/notificaciones/navegacion_notificaciones.dart';
 import 'package:app/core/router/app_shell.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
 import 'package:app/core/sesion/sesion_provider.dart';
 import 'package:app/features/actividad/presentation/actividad_screen.dart';
+import 'package:app/features/cuenta/presentation/completar_perfil_screen.dart';
 import 'package:app/features/cuenta/presentation/configuracion_screen.dart';
+import 'package:app/features/cuenta/presentation/perfil_controller.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
 import 'package:app/features/entrada/presentation/celular_screen.dart';
 import 'package:app/features/entrada/presentation/codigo_screen.dart';
@@ -28,12 +31,26 @@ final appRouterProvider = Provider<GoRouter>((ref) {
   final sesion = ValueNotifier<bool>(ref.read(sesionIniciadaProvider));
   ref.listen<bool>(sesionIniciadaProvider, (_, valor) => sesion.value = valor);
 
+  // Perfil incompleto (cuenta nueva) => completar perfil. Mientras carga no se
+  // redirige. El perfil es SIMULADO hasta que exista GET /me.
+  final perfilPendiente = ValueNotifier<bool>(
+    ref.read(perfilPendienteProvider),
+  );
+  ref.listen<bool>(
+    perfilPendienteProvider,
+    (_, valor) => perfilPendiente.value = valor,
+  );
+
   final router = GoRouter(
     initialLocation: Rutas.inicio,
-    refreshListenable: Listenable.merge([esTecnico, sesion]),
+    refreshListenable: Listenable.merge([esTecnico, sesion, perfilPendiente]),
     redirect: (context, state) =>
         redireccionPorSesion(
           sesionIniciada: sesion.value,
+          ubicacion: state.matchedLocation,
+        ) ??
+        redireccionPorPerfil(
+          perfilPendiente: perfilPendiente.value,
           ubicacion: state.matchedLocation,
         ) ??
         redireccionPorRol(
@@ -55,6 +72,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 CodigoScreen(celular: _celularDe(state)!),
           ),
         ],
+      ),
+      GoRoute(
+        path: Rutas.completarPerfil,
+        builder: (context, state) => const CompletarPerfilScreen(),
       ),
       StatefulShellRoute.indexedStack(
         builder: (context, state, navigationShell) =>
@@ -88,10 +109,13 @@ final appRouterProvider = Provider<GoRouter>((ref) {
     ],
   );
 
+  abrirPantallaDesdeNotificaciones(ref, router);
+
   ref.onDispose(() {
     router.dispose();
     esTecnico.dispose();
     sesion.dispose();
+    perfilPendiente.dispose();
   });
   return router;
 });

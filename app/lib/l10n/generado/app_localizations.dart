@@ -98,19 +98,19 @@ abstract class AppLocalizations {
     Locale('es'),
   ];
 
-  /// Nombre de la app (título de la tarea en el sistema). Es una marca: no se traduce.
+  /// Nombre de la app (t├¡tulo de la tarea en el sistema). Es una marca: no se traduce.
   ///
   /// In es, this message translates to:
   /// **'Knock'**
   String get appTitle;
 
-  /// Pestaña de la barra inferior y título de la pantalla de inicio.
+  /// Pesta├▒a de la barra inferior y t├¡tulo de la pantalla de inicio.
   ///
   /// In es, this message translates to:
   /// **'Inicio'**
   String get tabInicio;
 
-  /// Pestaña de la barra inferior y título de la pantalla para buscar técnicos.
+  /// Pesta├▒a de la barra inferior y t├¡tulo de la pantalla para buscar t├®cnicos.
   ///
   /// In es, this message translates to:
   /// **'Explorar'**
@@ -122,263 +122,353 @@ abstract class AppLocalizations {
   /// **'Oficios'**
   String get explorarOficios;
 
-  /// Pestaña de la barra inferior y título de la pantalla con las solicitudes y su historial.
+  /// Pesta├▒a de la barra inferior y t├¡tulo de la pantalla con las solicitudes y su historial.
   ///
   /// In es, this message translates to:
   /// **'Actividad'**
   String get tabActividad;
 
-  /// Pestaña de la barra inferior y título de la pantalla de trabajo; solo la ven los técnicos.
+  /// Pesta├▒a de la barra inferior y t├¡tulo de la pantalla de trabajo; solo la ven los t├®cnicos.
   ///
   /// In es, this message translates to:
   /// **'Trabajo'**
   String get tabTrabajo;
 
-  /// Pestaña de la barra inferior y título de la pantalla con los datos y la configuración de la cuenta.
+  /// Pesta├▒a de la barra inferior y t├¡tulo de la pantalla con los datos y la configuraci├│n de la cuenta.
   ///
   /// In es, this message translates to:
   /// **'Mi cuenta'**
   String get tabCuenta;
 
-  /// Interruptor de prueba (solo fuera de la versión de tienda) que da el rol de técnico.
+  /// Interruptor de prueba (solo fuera de la versi├│n de tienda) que da el rol de t├®cnico.
   ///
   /// In es, this message translates to:
-  /// **'Modo técnico (prueba)'**
+  /// **'Modo t├®cnico (prueba)'**
   String get pruebaModoTecnico;
 
-  /// Entrada de Mi cuenta y título de la pantalla para elegir idioma y tema.
+  /// Entrada de Mi cuenta y t├¡tulo de la pantalla para elegir idioma y tema.
   ///
   /// In es, this message translates to:
-  /// **'Configuración'**
+  /// **'Configuraci├│n'**
   String get configuracionTitulo;
 
-  /// Encabezado del selector de idioma en Configuración.
+  /// Encabezado del selector de idioma en Configuraci├│n.
   ///
   /// In es, this message translates to:
   /// **'Idioma'**
   String get configuracionIdioma;
 
-  /// Opción del selector de idioma. Se escribe siempre en español, en cualquier idioma.
+  /// Opci├│n del selector de idioma. Se escribe siempre en espa├▒ol, en cualquier idioma.
   ///
   /// In es, this message translates to:
-  /// **'Español'**
+  /// **'Espa├▒ol'**
   String get configuracionIdiomaEspanol;
 
-  /// Opción del selector de idioma. Se escribe siempre en inglés, en cualquier idioma.
+  /// Opci├│n del selector de idioma. Se escribe siempre en ingl├®s, en cualquier idioma.
   ///
   /// In es, this message translates to:
   /// **'English'**
   String get configuracionIdiomaIngles;
 
-  /// Encabezado del selector de tema en Configuración.
+  /// Encabezado del selector de tema en Configuraci├│n.
   ///
   /// In es, this message translates to:
   /// **'Tema'**
   String get configuracionTema;
 
-  /// Opción del selector de tema: seguir el tema claro u oscuro del teléfono.
+  /// Opci├│n del selector de tema: seguir el tema claro u oscuro del tel├®fono.
   ///
   /// In es, this message translates to:
-  /// **'Automático'**
+  /// **'Autom├ítico'**
   String get configuracionTemaAutomatico;
 
-  /// Subtítulo de la opción Automático del selector de tema.
+  /// Subt├¡tulo de la opci├│n Autom├ítico del selector de tema.
   ///
   /// In es, this message translates to:
-  /// **'Igual que el teléfono'**
+  /// **'Igual que el tel├®fono'**
   String get configuracionTemaAutomaticoDetalle;
 
-  /// Opción del selector de tema: tema claro.
+  /// Opci├│n del selector de tema: tema claro.
   ///
   /// In es, this message translates to:
   /// **'Claro'**
   String get configuracionTemaClaro;
 
-  /// Opción del selector de tema: tema oscuro.
+  /// Opci├│n del selector de tema: tema oscuro.
   ///
   /// In es, this message translates to:
   /// **'Oscuro'**
   String get configuracionTemaOscuro;
 
-  /// Título de la pantalla de entrada con celular (HU-001).
+  /// Saludo de Inicio; el nombre de la persona va en un texto aparte.
   ///
   /// In es, this message translates to:
-  /// **'Entra con tu celular'**
-  String get entradaCelularTitulo;
+  /// **'Hola'**
+  String get inicioSaludo;
 
-  /// Subtítulo bajo el título de la pantalla de entrada con celular.
+  /// T├¡tulo de la tarjeta de colonia en Inicio.
   ///
   /// In es, this message translates to:
-  /// **'Sin contraseñas: solo tu número y un código.'**
-  String get entradaCelularDetalle;
+  /// **'Tu zona'**
+  String get inicioZonaTitulo;
 
-  /// Etiqueta del campo de 10 dígitos del celular.
+  /// Texto inicial de la tarjeta de colonia en Inicio.
   ///
   /// In es, this message translates to:
-  /// **'Celular'**
-  String get entradaCelularEtiqueta;
+  /// **'Descubre si tu zona tiene cobertura.'**
+  String get inicioZonaSinPedir;
 
-  /// Prefijo fijo de México delante del celular. No se traduce.
+  /// Estado cargando de la tarjeta de colonia.
   ///
   /// In es, this message translates to:
-  /// **'+52'**
-  String get entradaPrefijoPais;
+  /// **'Buscando tu coloniaÔÇª'**
+  String get inicioZonaBuscando;
 
-  /// Línea de ayuda bajo el campo del celular.
+  /// La ubicaci├│n est├í fuera de la cobertura.
   ///
   /// In es, this message translates to:
-  /// **'Te enviaremos un código por SMS'**
-  String get entradaCelularAyuda;
+  /// **'Todav├¡a no llegamos a tu zona.'**
+  String get inicioZonaFuera;
 
-  /// Error bajo el campo cuando el celular no tiene 10 dígitos.
+  /// Sin permiso de ubicaci├│n o servicio apagado.
   ///
   /// In es, this message translates to:
-  /// **'Escribe los 10 dígitos de tu celular'**
-  String get entradaCelularError;
+  /// **'Necesitamos tu ubicaci├│n para ubicar tu colonia.'**
+  String get inicioZonaSinUbicacion;
 
-  /// Casilla de aceptación; {aviso} es el texto del enlace al aviso de privacidad.
+  /// Bot├│n que consulta la colonia de la persona.
   ///
   /// In es, this message translates to:
-  /// **'Acepto el {aviso}'**
-  String entradaAceptoAviso(String aviso);
+  /// **'Ver mi colonia'**
+  String get inicioVerColonia;
 
-  /// Texto con estilo de enlace dentro de la casilla de aceptación (aún no abre nada: TT-MOB-06).
+  /// Bot├│n que vuelve a consultar la colonia.
   ///
   /// In es, this message translates to:
-  /// **'aviso de privacidad'**
-  String get entradaAvisoPrivacidad;
+  /// **'Actualizar'**
+  String get inicioActualizar;
 
-  /// Error cuando se toca Continuar sin aceptar el aviso.
+  /// Bot├│n tras un error al consultar la colonia o un intento fallido.
   ///
   /// In es, this message translates to:
-  /// **'Acepta el aviso de privacidad para continuar'**
-  String get entradaAvisoError;
+  /// **'Reintentar'**
+  String get inicioReintentar;
 
-  /// Botón de la pantalla del celular que pasa a escribir el código.
+  /// Acceso de Inicio al cat├ílogo de oficios.
+  ///
+  /// In es, this message translates to:
+  /// **'Explorar oficios'**
+  String get inicioExplorarOficios;
+
+  /// Detalle del acceso a oficios en Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Mira qu├® t├®cnicos puedes encontrar'**
+  String get inicioExplorarOficiosDetalle;
+
+  /// Detalle bajo el nombre en Mi cuenta.
+  ///
+  /// In es, this message translates to:
+  /// **'Editar perfil'**
+  String get cuentaEditarPerfil;
+
+  /// Entrada de Mi cuenta y bot├│n de confirmaci├│n del di├ílogo.
+  ///
+  /// In es, this message translates to:
+  /// **'Cerrar sesi├│n'**
+  String get cuentaCerrarSesion;
+
+  /// T├¡tulo del di├ílogo de cierre de sesi├│n.
+  ///
+  /// In es, this message translates to:
+  /// **'┬┐Cerrar sesi├│n?'**
+  String get cuentaCerrarSesionTitulo;
+
+  /// Cuerpo del di├ílogo de cierre de sesi├│n.
+  ///
+  /// In es, this message translates to:
+  /// **'Tendr├ís que volver a entrar para usar tu cuenta.'**
+  String get cuentaCerrarSesionCuerpo;
+
+  /// Bot├│n que cierra el di├ílogo sin hacer nada.
+  ///
+  /// In es, this message translates to:
+  /// **'Cancelar'**
+  String get cuentaCancelar;
+
+  /// Bot├│n del aviso previo a un permiso: seguir y ver la petici├│n del sistema.
   ///
   /// In es, this message translates to:
   /// **'Continuar'**
-  String get entradaContinuar;
+  String get permisoContinuar;
 
-  /// Título de la pantalla del código de 6 dígitos.
+  /// Bot├│n del aviso previo a un permiso: no pedirlo ahora.
   ///
   /// In es, this message translates to:
-  /// **'Escribe el código'**
-  String get entradaCodigoTitulo;
+  /// **'Ahora no'**
+  String get permisoAhoraNo;
 
-  /// Texto bajo el título; {celular} es el número con formato 55 1234 5678.
+  /// T├¡tulo del aviso previo al permiso de notificaciones.
   ///
   /// In es, this message translates to:
-  /// **'Lo enviamos al +52 {celular}'**
-  String entradaCodigoEnviadoA(String celular);
+  /// **'┬┐Activar las notificaciones?'**
+  String get permisoNotificacionesTitulo;
 
-  /// Etiqueta del campo del código.
+  /// Explicaci├│n previa al permiso de notificaciones: para qu├® sirve.
   ///
   /// In es, this message translates to:
-  /// **'Código de 6 dígitos'**
-  String get entradaCodigoEtiqueta;
+  /// **'Te avisamos cuando haya novedades en tus solicitudes, mensajes y visitas. Los avisos no muestran c├│digos ni direcciones.'**
+  String get permisoNotificacionesCuerpo;
 
-  /// Error cuando se toca Entrar sin 6 dígitos.
+  /// T├¡tulo del aviso previo al permiso de ubicaci├│n.
   ///
   /// In es, this message translates to:
-  /// **'Escribe los 6 dígitos del código'**
-  String get entradaCodigoError;
+  /// **'┬┐Usar tu ubicaci├│n?'**
+  String get permisoUbicacionTitulo;
 
-  /// Botón que termina la entrada y lleva a Inicio.
+  /// Explicaci├│n previa al permiso de ubicaci├│n: para qu├® sirve y la alternativa.
   ///
   /// In es, this message translates to:
-  /// **'Entrar'**
-  String get entradaEntrar;
+  /// **'La usamos una sola vez para mostrarte t├®cnicos de tu colonia. No la guardamos. Si prefieres, puedes escribir tu c├│digo postal.'**
+  String get permisoUbicacionCuerpo;
 
-  /// Cuenta regresiva antes de poder pedir otro código.
+  /// Encabezado de la secci├│n de Configuraci├│n para elegir qu├® avisos recibir.
   ///
   /// In es, this message translates to:
-  /// **'Reenviar en {segundos} s'**
-  String entradaReenviarEn(int segundos);
+  /// **'Avisos'**
+  String get avisosTitulo;
 
-  /// Botón que aparece cuando la cuenta regresiva llega a 0.
+  /// Interruptor: avisos de cotizaciones.
   ///
   /// In es, this message translates to:
-  /// **'Reenviar código'**
-  String get entradaReenviarCodigo;
+  /// **'Cotizaciones'**
+  String get avisosCotizaciones;
 
-  /// Botón para regresar a escribir el celular.
+  /// Interruptor: avisos de mensajes.
   ///
   /// In es, this message translates to:
-  /// **'Cambiar número'**
-  String get entradaCambiarNumero;
+  /// **'Mensajes'**
+  String get avisosMensajes;
 
-  /// Firebase rechazó el código del SMS. (KNOCK-228).
+  /// Interruptor: avisos de visitas.
   ///
   /// In es, this message translates to:
-  /// **'El código no es correcto. Revísalo e inténtalo otra vez.'**
-  String get entradaErrorCodigoIncorrecto;
+  /// **'Visitas'**
+  String get avisosVisitas;
 
-  /// El código del SMS venció. (KNOCK-228).
+  /// Bot├│n que inicia la petici├│n del permiso de notificaciones.
   ///
   /// In es, this message translates to:
-  /// **'El código ya venció. Pide uno nuevo.'**
-  String get entradaErrorCodigoVencido;
+  /// **'Activar notificaciones'**
+  String get avisosActivar;
 
-  /// Firebase rechazó el número de celular. (KNOCK-228).
+  /// Mensaje cuando no hay permiso de notificaciones.
   ///
   /// In es, this message translates to:
-  /// **'No pudimos usar ese número. Revísalo e inténtalo otra vez.'**
-  String get entradaErrorCelularRechazado;
+  /// **'Las notificaciones est├ín apagadas en tu tel├®fono. La app sigue funcionando; puedes activarlas cuando quieras.'**
+  String get avisosApagadas;
 
-  /// La API respondió 403 account_suspended. (KNOCK-228).
+  /// Bot├│n que abre los ajustes del tel├®fono para cambiar un permiso negado.
   ///
   /// In es, this message translates to:
-  /// **'Tu cuenta está suspendida. Si crees que es un error, escríbenos.'**
-  String get entradaErrorCuentaSuspendida;
+  /// **'Abrir ajustes'**
+  String get avisosAbrirAjustes;
 
-  /// La API respondió 409 (conflicto de cuenta). (KNOCK-228).
+  /// Mensaje cuando el permiso de notificaciones est├í concedido.
   ///
   /// In es, this message translates to:
-  /// **'Este número ya está ligado a otra cuenta. Escríbenos para revisarlo.'**
-  String get entradaErrorConflicto;
+  /// **'Notificaciones activadas'**
+  String get avisosActivadas;
 
-  /// La API respondió 400, 413 o 422. (KNOCK-228).
+  /// Bot├│n para elegir la zona con la ubicaci├│n del tel├®fono.
   ///
   /// In es, this message translates to:
-  /// **'No pudimos procesar la entrada. Inténtalo otra vez.'**
-  String get entradaErrorDatos;
+  /// **'Usar mi ubicaci├│n'**
+  String get zonaUsarUbicacion;
 
-  /// La API o Firebase respondieron 429 / too-many-requests. (KNOCK-228).
+  /// Mensaje cuando no hay ubicaci├│n y se ofrece el c├│digo postal.
   ///
   /// In es, this message translates to:
-  /// **'Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.'**
-  String get entradaErrorDemasiadosIntentos;
+  /// **'Sin la ubicaci├│n, escribe tu c├│digo postal para continuar.'**
+  String get zonaPideCodigoPostal;
 
-  /// Sin red, servicio caído o 5xx. (KNOCK-228).
+  /// Etiqueta del campo del c├│digo postal.
   ///
   /// In es, this message translates to:
-  /// **'No pudimos conectarnos. Revisa tu internet e inténtalo otra vez.'**
-  String get entradaErrorSinConexion;
+  /// **'C├│digo postal'**
+  String get zonaCodigoPostal;
 
-  /// La compilación no tiene la configuración de Firebase. (KNOCK-228).
+  /// Error del campo de c├│digo postal.
   ///
   /// In es, this message translates to:
-  /// **'La verificación por SMS no está disponible en esta versión de la app.'**
-  String get entradaErrorVerificacionNoDisponible;
+  /// **'Escribe los 5 n├║meros de tu c├│digo postal.'**
+  String get zonaCodigoPostalInvalido;
 
-  /// La compilación no trae KNOCK_API_URL. (KNOCK-228).
+  /// Bot├│n que confirma el c├│digo postal.
   ///
   /// In es, this message translates to:
-  /// **'Esta versión de la app no tiene configurado el servidor.'**
-  String get entradaErrorApiNoConfigurada;
+  /// **'Continuar'**
+  String get zonaContinuar;
 
-  /// Cualquier otro error de la entrada. (KNOCK-228).
+  /// Error com├║n: sin conexi├│n o servicio no disponible (5xx).
   ///
   /// In es, this message translates to:
-  /// **'Algo salió mal. Inténtalo otra vez.'**
-  String get entradaErrorGenerico;
+  /// **'No pudimos conectar con Knock. Revisa tu conexi├│n e int├®ntalo de nuevo.'**
+  String get errorSinConexion;
 
-  /// Etiqueta accesible del indicador mientras se envía o verifica el código. (KNOCK-228).
+  /// Error com├║n: la API rechaz├│ la credencial (401) y no se pudo renovar.
   ///
   /// In es, this message translates to:
-  /// **'Cargando'**
-  String get entradaCargando;
+  /// **'Tu sesi├│n ya no es v├ílida. Inicia sesi├│n de nuevo.'**
+  String get errorSesionVencida;
+
+  /// Error com├║n: cuenta suspendida (403 account_suspended).
+  ///
+  /// In es, this message translates to:
+  /// **'Tu cuenta est├í suspendida. Contacta a soporte si crees que es un error.'**
+  String get errorCuentaSuspendida;
+
+  /// Error com├║n: acceso negado (403).
+  ///
+  /// In es, this message translates to:
+  /// **'No tienes permiso para hacer esto.'**
+  String get errorAccesoDenegado;
+
+  /// Error com├║n: conflicto (409).
+  ///
+  /// In es, this message translates to:
+  /// **'Esta acci├│n choca con otra cuenta o con el estado actual. Revisa los datos e int├®ntalo de nuevo.'**
+  String get errorConflicto;
+
+  /// Error com├║n: datos rechazados (400, 413 o 422).
+  ///
+  /// In es, this message translates to:
+  /// **'Revisa los datos que escribiste e int├®ntalo de nuevo.'**
+  String get errorDatosRechazados;
+
+  /// Error com├║n: l├¡mite de intentos (429).
+  ///
+  /// In es, this message translates to:
+  /// **'Hiciste demasiados intentos. Espera un momento e int├®ntalo de nuevo.'**
+  String get errorDemasiadosIntentos;
+
+  /// Error com├║n: la respuesta no cumple el contrato.
+  ///
+  /// In es, this message translates to:
+  /// **'Recibimos informaci├│n que no pudimos leer. Int├®ntalo m├ís tarde.'**
+  String get errorDatosInvalidos;
+
+  /// Error com├║n: falta KNOCK_API_URL al compilar.
+  ///
+  /// In es, this message translates to:
+  /// **'La app no est├í conectada a un servidor. Instala una versi├│n oficial.'**
+  String get errorApiNoConfigurada;
+
+  /// Error com├║n: cualquier fallo no previsto; nunca muestra detalles t├®cnicos.
+  ///
+  /// In es, this message translates to:
+  /// **'Algo sali├│ mal. Int├®ntalo de nuevo.'**
+  String get errorInesperado;
 }
 
 class _AppLocalizationsDelegate

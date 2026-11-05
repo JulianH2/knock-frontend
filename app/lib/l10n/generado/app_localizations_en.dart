@@ -40,7 +40,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get configuracionIdioma => 'Language';
 
   @override
-  String get configuracionIdiomaEspanol => 'Español';
+  String get configuracionIdiomaEspanol => 'Espa├▒ol';
 
   @override
   String get configuracionIdiomaIngles => 'English';
@@ -61,109 +61,153 @@ class AppLocalizationsEn extends AppLocalizations {
   String get configuracionTemaOscuro => 'Dark';
 
   @override
-  String get entradaCelularTitulo => 'Sign in with your phone';
+  String get inicioSaludo => 'Hello';
 
   @override
-  String get entradaCelularDetalle =>
-      'No passwords: just your number and a code.';
+  String get inicioZonaTitulo => 'Your area';
 
   @override
-  String get entradaCelularEtiqueta => 'Phone number';
+  String get inicioZonaSinPedir => 'Find out if your area is covered.';
 
   @override
-  String get entradaPrefijoPais => '+52';
+  String get inicioZonaBuscando => 'Looking up your neighborhoodÔÇª';
 
   @override
-  String get entradaCelularAyuda => 'We will send you a code by SMS';
+  String get inicioZonaFuera => 'We do not cover your area yet.';
 
   @override
-  String get entradaCelularError => 'Enter the 10 digits of your phone number';
+  String get inicioZonaSinUbicacion =>
+      'We need your location to find your neighborhood.';
 
   @override
-  String entradaAceptoAviso(String aviso) {
-    return 'I accept the $aviso';
-  }
+  String get inicioVerColonia => 'See my neighborhood';
 
   @override
-  String get entradaAvisoPrivacidad => 'privacy notice';
+  String get inicioActualizar => 'Refresh';
 
   @override
-  String get entradaAvisoError => 'Accept the privacy notice to continue';
+  String get inicioReintentar => 'Retry';
 
   @override
-  String get entradaContinuar => 'Continue';
+  String get inicioExplorarOficios => 'Browse trades';
 
   @override
-  String get entradaCodigoTitulo => 'Enter the code';
+  String get inicioExplorarOficiosDetalle =>
+      'See which technicians you can find';
 
   @override
-  String entradaCodigoEnviadoA(String celular) {
-    return 'We sent it to +52 $celular';
-  }
+  String get cuentaEditarPerfil => 'Edit profile';
 
   @override
-  String get entradaCodigoEtiqueta => '6-digit code';
+  String get cuentaCerrarSesion => 'Sign out';
 
   @override
-  String get entradaCodigoError => 'Enter the 6 digits of the code';
+  String get cuentaCerrarSesionTitulo => 'Sign out?';
 
   @override
-  String get entradaEntrar => 'Sign in';
+  String get cuentaCerrarSesionCuerpo =>
+      'You will need to sign in again to use your account.';
 
   @override
-  String entradaReenviarEn(int segundos) {
-    return 'Resend in $segundos s';
-  }
+  String get cuentaCancelar => 'Cancel';
 
   @override
-  String get entradaReenviarCodigo => 'Resend code';
+  String get permisoContinuar => 'Continue';
 
   @override
-  String get entradaCambiarNumero => 'Change number';
+  String get permisoAhoraNo => 'Not now';
 
   @override
-  String get entradaErrorCodigoIncorrecto =>
-      'That code isn\'t right. Check it and try again.';
+  String get permisoNotificacionesTitulo => 'Turn on notifications?';
 
   @override
-  String get entradaErrorCodigoVencido =>
-      'The code has expired. Request a new one.';
+  String get permisoNotificacionesCuerpo =>
+      'We let you know about updates to your requests, messages and visits. Notifications never show codes or addresses.';
 
   @override
-  String get entradaErrorCelularRechazado =>
-      'We couldn\'t use that number. Check it and try again.';
+  String get permisoUbicacionTitulo => 'Use your location?';
 
   @override
-  String get entradaErrorCuentaSuspendida =>
-      'Your account is suspended. If you think this is a mistake, contact us.';
+  String get permisoUbicacionCuerpo =>
+      'We use it once to show you technicians in your area. We don\'t store it. If you prefer, you can type your postal code.';
 
   @override
-  String get entradaErrorConflicto =>
-      'This number is already linked to another account. Contact us so we can check it.';
+  String get avisosTitulo => 'Notifications';
 
   @override
-  String get entradaErrorDatos =>
-      'We couldn\'t process your sign-in. Please try again.';
+  String get avisosCotizaciones => 'Quotes';
 
   @override
-  String get entradaErrorDemasiadosIntentos =>
+  String get avisosMensajes => 'Messages';
+
+  @override
+  String get avisosVisitas => 'Visits';
+
+  @override
+  String get avisosActivar => 'Turn on notifications';
+
+  @override
+  String get avisosApagadas =>
+      'Notifications are turned off on your phone. The app keeps working; you can turn them on whenever you like.';
+
+  @override
+  String get avisosAbrirAjustes => 'Open settings';
+
+  @override
+  String get avisosActivadas => 'Notifications are on';
+
+  @override
+  String get zonaUsarUbicacion => 'Use my location';
+
+  @override
+  String get zonaPideCodigoPostal =>
+      'Without your location, type your postal code to continue.';
+
+  @override
+  String get zonaCodigoPostal => 'Postal code';
+
+  @override
+  String get zonaCodigoPostalInvalido =>
+      'Type the 5 digits of your postal code.';
+
+  @override
+  String get zonaContinuar => 'Continue';
+
+  @override
+  String get errorSinConexion =>
+      'We couldn\'t reach Knock. Check your connection and try again.';
+
+  @override
+  String get errorSesionVencida =>
+      'Your session is no longer valid. Please sign in again.';
+
+  @override
+  String get errorCuentaSuspendida =>
+      'Your account is suspended. Contact support if you think this is a mistake.';
+
+  @override
+  String get errorAccesoDenegado => 'You don\'t have permission to do this.';
+
+  @override
+  String get errorConflicto =>
+      'This action conflicts with another account or the current state. Check the data and try again.';
+
+  @override
+  String get errorDatosRechazados =>
+      'Check the information you entered and try again.';
+
+  @override
+  String get errorDemasiadosIntentos =>
       'Too many attempts. Wait a moment and try again.';
 
   @override
-  String get entradaErrorSinConexion =>
-      'We couldn\'t connect. Check your internet and try again.';
+  String get errorDatosInvalidos =>
+      'We received information we couldn\'t read. Please try again later.';
 
   @override
-  String get entradaErrorVerificacionNoDisponible =>
-      'SMS verification isn\'t available in this version of the app.';
+  String get errorApiNoConfigurada =>
+      'The app isn\'t connected to a server. Install an official version.';
 
   @override
-  String get entradaErrorApiNoConfigurada =>
-      'This version of the app has no server configured.';
-
-  @override
-  String get entradaErrorGenerico => 'Something went wrong. Please try again.';
-
-  @override
-  String get entradaCargando => 'Loading';
+  String get errorInesperado => 'Something went wrong. Please try again.';
 }

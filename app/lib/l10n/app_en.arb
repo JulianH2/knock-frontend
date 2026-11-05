@@ -10,41 +10,104 @@
   "pruebaModoTecnico": "Technician mode (test)",
   "configuracionTitulo": "Settings",
   "configuracionIdioma": "Language",
-  "configuracionIdiomaEspanol": "Español",
+  "configuracionIdiomaEspanol": "Espa├▒ol",
   "configuracionIdiomaIngles": "English",
   "configuracionTema": "Theme",
   "configuracionTemaAutomatico": "Automatic",
   "configuracionTemaAutomaticoDetalle": "Same as your phone",
   "configuracionTemaClaro": "Light",
   "configuracionTemaOscuro": "Dark",
-  "entradaCelularTitulo": "Sign in with your phone",
-  "entradaCelularDetalle": "No passwords: just your number and a code.",
-  "entradaCelularEtiqueta": "Phone number",
-  "entradaPrefijoPais": "+52",
-  "entradaCelularAyuda": "We will send you a code by SMS",
-  "entradaCelularError": "Enter the 10 digits of your phone number",
-  "entradaAceptoAviso": "I accept the {aviso}",
-  "entradaAvisoPrivacidad": "privacy notice",
-  "entradaAvisoError": "Accept the privacy notice to continue",
-  "entradaContinuar": "Continue",
-  "entradaCodigoTitulo": "Enter the code",
-  "entradaCodigoEnviadoA": "We sent it to +52 {celular}",
-  "entradaCodigoEtiqueta": "6-digit code",
-  "entradaCodigoError": "Enter the 6 digits of the code",
-  "entradaEntrar": "Sign in",
-  "entradaReenviarEn": "Resend in {segundos} s",
-  "entradaReenviarCodigo": "Resend code",
-  "entradaCambiarNumero": "Change number",
-  "entradaErrorCodigoIncorrecto": "That code isn't right. Check it and try again.",
-  "entradaErrorCodigoVencido": "The code has expired. Request a new one.",
-  "entradaErrorCelularRechazado": "We couldn't use that number. Check it and try again.",
-  "entradaErrorCuentaSuspendida": "Your account is suspended. If you think this is a mistake, contact us.",
-  "entradaErrorConflicto": "This number is already linked to another account. Contact us so we can check it.",
-  "entradaErrorDatos": "We couldn't process your sign-in. Please try again.",
-  "entradaErrorDemasiadosIntentos": "Too many attempts. Wait a moment and try again.",
-  "entradaErrorSinConexion": "We couldn't connect. Check your internet and try again.",
-  "entradaErrorVerificacionNoDisponible": "SMS verification isn't available in this version of the app.",
-  "entradaErrorApiNoConfigurada": "This version of the app has no server configured.",
-  "entradaErrorGenerico": "Something went wrong. Please try again.",
-  "entradaCargando": "Loading"
+  "inicioSaludo": "Hello",
+  "@inicioSaludo": {
+    "description": "Saludo de Inicio; el nombre de la persona va en un texto aparte."
+  },
+  "inicioZonaTitulo": "Your area",
+  "@inicioZonaTitulo": {
+    "description": "T├¡tulo de la tarjeta de colonia en Inicio."
+  },
+  "inicioZonaSinPedir": "Find out if your area is covered.",
+  "@inicioZonaSinPedir": {
+    "description": "Texto inicial de la tarjeta de colonia en Inicio."
+  },
+  "inicioZonaBuscando": "Looking up your neighborhoodÔÇª",
+  "@inicioZonaBuscando": {
+    "description": "Estado cargando de la tarjeta de colonia."
+  },
+  "inicioZonaFuera": "We do not cover your area yet.",
+  "@inicioZonaFuera": {
+    "description": "La ubicaci├│n est├í fuera de la cobertura."
+  },
+  "inicioZonaSinUbicacion": "We need your location to find your neighborhood.",
+  "@inicioZonaSinUbicacion": {
+    "description": "Sin permiso de ubicaci├│n o servicio apagado."
+  },
+  "inicioVerColonia": "See my neighborhood",
+  "@inicioVerColonia": {
+    "description": "Bot├│n que consulta la colonia de la persona."
+  },
+  "inicioActualizar": "Refresh",
+  "@inicioActualizar": {
+    "description": "Bot├│n que vuelve a consultar la colonia."
+  },
+  "inicioReintentar": "Retry",
+  "@inicioReintentar": {
+    "description": "Bot├│n tras un error al consultar la colonia o un intento fallido."
+  },
+  "inicioExplorarOficios": "Browse trades",
+  "@inicioExplorarOficios": {
+    "description": "Acceso de Inicio al cat├ílogo de oficios."
+  },
+  "inicioExplorarOficiosDetalle": "See which technicians you can find",
+  "@inicioExplorarOficiosDetalle": {
+    "description": "Detalle del acceso a oficios en Inicio."
+  },
+  "cuentaEditarPerfil": "Edit profile",
+  "@cuentaEditarPerfil": {
+    "description": "Detalle bajo el nombre en Mi cuenta."
+  },
+  "cuentaCerrarSesion": "Sign out",
+  "@cuentaCerrarSesion": {
+    "description": "Entrada de Mi cuenta y bot├│n de confirmaci├│n del di├ílogo."
+  },
+  "cuentaCerrarSesionTitulo": "Sign out?",
+  "@cuentaCerrarSesionTitulo": {
+    "description": "T├¡tulo del di├ílogo de cierre de sesi├│n."
+  },
+  "cuentaCerrarSesionCuerpo": "You will need to sign in again to use your account.",
+  "@cuentaCerrarSesionCuerpo": {
+    "description": "Cuerpo del di├ílogo de cierre de sesi├│n."
+  },
+  "cuentaCancelar": "Cancel",
+  "@cuentaCancelar": {
+    "description": "Bot├│n que cierra el di├ílogo sin hacer nada."
+  },
+  "permisoContinuar": "Continue",
+  "permisoAhoraNo": "Not now",
+  "permisoNotificacionesTitulo": "Turn on notifications?",
+  "permisoNotificacionesCuerpo": "We let you know about updates to your requests, messages and visits. Notifications never show codes or addresses.",
+  "permisoUbicacionTitulo": "Use your location?",
+  "permisoUbicacionCuerpo": "We use it once to show you technicians in your area. We don't store it. If you prefer, you can type your postal code.",
+  "avisosTitulo": "Notifications",
+  "avisosCotizaciones": "Quotes",
+  "avisosMensajes": "Messages",
+  "avisosVisitas": "Visits",
+  "avisosActivar": "Turn on notifications",
+  "avisosApagadas": "Notifications are turned off on your phone. The app keeps working; you can turn them on whenever you like.",
+  "avisosAbrirAjustes": "Open settings",
+  "avisosActivadas": "Notifications are on",
+  "zonaUsarUbicacion": "Use my location",
+  "zonaPideCodigoPostal": "Without your location, type your postal code to continue.",
+  "zonaCodigoPostal": "Postal code",
+  "zonaCodigoPostalInvalido": "Type the 5 digits of your postal code.",
+  "zonaContinuar": "Continue",
+  "errorSinConexion": "We couldn't reach Knock. Check your connection and try again.",
+  "errorSesionVencida": "Your session is no longer valid. Please sign in again.",
+  "errorCuentaSuspendida": "Your account is suspended. Contact support if you think this is a mistake.",
+  "errorAccesoDenegado": "You don't have permission to do this.",
+  "errorConflicto": "This action conflicts with another account or the current state. Check the data and try again.",
+  "errorDatosRechazados": "Check the information you entered and try again.",
+  "errorDemasiadosIntentos": "Too many attempts. Wait a moment and try again.",
+  "errorDatosInvalidos": "We received information we couldn't read. Please try again later.",
+  "errorApiNoConfigurada": "The app isn't connected to a server. Install an official version.",
+  "errorInesperado": "Something went wrong. Please try again."
 }

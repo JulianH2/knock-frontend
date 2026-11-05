@@ -31,16 +31,16 @@ class AppLocalizationsEs extends AppLocalizations {
   String get tabCuenta => 'Mi cuenta';
 
   @override
-  String get pruebaModoTecnico => 'Modo técnico (prueba)';
+  String get pruebaModoTecnico => 'Modo t├®cnico (prueba)';
 
   @override
-  String get configuracionTitulo => 'Configuración';
+  String get configuracionTitulo => 'Configuraci├│n';
 
   @override
   String get configuracionIdioma => 'Idioma';
 
   @override
-  String get configuracionIdiomaEspanol => 'Español';
+  String get configuracionIdiomaEspanol => 'Espa├▒ol';
 
   @override
   String get configuracionIdiomaIngles => 'English';
@@ -49,10 +49,10 @@ class AppLocalizationsEs extends AppLocalizations {
   String get configuracionTema => 'Tema';
 
   @override
-  String get configuracionTemaAutomatico => 'Automático';
+  String get configuracionTemaAutomatico => 'Autom├ítico';
 
   @override
-  String get configuracionTemaAutomaticoDetalle => 'Igual que el teléfono';
+  String get configuracionTemaAutomaticoDetalle => 'Igual que el tel├®fono';
 
   @override
   String get configuracionTemaClaro => 'Claro';
@@ -61,110 +61,153 @@ class AppLocalizationsEs extends AppLocalizations {
   String get configuracionTemaOscuro => 'Oscuro';
 
   @override
-  String get entradaCelularTitulo => 'Entra con tu celular';
+  String get inicioSaludo => 'Hola';
 
   @override
-  String get entradaCelularDetalle =>
-      'Sin contraseñas: solo tu número y un código.';
+  String get inicioZonaTitulo => 'Tu zona';
 
   @override
-  String get entradaCelularEtiqueta => 'Celular';
+  String get inicioZonaSinPedir => 'Descubre si tu zona tiene cobertura.';
 
   @override
-  String get entradaPrefijoPais => '+52';
+  String get inicioZonaBuscando => 'Buscando tu coloniaÔÇª';
 
   @override
-  String get entradaCelularAyuda => 'Te enviaremos un código por SMS';
+  String get inicioZonaFuera => 'Todav├¡a no llegamos a tu zona.';
 
   @override
-  String get entradaCelularError => 'Escribe los 10 dígitos de tu celular';
+  String get inicioZonaSinUbicacion =>
+      'Necesitamos tu ubicaci├│n para ubicar tu colonia.';
 
   @override
-  String entradaAceptoAviso(String aviso) {
-    return 'Acepto el $aviso';
-  }
+  String get inicioVerColonia => 'Ver mi colonia';
 
   @override
-  String get entradaAvisoPrivacidad => 'aviso de privacidad';
+  String get inicioActualizar => 'Actualizar';
 
   @override
-  String get entradaAvisoError =>
-      'Acepta el aviso de privacidad para continuar';
+  String get inicioReintentar => 'Reintentar';
 
   @override
-  String get entradaContinuar => 'Continuar';
+  String get inicioExplorarOficios => 'Explorar oficios';
 
   @override
-  String get entradaCodigoTitulo => 'Escribe el código';
+  String get inicioExplorarOficiosDetalle =>
+      'Mira qu├® t├®cnicos puedes encontrar';
 
   @override
-  String entradaCodigoEnviadoA(String celular) {
-    return 'Lo enviamos al +52 $celular';
-  }
+  String get cuentaEditarPerfil => 'Editar perfil';
 
   @override
-  String get entradaCodigoEtiqueta => 'Código de 6 dígitos';
+  String get cuentaCerrarSesion => 'Cerrar sesi├│n';
 
   @override
-  String get entradaCodigoError => 'Escribe los 6 dígitos del código';
+  String get cuentaCerrarSesionTitulo => '┬┐Cerrar sesi├│n?';
 
   @override
-  String get entradaEntrar => 'Entrar';
+  String get cuentaCerrarSesionCuerpo =>
+      'Tendr├ís que volver a entrar para usar tu cuenta.';
 
   @override
-  String entradaReenviarEn(int segundos) {
-    return 'Reenviar en $segundos s';
-  }
+  String get cuentaCancelar => 'Cancelar';
 
   @override
-  String get entradaReenviarCodigo => 'Reenviar código';
+  String get permisoContinuar => 'Continuar';
 
   @override
-  String get entradaCambiarNumero => 'Cambiar número';
+  String get permisoAhoraNo => 'Ahora no';
 
   @override
-  String get entradaErrorCodigoIncorrecto =>
-      'El código no es correcto. Revísalo e inténtalo otra vez.';
+  String get permisoNotificacionesTitulo => '┬┐Activar las notificaciones?';
 
   @override
-  String get entradaErrorCodigoVencido =>
-      'El código ya venció. Pide uno nuevo.';
+  String get permisoNotificacionesCuerpo =>
+      'Te avisamos cuando haya novedades en tus solicitudes, mensajes y visitas. Los avisos no muestran c├│digos ni direcciones.';
 
   @override
-  String get entradaErrorCelularRechazado =>
-      'No pudimos usar ese número. Revísalo e inténtalo otra vez.';
+  String get permisoUbicacionTitulo => '┬┐Usar tu ubicaci├│n?';
 
   @override
-  String get entradaErrorCuentaSuspendida =>
-      'Tu cuenta está suspendida. Si crees que es un error, escríbenos.';
+  String get permisoUbicacionCuerpo =>
+      'La usamos una sola vez para mostrarte t├®cnicos de tu colonia. No la guardamos. Si prefieres, puedes escribir tu c├│digo postal.';
 
   @override
-  String get entradaErrorConflicto =>
-      'Este número ya está ligado a otra cuenta. Escríbenos para revisarlo.';
+  String get avisosTitulo => 'Avisos';
 
   @override
-  String get entradaErrorDatos =>
-      'No pudimos procesar la entrada. Inténtalo otra vez.';
+  String get avisosCotizaciones => 'Cotizaciones';
 
   @override
-  String get entradaErrorDemasiadosIntentos =>
-      'Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.';
+  String get avisosMensajes => 'Mensajes';
 
   @override
-  String get entradaErrorSinConexion =>
-      'No pudimos conectarnos. Revisa tu internet e inténtalo otra vez.';
+  String get avisosVisitas => 'Visitas';
 
   @override
-  String get entradaErrorVerificacionNoDisponible =>
-      'La verificación por SMS no está disponible en esta versión de la app.';
+  String get avisosActivar => 'Activar notificaciones';
 
   @override
-  String get entradaErrorApiNoConfigurada =>
-      'Esta versión de la app no tiene configurado el servidor.';
+  String get avisosApagadas =>
+      'Las notificaciones est├ín apagadas en tu tel├®fono. La app sigue funcionando; puedes activarlas cuando quieras.';
 
   @override
-  String get entradaErrorGenerico => 'Algo salió mal. Inténtalo otra vez.';
+  String get avisosAbrirAjustes => 'Abrir ajustes';
 
   @override
-  String get entradaCargando => 'Cargando';
+  String get avisosActivadas => 'Notificaciones activadas';
+
+  @override
+  String get zonaUsarUbicacion => 'Usar mi ubicaci├│n';
+
+  @override
+  String get zonaPideCodigoPostal =>
+      'Sin la ubicaci├│n, escribe tu c├│digo postal para continuar.';
+
+  @override
+  String get zonaCodigoPostal => 'C├│digo postal';
+
+  @override
+  String get zonaCodigoPostalInvalido =>
+      'Escribe los 5 n├║meros de tu c├│digo postal.';
+
+  @override
+  String get zonaContinuar => 'Continuar';
+
+  @override
+  String get errorSinConexion =>
+      'No pudimos conectar con Knock. Revisa tu conexi├│n e int├®ntalo de nuevo.';
+
+  @override
+  String get errorSesionVencida =>
+      'Tu sesi├│n ya no es v├ílida. Inicia sesi├│n de nuevo.';
+
+  @override
+  String get errorCuentaSuspendida =>
+      'Tu cuenta est├í suspendida. Contacta a soporte si crees que es un error.';
+
+  @override
+  String get errorAccesoDenegado => 'No tienes permiso para hacer esto.';
+
+  @override
+  String get errorConflicto =>
+      'Esta acci├│n choca con otra cuenta o con el estado actual. Revisa los datos e int├®ntalo de nuevo.';
+
+  @override
+  String get errorDatosRechazados =>
+      'Revisa los datos que escribiste e int├®ntalo de nuevo.';
+
+  @override
+  String get errorDemasiadosIntentos =>
+      'Hiciste demasiados intentos. Espera un momento e int├®ntalo de nuevo.';
+
+  @override
+  String get errorDatosInvalidos =>
+      'Recibimos informaci├│n que no pudimos leer. Int├®ntalo m├ís tarde.';
+
+  @override
+  String get errorApiNoConfigurada =>
+      'La app no est├í conectada a un servidor. Instala una versi├│n oficial.';
+
+  @override
+  String get errorInesperado => 'Algo sali├│ mal. Int├®ntalo de nuevo.';
 }

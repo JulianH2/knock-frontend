@@ -52,8 +52,19 @@ final class DatosRechazadosFailure extends Failure {
 }
 
 /// Demasiados intentos en poco tiempo (429).
+///
+/// [espera] es el tiempo que la API pidió con `Retry-After` (spec 009, R-09);
+/// `null` si el error no viene de una respuesta con esa cabecera.
 final class DemasiadosIntentosFailure extends Failure {
-  const DemasiadosIntentosFailure();
+  const DemasiadosIntentosFailure({this.espera});
+
+  final Duration? espera;
+}
+
+/// La persona no aceptó el aviso de privacidad: no se llama al servidor
+/// (spec 009, R-08).
+final class AvisoNoAceptadoFailure extends Failure {
+  const AvisoNoAceptadoFailure();
 }
 
 /// El código del SMS no es el correcto (Firebase `invalid-verification-code`).
