@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T19:35:55Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:36:10Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,7 +10,7 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cuenta` | presentation | 3 | 5 | 5 |
-| `errores` | core | 2 | 10 | 2 |
+| `errores` | core | 2 | 11 | 2 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | -, components, pages | 3 | 2 | 0 |
 | `inicio` | -, data, domain, presentation | 11 | 18 | 17 |
@@ -19,9 +19,9 @@
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 3 | 5 | 12 |
-| `red` | core | 4 | 3 | 7 |
+| `red` | core | 5 | 4 | 9 |
 | `router` | core | 3 | 3 | 4 |
-| `sesion` | core | 3 | 8 | 13 |
+| `sesion` | core | 7 | 13 | 22 |
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
@@ -61,7 +61,7 @@
 
 **core**
 
-- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`, class `AvisoNoAceptadoFailure`
   - `toString()`:10
 - `app/lib/core/errores/mensaje_failure.dart` — —
   - `mensajeDeError()`:10
@@ -192,6 +192,8 @@
   - `normalizarUrlApi()`:15
 - `app/lib/core/red/errores_api.dart` — —
   - `mapearErrorApi()`:10
+- `app/lib/core/red/espera_por_limite.dart` — class `ClienteConEspera`
+  - `send()`:32, `close()`:75
 
 ### router
 
@@ -207,10 +209,18 @@
 
 **core**
 
+- `app/lib/core/sesion/almacen_seguro.dart` — class `AlmacenSeguro`, class `AlmacenSeguroEnMemoria`
+  - `leer()`:26, `escribir()`:29, `borrar()`:33
+- `app/lib/core/sesion/almacen_sesion.dart` — class `AlmacenSesion`
+  - `guardar()`:17, `leerAcceso()`:25, `leerRefresco()`:27, `cerrarSesion()`:29
 - `app/lib/core/sesion/cliente_autenticado.dart` — class `ClienteAutenticado`
   - `send()`:23, `close()`:47
 - `app/lib/core/sesion/es_tecnico_provider.dart` — class `EsTecnicoNotifier`
   - `build()`:13, `cambiar()`:16
+- `app/lib/core/sesion/identificador_dispositivo.dart` — class `IdentificadorDispositivo`
+  - `obtener()`:25
+- `app/lib/core/sesion/preparar_canje.dart` — class `PrepararCanje`
+  - `preparar()`:18
 - `app/lib/core/sesion/sesion.dart` — class `TokensSesion`, class `AlmacenTokens`, class `AlmacenTokensEnMemoria`, class `RenovadorSesion`, class `RenovadorNoDisponible`, class `SesionNotifier`
   - `toString()`:25, `leer()`:44, `guardar()`:47, `borrar()`:50, `renovar()`:68, `build()`:84, `iniciar()`:87, `cerrar()`:94, `renovar()`:103
 

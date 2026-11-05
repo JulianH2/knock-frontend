@@ -12,7 +12,11 @@ Failure mapearErrorApi(Object error) {
   if (error is! ApiException) return const ServicioNoDisponibleFailure();
   // El cliente generado envuelve los fallos de red (sin conexión, TLS) con un
   // `innerException`: no hubo respuesta de la API.
-  if (error.innerException != null) return const ServicioNoDisponibleFailure();
+  // Salvo que el transporte lanzó a propósito un Failure (p. ej. la espera
+  // por 429): ese se conserva.
+  final interno = error.innerException;
+  if (interno is Failure) return interno;
+  if (interno != null) return const ServicioNoDisponibleFailure();
   return switch (error.code) {
     401 => const NoAutorizadoFailure(),
     403 when _codigo(error.message) == 'account_suspended' =>
