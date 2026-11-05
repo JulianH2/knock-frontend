@@ -199,6 +199,114 @@ abstract class AppLocalizations {
   /// In es, this message translates to:
   /// **'Oscuro'**
   String get configuracionTemaOscuro;
+
+  /// Título de la pantalla de entrada con celular (HU-001).
+  ///
+  /// In es, this message translates to:
+  /// **'Entra con tu celular'**
+  String get entradaCelularTitulo;
+
+  /// Subtítulo bajo el título de la pantalla de entrada con celular.
+  ///
+  /// In es, this message translates to:
+  /// **'Sin contraseñas: solo tu número y un código.'**
+  String get entradaCelularDetalle;
+
+  /// Etiqueta del campo de 10 dígitos del celular.
+  ///
+  /// In es, this message translates to:
+  /// **'Celular'**
+  String get entradaCelularEtiqueta;
+
+  /// Prefijo fijo de México delante del celular. No se traduce.
+  ///
+  /// In es, this message translates to:
+  /// **'+52'**
+  String get entradaPrefijoPais;
+
+  /// Línea de ayuda bajo el campo del celular.
+  ///
+  /// In es, this message translates to:
+  /// **'Te enviaremos un código por SMS'**
+  String get entradaCelularAyuda;
+
+  /// Error bajo el campo cuando el celular no tiene 10 dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 10 dígitos de tu celular'**
+  String get entradaCelularError;
+
+  /// Casilla de aceptación; {aviso} es el texto del enlace al aviso de privacidad.
+  ///
+  /// In es, this message translates to:
+  /// **'Acepto el {aviso}'**
+  String entradaAceptoAviso(String aviso);
+
+  /// Texto con estilo de enlace dentro de la casilla de aceptación (aún no abre nada: TT-MOB-06).
+  ///
+  /// In es, this message translates to:
+  /// **'aviso de privacidad'**
+  String get entradaAvisoPrivacidad;
+
+  /// Error cuando se toca Continuar sin aceptar el aviso.
+  ///
+  /// In es, this message translates to:
+  /// **'Acepta el aviso de privacidad para continuar'**
+  String get entradaAvisoError;
+
+  /// Botón de la pantalla del celular que pasa a escribir el código.
+  ///
+  /// In es, this message translates to:
+  /// **'Continuar'**
+  String get entradaContinuar;
+
+  /// Título de la pantalla del código de 6 dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe el código'**
+  String get entradaCodigoTitulo;
+
+  /// Texto bajo el título; {celular} es el número con formato 55 1234 5678.
+  ///
+  /// In es, this message translates to:
+  /// **'Lo enviamos al +52 {celular}'**
+  String entradaCodigoEnviadoA(String celular);
+
+  /// Etiqueta del campo del código.
+  ///
+  /// In es, this message translates to:
+  /// **'Código de 6 dígitos'**
+  String get entradaCodigoEtiqueta;
+
+  /// Error cuando se toca Entrar sin 6 dígitos.
+  ///
+  /// In es, this message translates to:
+  /// **'Escribe los 6 dígitos del código'**
+  String get entradaCodigoError;
+
+  /// Botón que termina la entrada y lleva a Inicio.
+  ///
+  /// In es, this message translates to:
+  /// **'Entrar'**
+  String get entradaEntrar;
+
+  /// Cuenta regresiva antes de poder pedir otro código.
+  ///
+  /// In es, this message translates to:
+  /// **'Reenviar en {segundos} s'**
+  String entradaReenviarEn(int segundos);
+
+  /// Botón que aparece cuando la cuenta regresiva llega a 0.
+  ///
+  /// In es, this message translates to:
+  /// **'Reenviar código'**
+  String get entradaReenviarCodigo;
+
+  /// Botón para regresar a escribir el celular.
+  ///
+  /// In es, this message translates to:
+  /// **'Cambiar número'**
+  String get entradaCambiarNumero;
 }
 
 class _AppLocalizationsDelegate

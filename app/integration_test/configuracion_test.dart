@@ -5,6 +5,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'soporte/entrar.dart';
+
 /// E2E mínimo de HU-052 en emulador Android, con el plugin real:
 /// `cd app && flutter test integration_test/configuracion_test.dart`.
 /// El cierre y la apertura reales de la app se comprueban a mano (spec §8).
@@ -20,6 +22,8 @@ void main() {
 
     await knock.main();
     await tester.pumpAndSettle();
+    // HU-001: la app abre en la entrada; se entra con datos ficticios.
+    await entrarConCelularFicticio(tester);
 
     await tester.tap(
       find.descendant(

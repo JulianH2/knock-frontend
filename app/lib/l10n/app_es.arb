@@ -67,5 +67,95 @@
   "configuracionTemaOscuro": "Oscuro",
   "@configuracionTemaOscuro": {
     "description": "Opción del selector de tema: tema oscuro."
+  },
+  "entradaCelularTitulo": "Entra con tu celular",
+  "@entradaCelularTitulo": {
+    "description": "Título de la pantalla de entrada con celular (HU-001)."
+  },
+  "entradaCelularDetalle": "Sin contraseñas: solo tu número y un código.",
+  "@entradaCelularDetalle": {
+    "description": "Subtítulo bajo el título de la pantalla de entrada con celular."
+  },
+  "entradaCelularEtiqueta": "Celular",
+  "@entradaCelularEtiqueta": {
+    "description": "Etiqueta del campo de 10 dígitos del celular."
+  },
+  "entradaPrefijoPais": "+52",
+  "@entradaPrefijoPais": {
+    "description": "Prefijo fijo de México delante del celular. No se traduce."
+  },
+  "entradaCelularAyuda": "Te enviaremos un código por SMS",
+  "@entradaCelularAyuda": {
+    "description": "Línea de ayuda bajo el campo del celular."
+  },
+  "entradaCelularError": "Escribe los 10 dígitos de tu celular",
+  "@entradaCelularError": {
+    "description": "Error bajo el campo cuando el celular no tiene 10 dígitos."
+  },
+  "entradaAceptoAviso": "Acepto el {aviso}",
+  "@entradaAceptoAviso": {
+    "description": "Casilla de aceptación; {aviso} es el texto del enlace al aviso de privacidad.",
+    "placeholders": {
+      "aviso": {
+        "type": "String",
+        "example": "aviso de privacidad"
+      }
+    }
+  },
+  "entradaAvisoPrivacidad": "aviso de privacidad",
+  "@entradaAvisoPrivacidad": {
+    "description": "Texto con estilo de enlace dentro de la casilla de aceptación (aún no abre nada: TT-MOB-06)."
+  },
+  "entradaAvisoError": "Acepta el aviso de privacidad para continuar",
+  "@entradaAvisoError": {
+    "description": "Error cuando se toca Continuar sin aceptar el aviso."
+  },
+  "entradaContinuar": "Continuar",
+  "@entradaContinuar": {
+    "description": "Botón de la pantalla del celular que pasa a escribir el código."
+  },
+  "entradaCodigoTitulo": "Escribe el código",
+  "@entradaCodigoTitulo": {
+    "description": "Título de la pantalla del código de 6 dígitos."
+  },
+  "entradaCodigoEnviadoA": "Lo enviamos al +52 {celular}",
+  "@entradaCodigoEnviadoA": {
+    "description": "Texto bajo el título; {celular} es el número con formato 55 1234 5678.",
+    "placeholders": {
+      "celular": {
+        "type": "String",
+        "example": "55 1234 5678"
+      }
+    }
+  },
+  "entradaCodigoEtiqueta": "Código de 6 dígitos",
+  "@entradaCodigoEtiqueta": {
+    "description": "Etiqueta del campo del código."
+  },
+  "entradaCodigoError": "Escribe los 6 dígitos del código",
+  "@entradaCodigoError": {
+    "description": "Error cuando se toca Entrar sin 6 dígitos."
+  },
+  "entradaEntrar": "Entrar",
+  "@entradaEntrar": {
+    "description": "Botón que termina la entrada y lleva a Inicio."
+  },
+  "entradaReenviarEn": "Reenviar en {segundos} s",
+  "@entradaReenviarEn": {
+    "description": "Cuenta regresiva antes de poder pedir otro código.",
+    "placeholders": {
+      "segundos": {
+        "type": "int",
+        "example": "60"
+      }
+    }
+  },
+  "entradaReenviarCodigo": "Reenviar código",
+  "@entradaReenviarCodigo": {
+    "description": "Botón que aparece cuando la cuenta regresiva llega a 0."
+  },
+  "entradaCambiarNumero": "Cambiar número",
+  "@entradaCambiarNumero": {
+    "description": "Botón para regresar a escribir el celular."
   }
 }

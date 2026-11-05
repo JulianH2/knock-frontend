@@ -59,4 +59,65 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get configuracionTemaOscuro => 'Dark';
+
+  @override
+  String get entradaCelularTitulo => 'Sign in with your phone';
+
+  @override
+  String get entradaCelularDetalle =>
+      'No passwords: just your number and a code.';
+
+  @override
+  String get entradaCelularEtiqueta => 'Phone number';
+
+  @override
+  String get entradaPrefijoPais => '+52';
+
+  @override
+  String get entradaCelularAyuda => 'We will send you a code by SMS';
+
+  @override
+  String get entradaCelularError => 'Enter the 10 digits of your phone number';
+
+  @override
+  String entradaAceptoAviso(String aviso) {
+    return 'I accept the $aviso';
+  }
+
+  @override
+  String get entradaAvisoPrivacidad => 'privacy notice';
+
+  @override
+  String get entradaAvisoError => 'Accept the privacy notice to continue';
+
+  @override
+  String get entradaContinuar => 'Continue';
+
+  @override
+  String get entradaCodigoTitulo => 'Enter the code';
+
+  @override
+  String entradaCodigoEnviadoA(String celular) {
+    return 'We sent it to +52 $celular';
+  }
+
+  @override
+  String get entradaCodigoEtiqueta => '6-digit code';
+
+  @override
+  String get entradaCodigoError => 'Enter the 6 digits of the code';
+
+  @override
+  String get entradaEntrar => 'Sign in';
+
+  @override
+  String entradaReenviarEn(int segundos) {
+    return 'Resend in $segundos s';
+  }
+
+  @override
+  String get entradaReenviarCodigo => 'Resend code';
+
+  @override
+  String get entradaCambiarNumero => 'Change number';
 }

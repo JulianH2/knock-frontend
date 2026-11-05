@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 
+import 'soporte/entrar.dart';
+
 /// Humo E2E de TT-MOB-01 en emulador Android:
 /// `cd app && flutter test integration_test`.
 void main() {
@@ -20,6 +22,8 @@ void main() {
   ) async {
     await knock.main();
     await tester.pumpAndSettle();
+    // HU-001: la app abre en la entrada; se entra con datos ficticios.
+    await entrarConCelularFicticio(tester);
 
     // Cuenta de cliente por defecto: 4 pestañas, sin Trabajo.
     expect(find.byType(NavigationDestination), findsNWidgets(4));

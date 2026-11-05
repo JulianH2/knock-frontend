@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T12:48:28Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T12:52:09Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,18 +10,19 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cuenta` | presentation | 3 | 5 | 5 |
+| `entrada` | domain, presentation | 5 | 8 | 15 |
 | `errores` | core | 1 | 10 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | data, domain, presentation | 10 | 18 | 17 |
-| `l10n` | - | 3 | 4 | 5 |
+| `l10n` | - | 3 | 4 | 11 |
 | `layout` | core | 1 | 1 | 0 |
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 3 | 5 | 12 |
 | `red` | core | 3 | 0 | 2 |
-| `router` | core | 3 | 3 | 4 |
-| `sesion` | core | 1 | 1 | 2 |
+| `router` | core | 3 | 3 | 5 |
+| `sesion` | core | 2 | 2 | 4 |
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
@@ -56,6 +57,24 @@
   - `build()`:16
 - `app/lib/features/cuenta/presentation/widgets/menu_de_prueba.dart` — class `MenuDePrueba`
   - `build()`:15
+
+### entrada
+
+**domain**
+
+- `app/lib/features/entrada/domain/validacion_entrada.dart` — —
+  - `esCelularValido()`:17, `esCodigoValido()`:20, `formatearCelular()`:25
+
+**presentation**
+
+- `app/lib/features/entrada/presentation/celular_screen.dart` — class `CelularScreen`, class `_CelularScreenState`, class `_CasillaDelAviso`
+  - `dispose()`:30, `build()`:49, `build()`:125, `CheckboxListTile()`:154
+- `app/lib/features/entrada/presentation/codigo_screen.dart` — class `CodigoScreen`, class `_CodigoScreenState`
+  - `dispose()`:32, `build()`:55
+- `app/lib/features/entrada/presentation/cuenta_regresiva_controller.dart` — class `CuentaRegresivaNotifier`
+  - `build()`:18, `reiniciar()`:25
+- `app/lib/features/entrada/presentation/widgets/marco_de_entrada.dart` — class `MarcoDeEntrada`, class `_Marca`
+  - `build()`:30, `build()`:95, `decoracionDeEntrada()`:132, `estiloBotonPrincipal()`:154
 
 ### errores
 
@@ -117,9 +136,11 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:209, `isSupported()`:214, `shouldReload()`:218, `lookupAppLocalizations()`:221
+  - `of()`:70, `load()`:317, `isSupported()`:322, `shouldReload()`:326, `lookupAppLocalizations()`:329
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
+  - `entradaAceptoAviso()`:83, `entradaCodigoEnviadoA()`:100, `entradaReenviarEn()`:114
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
+  - `entradaAceptoAviso()`:83, `entradaCodigoEnviadoA()`:101, `entradaReenviarEn()`:115
 
 ### layout
 
@@ -189,7 +210,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:35, `build()`:48, `Scaffold()`:53
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:20
+  - `redireccionPorSesion()`:27, `redireccionPorRol()`:42
 
 ### sesion
 
@@ -197,6 +218,8 @@
 
 - `app/lib/core/sesion/es_tecnico_provider.dart` — class `EsTecnicoNotifier`
   - `build()`:13, `cambiar()`:16
+- `app/lib/core/sesion/sesion_provider.dart` — class `SesionNotifier`
+  - `build()`:13, `iniciar()`:16
 
 ### tema
 
