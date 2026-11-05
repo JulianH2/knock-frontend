@@ -2,6 +2,8 @@
     <!-- Ubicación aproximada para el botón «Mi ubicación» (TT-MOB-04). Se pide
          solo al tocar el botón, nunca al abrir la app. -->
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <!-- Llamar a la API de Knock y a Firebase Auth también en release (KNOCK-228). -->
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
         android:label="Knock"
         android:name="${applicationName}"
