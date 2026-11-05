@@ -68,3 +68,19 @@ Para activarlo, en **cada repositorio** (knock-backend y knock-frontend), en Git
 La llave nunca va en el código, un issue, un PR ni un chat. Los PR de forks y los borradores no se revisan. Solo sale hacia el proveedor el **diff público** del PR, sin lockfiles, archivos generados, binarios ni archivos con aspecto de secreto, y con patrones de llaves enmascarados. Cuesta menos de un centavo de dólar por revisión.
 
 Si el repositorio es privado y no tiene GitHub Advanced Security, la revisión de dependencias y la subida de SARIF se omiten; para activarlas, crea la variable `GHAS_ENABLED=true`.
+
+## 9. Versionamiento por puntos (spec 011)
+La app (`app`), el panel (`panel`) y la landing (`landing`) llevan cada uno su propia versión `X.Y.Z`; la primera publicada es `1.0.0`. Un cambio en la landing no cambia el número de la app. Cada PR declara cuántos puntos suma a cada componente que toca con una etiqueta `puntos-<componente>-N` (p. ej. `puntos-app-4`); si no suma, `puntos-<componente>-0`. Sin etiqueta válida, el job `pr-points` del CI falla (lo exentan las ramas `release-please--*` y `dependabot/*`). Una persona del equipo con permiso la crea en GitHub la primera vez que la usa.
+
+| Tipo de cambio | Puntos |
+|---|---|
+| Corrección, ajuste de texto, traducción o estilo | 1 |
+| Campo nuevo o cambio de regla | 2 |
+| Pantalla nueva | 3 |
+| Función completa | 5 |
+| Integración externa o permiso nuevo del teléfono | 10 |
+
+- Al publicar se suman los puntos de los cambios incluidos y se aplican a `Z`; al llegar a 10, `Z` vuelve a cero y `Y` sube, y lo mismo entre `Y` y `X` (`1.0.0` + 3 puntos = `1.0.3`; `1.0.4` + 8 = `1.1.2`). Un cambio que rompe compatibilidad sube `X` y deja `Y` y `Z` en cero. Una publicación con cero puntos no cambia la versión.
+- `versionCode` de Android = `X × 1 000 000 + Y × 10 000 + Z × 100 + n`, donde `n` (0 a 99) es el número de subida de esa versión: `1.1.2` en su primera subida da `1010200`; en la segunda, `1010201`. No se lleva a mano.
+- Cuenta el tipo de cambio, no el tamaño del código. Quien revisa el PR comprueba que la etiqueta corresponde al tipo de cambio (declarar de menos para no subir de versión es el riesgo).
+- Cálculo: `python scripts/ci/version.py bump --current 1.0.4 --points 8` y `python scripts/ci/version.py code --version 1.1.2 --n 0`. Registro de lo publicado: [`docs/VERSIONES_PUBLICADAS.md`](docs/VERSIONES_PUBLICADAS.md).
