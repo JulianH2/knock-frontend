@@ -1,6 +1,7 @@
 import 'package:app/core/errores/failure.dart';
 import 'package:app/core/red/cache_respuestas.dart';
 import 'package:app/core/red/configuracion_api.dart';
+import 'package:app/core/red/espera_por_limite.dart';
 import 'package:app/core/sesion/cliente_autenticado.dart';
 import 'package:app/core/sesion/sesion.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,10 +11,10 @@ import 'package:knock_api/api.dart';
 /// URL base cruda de la API. Las pruebas la reemplazan con `overrideWithValue`.
 final urlApiProvider = Provider<String>((ref) => urlApiDefinida);
 
-/// Cliente HTTP de red sin decorar. Las pruebas lo reemplazan por un cliente
-/// que apunta a un servidor simulado.
+/// Cliente HTTP de red con espera por 429 (`Retry-After`, spec 009). Las pruebas
+/// lo reemplazan por un cliente que apunta a un servidor simulado.
 final transporteHttpProvider = Provider<http.Client>((ref) {
-  final cliente = http.Client();
+  final cliente = ClienteConEspera(http.Client());
   ref.onDispose(cliente.close);
   return cliente;
 });

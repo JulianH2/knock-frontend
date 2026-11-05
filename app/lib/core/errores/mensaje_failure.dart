@@ -19,5 +19,7 @@ String mensajeDeError(AppLocalizations textos, Object error) {
     DemasiadosIntentosFailure() => textos.errorDemasiadosIntentos,
     DatosInvalidosFailure() => textos.errorDatosInvalidos,
     ApiNoConfiguradaFailure() => textos.errorApiNoConfigurada,
+    // Sin texto propio hasta que KNOCK-228 traiga la pantalla del aviso.
+    AvisoNoAceptadoFailure() => textos.errorDatosRechazados,
   };
 }
