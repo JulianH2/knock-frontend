@@ -136,3 +136,8 @@
 - **Porqué:** R-03 y R-06 exigían pruebas de capas en todo el código y solo `oficios` las tenía; Inicio se saltaba la regla.
 - **Pendiente:** el estado de pantalla de cuatro tipos (R-05) sigue sin un tipo común (oficios usa `AsyncValue`); falta `docs/arquitectura-app.md` (T-06); reiniciar controladores al cerrar sesión depende de la sesión real.
 - **A evitar:** declarar el `Provider` de un repositorio dentro de `data/` y leerlo desde `presentation/`; los providers van en `<funcion>_providers.dart`.
+
+## 2026-11-05 — Gitleaks en los PR de Erick: huella del token ficticio (EXC-004, KNOCK-223)
+- **Decisión:** `.gitleaksignore` en la raíz con una sola huella, `8735cb22dc6095acc63cccea48ad253f6688f589:app/test/core/sesion/sesion_segura_test.dart:generic-api-key:20`, y una segunda, `1d73fc5454410e9de7ebf0faea441ea3a43d8d81:security/exceptions.yaml:generic-api-key:69`, porque el primer texto de EXC-004 copió el literal del token y Gitleaks lo detectó en ese commit ya publicado; el texto vigente no lo copia. Excepción EXC-004 en `security/exceptions.yaml` (vence 2027-02-03).
+- **Porqué:** la constante ficticia de una prueba de sesión es ficticio, pero Gitleaks recorre el historial de todas las ramas (`fetch-depth: 0`), así que cambiarlo en un commit nuevo no quita el hallazgo del commit 8735cb2 y ese único check mantenía en rojo los PR #14 al #21. No se reescribe el historial ni se hace force-push. Comprobado con gitleaks v8.30.1 (imagen oficial) sobre un clon con esa rama: 1 hallazgo sin el archivo, 0 con él.
+- **A evitar:** ampliar `.gitleaksignore` con comodines o con más huellas sin su propia excepción, o poner tokens con aspecto de llave en las pruebas; usar valores cortos o claramente no secretos.
