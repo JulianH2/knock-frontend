@@ -58,10 +58,14 @@ class PaginasLegales(unittest.TestCase):
             for region in ("header", "main", "footer"):
                 self.assertEqual(len(pagina.de(region)), 1, f"<{region}> en {nombre}")
 
-    def test_marcadores_por_completar_y_sin_claves_internas(self):
+    def test_marcadores_por_confirmar_y_sin_claves_internas(self):
         for nombre in PAGINAS_LEGALES:
             html = leer(nombre)
-            self.assertIn("[POR COMPLETAR POR JOSÉ", html, nombre)
+            # Ya no quedan huecos sin texto; solo lo que el responsable debe aportar (no se inventa).
+            self.assertNotIn("POR COMPLETAR POR JOSÉ", html, nombre)
+            self.assertIn("[CORREO POR CONFIRMAR]", html, nombre)
+            if nombre.startswith("privacidad"):
+                self.assertIn("[NOMBRE LEGAL Y DOMICILIO POR CONFIRMAR]", html, nombre)
             self.assertNotRegex(html, r"\b(TT|HU|KNOCK)-[A-Za-z0-9]", nombre)
             # No se inventan contactos ni razón social.
             self.assertNotRegex(html, r"@[A-Za-z0-9-]+\.[a-z]{2,}", nombre)
