@@ -59,4 +59,42 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get configuracionTemaOscuro => 'Dark';
+
+  @override
+  String get errorSinConexion =>
+      'We couldn\'t reach Knock. Check your connection and try again.';
+
+  @override
+  String get errorSesionVencida =>
+      'Your session is no longer valid. Please sign in again.';
+
+  @override
+  String get errorCuentaSuspendida =>
+      'Your account is suspended. Contact support if you think this is a mistake.';
+
+  @override
+  String get errorAccesoDenegado => 'You don\'t have permission to do this.';
+
+  @override
+  String get errorConflicto =>
+      'This action conflicts with another account or the current state. Check the data and try again.';
+
+  @override
+  String get errorDatosRechazados =>
+      'Check the information you entered and try again.';
+
+  @override
+  String get errorDemasiadosIntentos =>
+      'Too many attempts. Wait a moment and try again.';
+
+  @override
+  String get errorDatosInvalidos =>
+      'We received information we couldn\'t read. Please try again later.';
+
+  @override
+  String get errorApiNoConfigurada =>
+      'The app isn\'t connected to a server. Install an official version.';
+
+  @override
+  String get errorInesperado => 'Something went wrong. Please try again.';
 }

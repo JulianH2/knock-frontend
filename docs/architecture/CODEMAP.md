@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-05T19:35:47Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-05T19:35:55Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,7 +10,7 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 3 | 2 | 4 |
 | `cuenta` | presentation | 3 | 5 | 5 |
-| `errores` | core | 1 | 10 | 1 |
+| `errores` | core | 2 | 10 | 2 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | -, components, pages | 3 | 2 | 0 |
 | `inicio` | -, data, domain, presentation | 11 | 18 | 17 |
@@ -19,9 +19,9 @@
 | `oficios` | -, data, domain, presentation | 8 | 12 | 11 |
 | `panel` | - | 3 | 1 | 0 |
 | `preferencias` | core | 3 | 5 | 12 |
-| `red` | core | 3 | 0 | 2 |
+| `red` | core | 4 | 3 | 7 |
 | `router` | core | 3 | 3 | 4 |
-| `sesion` | core | 1 | 1 | 2 |
+| `sesion` | core | 3 | 8 | 13 |
 | `tema` | core | 3 | 3 | 1 |
 | `trabajo` | presentation | 1 | 1 | 1 |
 | `widgets` | core | 1 | 1 | 1 |
@@ -63,6 +63,8 @@
 
 - `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `ApiNoConfiguradaFailure`, class `NoAutorizadoFailure`, class `CuentaSuspendidaFailure`, class `AccesoDenegadoFailure`, class `ConflictoFailure`, class `DatosRechazadosFailure`, class `DemasiadosIntentosFailure`
   - `toString()`:10
+- `app/lib/core/errores/mensaje_failure.dart` — —
+  - `mensajeDeError()`:10
 
 ### explorar
 
@@ -125,7 +127,7 @@
 **-**
 
 - `app/lib/l10n/generado/app_localizations.dart` — class `AppLocalizations`, class `_AppLocalizationsDelegate`
-  - `of()`:70, `load()`:209, `isSupported()`:214, `shouldReload()`:218, `lookupAppLocalizations()`:221
+  - `of()`:70, `load()`:269, `isSupported()`:274, `shouldReload()`:278, `lookupAppLocalizations()`:281
 - `app/lib/l10n/generado/app_localizations_en.dart` — class `AppLocalizationsEn`
 - `app/lib/l10n/generado/app_localizations_es.dart` — class `AppLocalizationsEs`
 
@@ -183,6 +185,8 @@
 
 **core**
 
+- `app/lib/core/red/cache_respuestas.dart` — class `EntradaCache`, class `CacheRespuestas`, class `ClienteConCache`
+  - `obtener()`:38, `guardar()`:48, `borrarTodo()`:63, `send()`:80, `close()`:125
 - `app/lib/core/red/cliente_api_provider.dart` — —
 - `app/lib/core/red/configuracion_api.dart` — —
   - `normalizarUrlApi()`:15
@@ -203,8 +207,12 @@
 
 **core**
 
+- `app/lib/core/sesion/cliente_autenticado.dart` — class `ClienteAutenticado`
+  - `send()`:23, `close()`:47
 - `app/lib/core/sesion/es_tecnico_provider.dart` — class `EsTecnicoNotifier`
   - `build()`:13, `cambiar()`:16
+- `app/lib/core/sesion/sesion.dart` — class `TokensSesion`, class `AlmacenTokens`, class `AlmacenTokensEnMemoria`, class `RenovadorSesion`, class `RenovadorNoDisponible`, class `SesionNotifier`
+  - `toString()`:25, `leer()`:44, `guardar()`:47, `borrar()`:50, `renovar()`:68, `build()`:84, `iniciar()`:87, `cerrar()`:94, `renovar()`:103
 
 ### tema
 

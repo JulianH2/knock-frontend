@@ -67,5 +67,45 @@
   "configuracionTemaOscuro": "Oscuro",
   "@configuracionTemaOscuro": {
     "description": "Opción del selector de tema: tema oscuro."
+  },
+  "errorSinConexion": "No pudimos conectar con Knock. Revisa tu conexión e inténtalo de nuevo.",
+  "@errorSinConexion": {
+    "description": "Error común: sin conexión o servicio no disponible (5xx)."
+  },
+  "errorSesionVencida": "Tu sesión ya no es válida. Inicia sesión de nuevo.",
+  "@errorSesionVencida": {
+    "description": "Error común: la API rechazó la credencial (401) y no se pudo renovar."
+  },
+  "errorCuentaSuspendida": "Tu cuenta está suspendida. Contacta a soporte si crees que es un error.",
+  "@errorCuentaSuspendida": {
+    "description": "Error común: cuenta suspendida (403 account_suspended)."
+  },
+  "errorAccesoDenegado": "No tienes permiso para hacer esto.",
+  "@errorAccesoDenegado": {
+    "description": "Error común: acceso negado (403)."
+  },
+  "errorConflicto": "Esta acción choca con otra cuenta o con el estado actual. Revisa los datos e inténtalo de nuevo.",
+  "@errorConflicto": {
+    "description": "Error común: conflicto (409)."
+  },
+  "errorDatosRechazados": "Revisa los datos que escribiste e inténtalo de nuevo.",
+  "@errorDatosRechazados": {
+    "description": "Error común: datos rechazados (400, 413 o 422)."
+  },
+  "errorDemasiadosIntentos": "Hiciste demasiados intentos. Espera un momento e inténtalo de nuevo.",
+  "@errorDemasiadosIntentos": {
+    "description": "Error común: límite de intentos (429)."
+  },
+  "errorDatosInvalidos": "Recibimos información que no pudimos leer. Inténtalo más tarde.",
+  "@errorDatosInvalidos": {
+    "description": "Error común: la respuesta no cumple el contrato."
+  },
+  "errorApiNoConfigurada": "La app no está conectada a un servidor. Instala una versión oficial.",
+  "@errorApiNoConfigurada": {
+    "description": "Error común: falta KNOCK_API_URL al compilar."
+  },
+  "errorInesperado": "Algo salió mal. Inténtalo de nuevo.",
+  "@errorInesperado": {
+    "description": "Error común: cualquier fallo no previsto; nunca muestra detalles técnicos."
   }
 }
