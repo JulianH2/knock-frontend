@@ -1,4 +1,5 @@
 // KNOCK-228: los tokens van solo al almacenamiento seguro (security-core #10).
+import 'package:app/core/sesion/almacen_seguro.dart';
 import 'package:app/core/sesion/almacen_sesion.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -12,57 +13,34 @@ void main() {
     'guarda los dos tokens en el almacenamiento seguro y los borra',
     () async {
       const seguro = FlutterSecureStorage();
-      final almacen = AlmacenSesionSeguro();
+      final almacen = AlmacenSesion(AlmacenSeguroFlutterSecureStorage());
 
-      expect(await almacen.tieneSesion(), isFalse);
-      await almacen.guardarTokens(
+      expect(await almacen.leerRefresco(), isNull);
+      await almacen.guardar(
         acceso: 'acceso-ficticio',
-        renovacion: 'renovacion-ficticia',
+        refresco: 'refresco-ficticio',
       );
 
       expect(await seguro.readAll(), {
-        AlmacenSesionSeguro.claveAcceso: 'acceso-ficticio',
-        AlmacenSesionSeguro.claveRenovacion: 'renovacion-ficticia',
+        AlmacenSesion.claveAcceso: 'acceso-ficticio',
+        AlmacenSesion.claveRefresco: 'refresco-ficticio',
       });
-      expect(await almacen.tieneSesion(), isTrue);
+      expect(await almacen.leerRefresco(), isNotNull);
 
-      await almacen.borrarTokens();
+      await almacen.cerrarSesion();
       expect(await seguro.readAll(), isEmpty);
-      expect(await almacen.tieneSesion(), isFalse);
+      expect(await almacen.leerRefresco(), isNull);
     },
   );
 
-  test('el id del dispositivo se crea una vez y se reusa', () async {
-    var creados = 0;
-    final almacen = AlmacenSesionSeguro(
-      nuevoId: () => '00000000-0000-4000-8000-00000000000${++creados}',
-    );
+  test('lee el acceso y el refresco guardados', () async {
+    const seguro = FlutterSecureStorage();
+    final almacen = AlmacenSesion(AlmacenSeguroFlutterSecureStorage());
 
-    final primero = await almacen.idDeDispositivo();
-    final segundo = await AlmacenSesionSeguro(nuevoId: () => 'no-se-usa')
-        .idDeDispositivo();
+    await almacen.guardar(acceso: 'acceso-ficticio', refresco: 'refresco-ficticio');
 
-    expect(primero, '00000000-0000-4000-8000-000000000001');
-    expect(segundo, primero);
-    expect(creados, 1);
-  });
-
-  test('el id por defecto es un UUID v4 de 36 caracteres', () async {
-    final id = await AlmacenSesionSeguro().idDeDispositivo();
-    expect(id, hasLength(36));
-    expect(
-      RegExp(
-        '^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}',
-      ).hasMatch(id),
-      isTrue,
-    );
-  });
-
-  test('borrar los tokens conserva el id del dispositivo', () async {
-    final almacen = AlmacenSesionSeguro();
-    final id = await almacen.idDeDispositivo();
-    await almacen.guardarTokens(acceso: 'a', renovacion: 'r');
-    await almacen.borrarTokens();
-    expect(await almacen.idDeDispositivo(), id);
+    expect(await almacen.leerAcceso(), 'acceso-ficticio');
+    expect(await almacen.leerRefresco(), 'refresco-ficticio');
+    expect(await seguro.readAll(), isNotEmpty);
   });
 }

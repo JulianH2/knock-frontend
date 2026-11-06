@@ -1,6 +1,7 @@
 import 'package:app/app.dart';
 import 'package:app/core/preferencias/almacen_preferencias.dart';
 import 'package:app/core/preferencias/arranque.dart';
+import 'package:app/core/sesion/almacen_seguro.dart';
 import 'package:app/core/sesion/almacen_sesion.dart';
 import 'package:app/core/sesion/arranque_sesion.dart';
 import 'package:app/core/sesion/sesion_provider.dart';
@@ -19,13 +20,15 @@ Future<void> arrancar({List<Override> overrides = const []}) async {
   WidgetsFlutterBinding.ensureInitialized();
   final almacen = await crearAlmacenDeArranque();
   final firebaseListo = await iniciarFirebase();
-  final haySesion = await haySesionGuardada(AlmacenSesionSeguro());
+  final almacenSeguro = AlmacenSeguroFlutterSecureStorage();
+  final haySesion = await haySesionGuardada(AlmacenSesion(almacenSeguro));
   runApp(
     ProviderScope(
       overrides: [
         almacenPreferenciasProvider.overrideWithValue(almacen),
         firebaseListoProvider.overrideWithValue(firebaseListo),
         sesionInicialProvider.overrideWithValue(haySesion),
+        almacenSeguroProvider.overrideWithValue(almacenSeguro),
         ...overrides,
       ],
       child: const KnockApp(),

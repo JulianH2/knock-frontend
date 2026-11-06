@@ -1,7 +1,9 @@
 // KNOCK-228: Firebase verifica, la API canjea y los tokens van al almacén seguro.
 import 'package:app/core/errores/failure.dart';
+import 'package:app/core/sesion/almacen_seguro.dart';
 import 'package:app/core/sesion/almacen_sesion.dart';
 import 'package:app/core/sesion/canje_sesion.dart';
+import 'package:app/core/sesion/identificador_dispositivo.dart';
 import 'package:app/core/sesion/servicio_entrada.dart';
 import 'package:app/core/sesion/verificador_celular.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -68,14 +70,22 @@ void main() {
     idVerificacion: 'v-1',
   );
 
-  setUp(() {
+  setUp(() async {
     FlutterSecureStorage.setMockInitialValues({});
     verificador = _VerificadorFalso();
     canje = _CanjeFalso();
+    // Usa una sola instancia de almacenamiento seguro para escribir y leer
+    // el id de dispositivo, de modo que obtener() lo devuelva sin generar uno nuevo.
+    final almacenSeguro = AlmacenSeguroFlutterSecureStorage();
+    await almacenSeguro.escribir(
+      IdentificadorDispositivo.clave,
+      '00000000-0000-4000-8000-000000000001',
+    );
     servicio = ServicioEntradaReal(
       verificador: verificador,
       canje: canje,
-      almacen: AlmacenSesionSeguro(nuevoId: () => 'id-dispositivo-ficticio'),
+      almacen: AlmacenSesion(almacenSeguro),
+      identificador: IdentificadorDispositivo(almacenSeguro),
       dispositivo: 'Android',
     );
   });
@@ -88,15 +98,15 @@ void main() {
       expect(verificador.codigoVerificado, '123456');
       expect(canje.recibido, (
         token: 'token-firebase-ficticio',
-        id: 'id-dispositivo-ficticio',
+        id: '00000000-0000-4000-8000-000000000001',
         dispositivo: 'Android',
       ));
       expect(resultado.esNuevo, isFalse);
       expect(resultado.perfilCompleto, isTrue);
       final guardado = await seguro.readAll();
-      expect(guardado[AlmacenSesionSeguro.claveAcceso], 'acceso-ficticio');
+      expect(guardado[AlmacenSesion.claveAcceso], 'acceso-ficticio');
       expect(
-        guardado[AlmacenSesionSeguro.claveRenovacion],
+        guardado[AlmacenSesion.claveRefresco],
         'renovacion-ficticia',
       );
       expect(verificador.cerrado, isTrue);
@@ -111,8 +121,8 @@ void main() {
       throwsA(isA<CuentaSuspendidaFailure>()),
     );
     final guardado = await seguro.readAll();
-    expect(guardado.containsKey(AlmacenSesionSeguro.claveAcceso), isFalse);
-    expect(guardado.containsKey(AlmacenSesionSeguro.claveRenovacion), isFalse);
+    expect(guardado.containsKey(AlmacenSesion.claveAcceso), isFalse);
+    expect(guardado.containsKey(AlmacenSesion.claveRefresco), isFalse);
   });
 
   test('si Firebase rechaza el código no se llama a la API', () async {

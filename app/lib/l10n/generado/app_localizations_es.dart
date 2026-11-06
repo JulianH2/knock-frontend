@@ -210,4 +210,129 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get errorInesperado => 'Algo sali├│ mal. Int├®ntalo de nuevo.';
+
+  @override
+  String get errorCodigoIncorrecto =>
+      'El c├│digo de verificaci├│n es incorrecto.';
+
+  @override
+  String get errorCodigoVencido =>
+      'El c├│digo de verificaci├│n venci├│. Solicita otro.';
+
+  @override
+  String get errorCelularRechazado => 'El n├║mero de celular no es v├ílido.';
+
+  @override
+  String get errorVerificacionNoDisponible =>
+      'La verificaci├│n por SMS no est├í disponible.';
+
+  @override
+  String get entradaCelularTitulo => 'Entra con tu celular';
+
+  @override
+  String get entradaCelularDetalle => 'Te enviaremos un código por SMS';
+
+  @override
+  String get entradaCelularEtiqueta => 'N├║mero de celular';
+
+  @override
+  String get entradaCelularAyuda => '10 d├Łgitos sin el +52';
+
+  @override
+  String get entradaCelularError => 'Escribe los 10 dígitos de tu celular';
+
+  @override
+  String get entradaPrefijoPais => '+52';
+
+  @override
+  String get entradaContinuar => 'Continuar';
+
+  @override
+  String get entradaCargando => 'Enviando c├│digo…';
+
+  @override
+  String get entradaAvisoPrivacidad => 'Acepto el aviso de privacidad';
+
+  @override
+  String entradaAceptoAviso(String aviso) {
+    return 'Acepto el $aviso';
+  }
+
+  @override
+  String get entradaAvisoError =>
+      'Acepta el aviso de privacidad para continuar';
+
+  @override
+  String get entradaErrorCodigoIncorrecto =>
+      'El c├│digo no es correcto. Revísalo e int├®ntalo otra vez.';
+
+  @override
+  String get entradaErrorCodigoVencido => 'El c├│digo venci├│. Pide otro.';
+
+  @override
+  String get entradaErrorCelularRechazado => 'N├║mero de celular no v├ílido.';
+
+  @override
+  String get entradaErrorCuentaSuspendida =>
+      'Tu cuenta est├í suspendida. Si crees que es un error, escr├¡benos.';
+
+  @override
+  String get entradaErrorConflicto =>
+      'Este n├║mero ya est├í ligado a otra cuenta. Escr├¡benos para revisarlo.';
+
+  @override
+  String get entradaErrorDatos =>
+      'No pudimos procesar la entrada. Int├®ntalo otra vez.';
+
+  @override
+  String get entradaErrorDemasiadosIntentos =>
+      'Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.';
+
+  @override
+  String get entradaErrorSinConexion =>
+      'No pudimos conectarnos. Revisa tu internet e int├®ntalo otra vez.';
+
+  @override
+  String get entradaErrorVerificacionNoDisponible =>
+      'La verificaci├│n por SMS no est├í disponible en esta versi├│n de la app.';
+
+  @override
+  String get entradaErrorApiNoConfigurada =>
+      'La app no tiene servidor configurado.';
+
+  @override
+  String get entradaErrorGenerico =>
+      'Error al iniciar sesi├│n. Int├®ntalo de nuevo.';
+
+  @override
+  String get entradaErrorAvisoNoAceptado =>
+      'Debes aceptar el aviso de privacidad antes de continuar.';
+
+  @override
+  String get entradaCodigoTitulo => 'Escribe el c├│digo';
+
+  @override
+  String entradaCodigoEnviadoA(String celular) {
+    return 'Lo enviamos al +52 $celular';
+  }
+
+  @override
+  String get entradaCodigoEtiqueta => 'C├│digo de verificaci├│n';
+
+  @override
+  String get entradaCodigoError => 'Escribe los 6 dígitos del código';
+
+  @override
+  String get entradaEntrar => 'Entrar';
+
+  @override
+  String entradaReenviarEn(int segundos) {
+    return 'Reenviar en $segundos s';
+  }
+
+  @override
+  String get entradaReenviarCodigo => 'Reenviar código';
+
+  @override
+  String get entradaCambiarNumero => 'Cambiar n├║mero';
 }

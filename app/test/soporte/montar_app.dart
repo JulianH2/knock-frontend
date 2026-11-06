@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:app/app.dart';
+import 'package:app/core/preferencias/preferencias_provider.dart';
 import 'package:app/core/router/app_router.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
 import 'package:app/core/sesion/servicio_entrada.dart';
@@ -51,6 +52,8 @@ Future<ProviderContainer> montarApp(
   final container = ProviderContainer(
     overrides: [
       conSesion(iniciada: sesionIniciada),
+      // Idioma por defecto en español para las pruebas de widget (KNOCK-228).
+      preferenciasProvider.overrideWith(_PreferenciasInicialES.new),
       // Entrada sin Firebase ni red (KNOCK-228).
       servicioEntradaProvider.overrideWithValue(
         servicioEntrada ?? ServicioEntradaFalso(),
@@ -110,4 +113,10 @@ Future<void> tocarTexto(WidgetTester tester, String texto) async {
   await tester.pumpAndSettle();
   await tester.tap(find.text(texto));
   await tester.pumpAndSettle();
+}
+
+/// Notifier de preferencias de prueba que siempre devuelve idioma español.
+class _PreferenciasInicialES extends PreferenciasNotifier {
+  @override
+  Preferencias build() => Preferencias.inicial;
 }

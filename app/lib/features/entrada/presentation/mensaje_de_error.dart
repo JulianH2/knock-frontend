@@ -16,6 +16,7 @@ String mensajeDeErrorDeEntrada(AppLocalizations textos, Failure error) =>
       VerificacionNoDisponibleFailure() =>
         textos.entradaErrorVerificacionNoDisponible,
       ApiNoConfiguradaFailure() => textos.entradaErrorApiNoConfigurada,
+      AvisoNoAceptadoFailure() => textos.entradaErrorAvisoNoAceptado,
       AccesoDenegadoFailure() ||
       NoAutorizadoFailure() => textos.entradaErrorGenerico,
     };

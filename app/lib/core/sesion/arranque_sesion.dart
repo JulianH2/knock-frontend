@@ -35,7 +35,7 @@ Future<bool> iniciarFirebase() async {
 Future<bool> haySesionGuardada(AlmacenSesion almacen) async {
   if (!esTelefono) return false;
   try {
-    return await almacen.tieneSesion();
+    return await almacen.leerRefresco() != null;
   } on Exception {
     return false;
   }

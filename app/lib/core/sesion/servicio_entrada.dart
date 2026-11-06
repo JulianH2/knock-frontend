@@ -1,5 +1,6 @@
 import 'package:app/core/sesion/almacen_sesion.dart';
 import 'package:app/core/sesion/canje_sesion.dart';
+import 'package:app/core/sesion/identificador_dispositivo.dart';
 import 'package:app/core/sesion/verificador_celular.dart';
 
 /// Resultado de entrar, sin tokens (esos solo van al almacenamiento seguro).
@@ -30,12 +31,14 @@ class ServicioEntradaReal implements ServicioEntrada {
     required this._verificador,
     required this._canje,
     required this._almacen,
+    required this._identificador,
     required this._dispositivo,
   });
 
   final VerificadorCelular _verificador;
   final CanjeSesion _canje;
   final AlmacenSesion _almacen;
+  final IdentificadorDispositivo _identificador;
   final String _dispositivo;
 
   @override
@@ -52,12 +55,12 @@ class ServicioEntradaReal implements ServicioEntrada {
     final tokenFirebase = await _verificador.tokenDeId(solicitud, codigo);
     final sesion = await _canje.canjear(
       tokenFirebase: tokenFirebase,
-      idDispositivo: await _almacen.idDeDispositivo(),
+      idDispositivo: await _identificador.obtener(),
       dispositivo: _dispositivo,
     );
-    await _almacen.guardarTokens(
+    await _almacen.guardar(
       acceso: sesion.acceso,
-      renovacion: sesion.renovacion,
+      refresco: sesion.renovacion,
     );
     // La app ya tiene su sesión; la de Firebase no se necesita. Si cerrarla
     // falla, la entrada sigue siendo válida.

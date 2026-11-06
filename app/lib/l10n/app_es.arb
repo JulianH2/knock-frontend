@@ -247,5 +247,163 @@
   "errorInesperado": "Algo sali├│ mal. Int├®ntalo de nuevo.",
   "@errorInesperado": {
     "description": "Error com├║n: cualquier fallo no previsto; nunca muestra detalles t├®cnicos."
+  },
+  "errorCodigoIncorrecto": "El c├│digo de verificaci├│n es incorrecto.",
+  "@errorCodigoIncorrecto": {
+    "description": "Error com├║n: c├│digo de SMS incorrecto."
+  },
+  "errorCodigoVencido": "El c├│digo de verificaci├│n venci├│. Solicita otro.",
+  "@errorCodigoVencido": {
+    "description": "Error com├║n: c├│digo de SMS vencido."
+  },
+  "errorCelularRechazado": "El n├║mero de celular no es v├ílido.",
+  "@errorCelularRechazado": {
+    "description": "Error com├║n: n├║mero de celular rechazado por Firebase."
+  },
+  "errorVerificacionNoDisponible": "La verificaci├│n por SMS no est├í disponible.",
+  "@errorVerificacionNoDisponible": {
+    "description": "Error com├║n: falta google-services.json en la compilaci├│n."
+  },
+  "entradaCelularTitulo": "Entra con tu celular",
+  "@entradaCelularTitulo": {
+    "description": "T├Łtulo de la pantalla de entrada con celular."
+  },
+  "entradaCelularDetalle": "Te enviaremos un código por SMS",
+  "@entradaCelularDetalle": {
+    "description": "Texto de ayuda debajo del t├Łtulo de entrada."
+  },
+  "entradaCelularEtiqueta": "N├║mero de celular",
+  "@entradaCelularEtiqueta": {
+    "description": "Etiqueta del campo de n├║mero de celular."
+  },
+  "entradaCelularAyuda": "10 d├Łgitos sin el +52",
+  "@entradaCelularAyuda": {
+    "description": "Texto de ayuda del campo de n├║mero de celular."
+  },
+  "entradaCelularError": "Escribe los 10 dígitos de tu celular",
+  "@entradaCelularError": {
+    "description": "Error del campo de n├║mero de celular."
+  },
+  "entradaPrefijoPais": "+52",
+  "@entradaPrefijoPais": {
+    "description": "Prefijo de pa├Łs fijo mostrado junto al campo de celular (sin selector +52/+1)."
+  },
+  "entradaContinuar": "Continuar",
+  "@entradaContinuar": {
+    "description": "Bot├│n de la pantalla de entrada para pedir el c├│digo SMS."
+  },
+  "entradaCargando": "Enviando c├│digo\u2026",
+  "@entradaCargando": {
+    "description": "Etiqueta del bot├│n mientras se env├Ła el c├│digo SMS."
+  },
+  "entradaAvisoPrivacidad": "Acepto el aviso de privacidad",
+  "@entradaAvisoPrivacidad": {
+    "description": "Texto del aviso de privacidad en la casilla de entrada."
+  },
+  "entradaAceptoAviso": "Acepto el {aviso}",
+  "@entradaAceptoAviso": {
+    "description": "Texto completo de la casilla de aceptaci├│n del aviso de privacidad.",
+    "placeholders": {
+      "aviso": {
+        "type": "String",
+        "description": "Nombre del aviso de privacidad"
+      }
+    }
+  },
+  "entradaAvisoError": "Acepta el aviso de privacidad para continuar",
+  "@entradaAvisoError": {
+    "description": "Error mostrado si no se acepta el aviso de privacidad."
+  },
+  "entradaErrorCodigoIncorrecto": "El c├│digo no es correcto. Revísalo e int├®ntalo otra vez.",
+  "@entradaErrorCodigoIncorrecto": {
+    "description": "Error de entrada: c├│digo SMS incorrecto."
+  },
+  "entradaErrorCodigoVencido": "El c├│digo venci├│. Pide otro.",
+  "@entradaErrorCodigoVencido": {
+    "description": "Error de entrada: c├│digo SMS vencido."
+  },
+  "entradaErrorCelularRechazado": "N├║mero de celular no v├ílido.",
+  "@entradaErrorCelularRechazado": {
+    "description": "Error de entrada: celular rechazado por Firebase."
+  },
+  "entradaErrorCuentaSuspendida": "Tu cuenta est├í suspendida. Si crees que es un error, escr├¡benos.",
+  "@entradaErrorCuentaSuspendida": {
+    "description": "Error de entrada: cuenta suspendida."
+  },
+  "entradaErrorConflicto": "Este n├║mero ya est├í ligado a otra cuenta. Escr├¡benos para revisarlo.",
+  "@entradaErrorConflicto": {
+    "description": "Error de entrada: conflicto de cuenta."
+  },
+  "entradaErrorDatos": "No pudimos procesar la entrada. Int├®ntalo otra vez.",
+  "@entradaErrorDatos": {
+    "description": "Error de entrada: datos rechazados o inv├ílidos."
+  },
+  "entradaErrorDemasiadosIntentos": "Hiciste muchos intentos. Espera un momento y vuelve a intentarlo.",
+  "@entradaErrorDemasiadosIntentos": {
+    "description": "Error de entrada: demasiados intentos."
+  },
+  "entradaErrorSinConexion": "No pudimos conectarnos. Revisa tu internet e int├®ntalo otra vez.",
+  "@entradaErrorSinConexion": {
+    "description": "Error de entrada: sin conexi├│n."
+  },
+  "entradaErrorVerificacionNoDisponible": "La verificaci├│n por SMS no est├í disponible en esta versi├│n de la app.",
+  "@entradaErrorVerificacionNoDisponible": {
+    "description": "Error de entrada: verificaci├│n SMS no disponible."
+  },
+  "entradaErrorApiNoConfigurada": "La app no tiene servidor configurado.",
+  "@entradaErrorApiNoConfigurada": {
+    "description": "Error de entrada: API no configurada."
+  },
+  "entradaErrorGenerico": "Error al iniciar sesi├│n. Int├®ntalo de nuevo.",
+  "@entradaErrorGenerico": {
+    "description": "Error de entrada gen├®rico."
+  },
+  "entradaErrorAvisoNoAceptado": "Debes aceptar el aviso de privacidad antes de continuar.",
+  "@entradaErrorAvisoNoAceptado": {
+    "description": "Error de entrada: aviso de privacidad no aceptado."
+  },
+  "entradaCodigoTitulo": "Escribe el c├│digo",
+  "@entradaCodigoTitulo": {
+    "description": "T├Łtulo de la pantalla de verificaci├│n del c├│digo SMS."
+  },
+  "entradaCodigoEnviadoA": "Lo enviamos al +52 {celular}",
+  "@entradaCodigoEnviadoA": {
+    "description": "Texto de detalle de la pantalla de verificaci├│n.",
+    "placeholders": {
+      "celular": {
+        "type": "String",
+        "description": "N├║mero de celular con prefijo"
+      }
+    }
+  },
+  "entradaCodigoEtiqueta": "C├│digo de verificaci├│n",
+  "@entradaCodigoEtiqueta": {
+    "description": "Etiqueta del campo de c├│digo SMS."
+  },
+  "entradaCodigoError": "Escribe los 6 dígitos del código",
+  "@entradaCodigoError": {
+    "description": "Error del campo de c├│digo SMS."
+  },
+  "entradaEntrar": "Entrar",
+  "@entradaEntrar": {
+    "description": "Bot├│n de la pantalla de verificaci├│n para validar el c├│digo."
+  },
+  "entradaReenviarEn": "Reenviar en {segundos} s",
+  "@entradaReenviarEn": {
+    "description": "Texto del bot├│n de reenv├Ło con cuenta regresiva.",
+    "placeholders": {
+      "segundos": {
+        "type": "int",
+        "description": "Segundos restantes antes de poder reenviar"
+      }
+    }
+  },
+  "entradaReenviarCodigo": "Reenviar código",
+  "@entradaReenviarCodigo": {
+    "description": "Bot├│n de texto para reenviar el c├│digo SMS."
+  },
+  "entradaCambiarNumero": "Cambiar n├║mero",
+  "@entradaCambiarNumero": {
+    "description": "Bot├│n de texto para volver a escribir el n├║mero de celular."
   }
 }
