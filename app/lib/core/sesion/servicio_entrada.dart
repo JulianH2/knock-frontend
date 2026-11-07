@@ -58,10 +58,7 @@ class ServicioEntradaReal implements ServicioEntrada {
       idDispositivo: await _identificador.obtener(),
       dispositivo: _dispositivo,
     );
-    await _almacen.guardar(
-      acceso: sesion.acceso,
-      refresco: sesion.renovacion,
-    );
+    await _almacen.guardar(acceso: sesion.acceso, refresco: sesion.renovacion);
     // La app ya tiene su sesión; la de Firebase no se necesita. Si cerrarla
     // falla, la entrada sigue siendo válida.
     try {

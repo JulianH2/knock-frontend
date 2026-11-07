@@ -24,7 +24,6 @@ String mensajeDeError(AppLocalizations textos, Object error) {
     CodigoIncorrectoFailure() => textos.errorCodigoIncorrecto,
     CodigoVencidoFailure() => textos.errorCodigoVencido,
     CelularRechazadoFailure() => textos.errorCelularRechazado,
-    VerificacionNoDisponibleFailure() =>
-        textos.errorVerificacionNoDisponible,
+    VerificacionNoDisponibleFailure() => textos.errorVerificacionNoDisponible,
   };
 }

@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-06T23:46:49Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-07T23:39:41Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -328,7 +328,7 @@
 **core**
 
 - `app/lib/core/sesion/almacen_seguro.dart` — class `AlmacenSeguro`, class `AlmacenSeguroEnMemoria`, class `AlmacenSeguroFlutterSecureStorage`
-  - `leer()`:25, `escribir()`:28, `borrar()`:32, `leer()`:44, `escribir()`:47, `borrar()`:51
+  - `leer()`:25, `escribir()`:28, `borrar()`:32, `leer()`:46, `escribir()`:49, `borrar()`:53
 - `app/lib/core/sesion/almacen_sesion.dart` — class `AlmacenSesion`
   - `guardar()`:17, `leerAcceso()`:25, `leerRefresco()`:27, `cerrarSesion()`:29
 - `app/lib/core/sesion/arranque_sesion.dart` — —

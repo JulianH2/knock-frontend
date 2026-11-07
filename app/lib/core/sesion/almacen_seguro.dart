@@ -36,7 +36,9 @@ class AlmacenSeguroEnMemoria implements AlmacenSeguro {
 /// Keychain en iOS). Se usa en producción desde `main.dart`; en pruebas se
 /// reemplaza con `AlmacenSeguroEnMemoria` o se mockea `FlutterSecureStorage`.
 class AlmacenSeguroFlutterSecureStorage implements AlmacenSeguro {
-  AlmacenSeguroFlutterSecureStorage({this._almacen = const FlutterSecureStorage()});
+  AlmacenSeguroFlutterSecureStorage({
+    this._almacen = const FlutterSecureStorage(),
+  });
 
   final FlutterSecureStorage _almacen;
 

@@ -37,7 +37,10 @@ void main() {
     const seguro = FlutterSecureStorage();
     final almacen = AlmacenSesion(AlmacenSeguroFlutterSecureStorage());
 
-    await almacen.guardar(acceso: 'acceso-ficticio', refresco: 'refresco-ficticio');
+    await almacen.guardar(
+      acceso: 'acceso-ficticio',
+      refresco: 'refresco-ficticio',
+    );
 
     expect(await almacen.leerAcceso(), 'acceso-ficticio');
     expect(await almacen.leerRefresco(), 'refresco-ficticio');

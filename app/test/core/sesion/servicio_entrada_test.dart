@@ -105,10 +105,7 @@ void main() {
       expect(resultado.perfilCompleto, isTrue);
       final guardado = await seguro.readAll();
       expect(guardado[AlmacenSesion.claveAcceso], 'acceso-ficticio');
-      expect(
-        guardado[AlmacenSesion.claveRefresco],
-        'renovacion-ficticia',
-      );
+      expect(guardado[AlmacenSesion.claveRefresco], 'renovacion-ficticia');
       expect(verificador.cerrado, isTrue);
     },
   );
