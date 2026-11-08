@@ -25,19 +25,12 @@ abstract final class Rutas {
 
 /// Devuelve a dónde redirigir según la sesión, o `null` si se permite.
 ///
-/// Sin sesión, todo lo que no sea `/entrar` (o sus subrutas) lleva a
-/// `/entrar`; con sesión, `/entrar` y sus subrutas llevan a Inicio (HU-001).
+/// Las pantallas individuales manejan su propia verificación de sesión,
+/// así que el router no redirige por sesión.
 String? redireccionPorSesion({
   required bool sesionIniciada,
   required String ubicacion,
-}) {
-  final esRutaDeEntrada =
-      ubicacion == Rutas.entrar || ubicacion.startsWith('${Rutas.entrar}/');
-  if (!sesionIniciada) {
-    return esRutaDeEntrada ? null : Rutas.entrar;
-  }
-  return esRutaDeEntrada ? Rutas.inicio : null;
-}
+}) => null;
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.
 ///
