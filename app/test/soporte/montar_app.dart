@@ -10,7 +10,7 @@ import 'package:app/core/sesion/sesion_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test';
 
 import 'entrada_falsa.dart';
 
@@ -100,11 +100,13 @@ Finder enLaBarra(String etiqueta) => find.descendant(
   matching: find.text(etiqueta),
 );
 
-Finder enElTitulo(String texto) =>
-    find.descendant(of: find.byType(AppBar), matching: find.text(texto));
+Finder enElTitulo(String texto) => find.descendant(
+  of: find.byType(AppBar),
+  matching: find.text(texto),
+);
 
-int indiceSeleccionado(WidgetTester tester) =>
-    tester.widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
+int indiceSeleccionado(WidgetTester tester) => tester
+    .widget<NavigationBar>(find.byType(NavigationBar)).selectedIndex;
 
 String ubicacion(ProviderContainer container) => container
     .read(appRouterProvider)
