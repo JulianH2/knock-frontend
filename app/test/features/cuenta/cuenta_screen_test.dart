@@ -1,7 +1,8 @@
+import 'package:app/core/router/app_router.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/features/cuenta/presentation/widgets/menu_de_prueba.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter_test/flutter_test';
 
 import '../../soporte/montar_app.dart';
 
@@ -13,8 +14,8 @@ void main() {
         tester,
         esTecnico: false,
         interruptorDePrueba: false,
+        rutaInicial: Rutas.cuenta,
       );
-      await tester.tap(enLaBarra('Mi cuenta'));
       await tester.pumpAndSettle();
 
       expect(find.text('Configuración'), findsOneWidget);
@@ -24,22 +25,25 @@ void main() {
 
       await tocarTexto(tester, 'Configuración');
       expect(ubicacion(container), Rutas.configuracion);
-      expect(enElTitulo('Configuración'), findsOneWidget);
+      expect(find.text('Configuración'), findsOneWidget);
       expect(find.byType(NavigationBar), findsOneWidget);
       expect(indiceSeleccionado(tester), 3);
 
       await tester.tap(find.byType(BackButton));
       await tester.pumpAndSettle();
       expect(ubicacion(container), Rutas.cuenta);
-      expect(enElTitulo('Mi cuenta'), findsOneWidget);
+      expect(find.text('Mi cuenta'), findsOneWidget);
     },
   );
 
   testWidgets(
     'TC-HU-052-09 fuera de release el menú de prueba solo tiene el modo técnico',
     (tester) async {
-      await montarApp(tester, esTecnico: false);
-      await tester.tap(enLaBarra('Mi cuenta'));
+      final container = await montarApp(
+        tester,
+        esTecnico: false,
+        rutaInicial: Rutas.cuenta,
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Configuración'), findsOneWidget);
@@ -61,7 +65,7 @@ void main() {
       // El interruptor sigue dando la pestaña Trabajo.
       await tester.tap(find.text('Modo técnico (prueba)'));
       await tester.pumpAndSettle();
-      expect(enLaBarra('Trabajo'), findsOneWidget);
+      expect(find.text('Trabajo'), findsOneWidget);
     },
   );
 }

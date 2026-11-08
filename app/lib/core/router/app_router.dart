@@ -19,8 +19,7 @@ import 'package:go_router/go_router.dart';
 ///
 /// Cada ruta envuelve su pantalla con [AppShell] para mostrar la barra
 /// inferior (Inicio · Explorar · Actividad · Trabajo · Mi cuenta).
-/// Trabajo solo es accesible si el usuario es técnic
-o.
+/// Trabajo solo es accesible si el usuario es técnico.
 /// La entrada (/entrar) queda fuera de la barra inferior.
 final appRouterProvider = Provider<GoRouter>((ref) {
   final esTecnico = ValueNotifier<bool>(ref.read(esTecnicoProvider));
