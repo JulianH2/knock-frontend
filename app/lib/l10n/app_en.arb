@@ -158,7 +158,7 @@
   "@entradaCargando": {
     "description": "Button label while the SMS code is being sent."
   },
-  "entradaAvisoPrivacidad": "I accept the privacy notice",
+  "entradaAvisoPrivacidad": "privacy notice",
   "@entradaAvisoPrivacidad": {
     "description": "Text of the privacy notice in the sign-in checkbox."
   },

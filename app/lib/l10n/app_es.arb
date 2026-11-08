@@ -296,7 +296,7 @@
   "@entradaCargando": {
     "description": "Etiqueta del bot├│n mientras se env├Ła el c├│digo SMS."
   },
-  "entradaAvisoPrivacidad": "Acepto el aviso de privacidad",
+  "entradaAvisoPrivacidad": "aviso de privacidad",
   "@entradaAvisoPrivacidad": {
     "description": "Texto del aviso de privacidad en la casilla de entrada."
   },
