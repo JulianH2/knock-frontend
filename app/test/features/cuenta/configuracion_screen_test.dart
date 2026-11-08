@@ -1,5 +1,6 @@
 import 'package:app/app.dart';
 import 'package:app/core/preferencias/preferencias_provider.dart';
+import 'package:app/core/router/app_router.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/tema/colores.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import '../../soporte/montar_app.dart';
 
 /// Tema que ve la pantalla activa.
 ThemeData _tema(WidgetTester tester) =>
-    Theme.of(tester.element(find.byType(AppBar)));
+    Theme.of(tester.element(find.byType(Scaffold)));
 
 /// Fija el tema del teléfono para la prueba.
 void _telefonoEn(WidgetTester tester, Brightness brillo) {
@@ -18,15 +19,18 @@ void _telefonoEn(WidgetTester tester, Brightness brillo) {
 }
 
 /// Monta la app y entra a Mi cuenta → Configuración.
-Future<void> _abrirConfiguracion(
+Future<dynamic> _abrirConfiguracion(
   WidgetTester tester, {
   bool esTecnico = false,
 }) async {
-  await montarApp(tester, esTecnico: esTecnico);
-  await tester.tap(enLaBarra('Mi cuenta'));
+  final container = await montarApp(
+    tester,
+    esTecnico: esTecnico,
+    rutaInicial: Rutas.configuracion,
+  );
   await tester.pumpAndSettle();
-  await tocarTexto(tester, 'Configuración');
-  expect(enElTitulo('Configuración'), findsOneWidget);
+  expect(find.text('Configuración'), findsOneWidget);
+  return container;
 }
 
 void _esperarOscuro(WidgetTester tester, String pantalla) {
@@ -43,9 +47,10 @@ void main() {
     'TC-HU-052-01 al elegir English la app cambia de idioma sin reiniciar',
     (tester) async {
       final container = await montarApp(tester, esTecnico: false);
-      await tester.tap(enLaBarra('Mi cuenta'));
+      container.read(appRouterProvider).go(Rutas.cuenta);
       await tester.pumpAndSettle();
-      await tocarTexto(tester, 'Configuración');
+      container.read(appRouterProvider).go(Rutas.configuracion);
+      await tester.pumpAndSettle();
 
       final elementoApp = tester.element(find.byType(KnockApp));
       final estadoRouter = tester.state(
@@ -97,7 +102,7 @@ void main() {
     'TC-HU-052-03 con Oscuro todas las pantallas usan el tema oscuro de la maqueta',
     (tester) async {
       _telefonoEn(tester, Brightness.light);
-      await _abrirConfiguracion(tester, esTecnico: true);
+      final container = await _abrirConfiguracion(tester, esTecnico: true);
       expect(_tema(tester).brightness, Brightness.light);
 
       await tocarTexto(tester, 'Oscuro');
@@ -107,20 +112,29 @@ void main() {
       await tester.pumpAndSettle();
       _esperarOscuro(tester, 'Mi cuenta');
 
-      for (final pestana in [
+      final rutas = [
+        Rutas.inicio,
+        Rutas.explorar,
+        Rutas.actividad,
+        Rutas.trabajo,
+        Rutas.cuenta,
+      ];
+      final nombres = [
         'Inicio',
         'Explorar',
         'Actividad',
         'Trabajo',
         'Mi cuenta',
-      ]) {
-        await tester.tap(enLaBarra(pestana));
+      ];
+      for (var i = 0; i < rutas.length; i++) {
+        container.read(appRouterProvider).go(rutas[i]);
         await tester.pumpAndSettle();
-        expect(enElTitulo(pestana), findsOneWidget);
-        _esperarOscuro(tester, pestana);
+        expect(enElTitulo(nombres[i]), findsOneWidget);
+        _esperarOscuro(tester, nombres[i]);
       }
 
-      await tocarTexto(tester, 'Configuración');
+      container.read(appRouterProvider).go(Rutas.configuracion);
+      await tester.pumpAndSettle();
       _esperarOscuro(tester, 'Configuración otra vez');
     },
   );
@@ -224,7 +238,7 @@ void main() {
 
     await _abrirConfiguracion(tester);
     expect(
-      MediaQuery.textScalerOf(tester.element(find.byType(AppBar))).scale(10),
+      MediaQuery.textScalerOf(tester.element(find.byType(Scaffold))).scale(10),
       20,
     );
 

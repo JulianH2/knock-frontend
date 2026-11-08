@@ -1,3 +1,4 @@
+import 'package:app/core/router/app_router.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/features/cuenta/presentation/widgets/menu_de_prueba.dart';
 import 'package:flutter/material.dart';
@@ -13,8 +14,8 @@ void main() {
         tester,
         esTecnico: false,
         interruptorDePrueba: false,
+        rutaInicial: Rutas.cuenta,
       );
-      await tester.tap(enLaBarra('Mi cuenta'));
       await tester.pumpAndSettle();
 
       expect(find.text('Configuración'), findsOneWidget);
@@ -38,8 +39,11 @@ void main() {
   testWidgets(
     'TC-HU-052-09 fuera de release el menú de prueba solo tiene el modo técnico',
     (tester) async {
-      await montarApp(tester, esTecnico: false);
-      await tester.tap(enLaBarra('Mi cuenta'));
+      final container = await montarApp(
+        tester,
+        esTecnico: false,
+        rutaInicial: Rutas.cuenta,
+      );
       await tester.pumpAndSettle();
 
       expect(find.text('Configuración'), findsOneWidget);

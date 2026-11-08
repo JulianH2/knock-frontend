@@ -42,12 +42,14 @@ Override conSesion({bool iniciada = true}) =>
 /// Monta `KnockApp` con un contenedor propio (sin red).
 ///
 /// Arranca con sesión (HU-001) salvo que [sesionIniciada] sea falso.
+/// Si se proporciona [rutaInicial], navega a esa ruta tras montar.
 Future<ProviderContainer> montarApp(
   WidgetTester tester, {
   required bool esTecnico,
   bool interruptorDePrueba = true,
   bool sesionIniciada = true,
   ServicioEntrada? servicioEntrada,
+  String? rutaInicial,
 }) async {
   final container = ProviderContainer(
     overrides: [
@@ -67,6 +69,10 @@ Future<ProviderContainer> montarApp(
     UncontrolledProviderScope(container: container, child: const KnockApp()),
   );
   await tester.pumpAndSettle();
+  if (rutaInicial != null) {
+    container.read(appRouterProvider).go(rutaInicial);
+    await tester.pumpAndSettle();
+  }
   return container;
 }
 
