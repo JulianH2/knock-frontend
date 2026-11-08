@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-/// Pantalla base de una pestaña: título y cuerpo.
+/// Pantalla base de una pestaña: barra superior con el título y un cuerpo.
 ///
-/// No usa Scaffold directamente: el Scaffold (con AppBar y BottomNavigationBar)
-/// lo provee AppShell, que envuelve cada pantalla.
+/// Las pestañas de TT-MOB-01 están vacías; cada historia reemplaza el cuerpo
+/// con su contenido y sus 4 estados.
 class PantallaTitulada extends StatelessWidget {
   const PantallaTitulada({required this.titulo, this.cuerpo, super.key});
 
@@ -12,23 +12,9 @@ class PantallaTitulada extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Padding(
-            padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            child: Text(
-              titulo,
-              style: Theme.of(context).textTheme.headlineSmall,
-            ),
-          ),
-          const Divider(height: 1),
-          Expanded(
-            child: cuerpo ?? const SizedBox.shrink(),
-          ),
-        ],
-      ),
+    return Scaffold(
+      appBar: AppBar(title: Text(titulo)),
+      body: cuerpo ?? const SizedBox.shrink(),
     );
   }
 }
