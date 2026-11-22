@@ -55,7 +55,7 @@ abstract final class ChatMapper {
       return valor;
     }
     if (valor == true) {
-      return 'Por tu seguridad, no compartas datos personales fuera de Knock.';
+      return avisoSeguridadPorOmision;
     }
     return null;
   }
@@ -91,6 +91,21 @@ abstract final class ChatMapper {
   static PaginaMensajes paginaMensajes(Object? json) {
     final (items, cursor) = LecturaJson.pagina(json, mensaje, 'nextCursor');
     return PaginaMensajes(items: items, nextCursor: cursor);
+  }
+
+  /// `ChatResult` de un método del hub.
+  static ResultadoHub resultadoHub(Object? json) {
+    final mapa = LecturaJson.objeto(json);
+    final enviadoEn = mapa['enviadoEn'];
+    return ResultadoHub(
+      ok: LecturaJson.booleano(mapa['ok']),
+      codigo: LecturaJson.textoONulo(mapa['codigo']),
+      mensajeId: LecturaJson.textoONulo(mapa['mensajeId']),
+      enviadoEn: enviadoEn == null ? null : LecturaJson.fecha(enviadoEn),
+      reintentarEnSegundos: LecturaJson.enteroONulo(
+        mapa['reintentarEnSegundos'],
+      ),
+    );
   }
 
   /// Convierte un evento del hub (`nombre` y su argumento) a `EventoChat`.

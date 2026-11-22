@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:app/features/chat/chat_providers.dart';
 import 'package:app/features/chat/domain/chat.dart';
 import 'package:app/features/chat/domain/chat_hub.dart';
@@ -7,7 +9,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 /// (`noLeidos`): el GET es la fuente de verdad.
 final noLeidasChatProvider = FutureProvider.autoDispose<int>((ref) {
   ref.listen(eventosChatProvider, (_, evento) {
-    if (evento.value is NoLeidosActualizados) {
+    final e = evento.value;
+    if (e is NoLeidosActualizados || e is ConexionRestablecida) {
       ref.invalidateSelf();
     }
   });
@@ -64,6 +67,28 @@ class ConversacionesController extends AsyncNotifier<BandejaChats> {
 
   void reintentar() => ref.invalidateSelf();
 
+  /// Pull-to-refresh: vuelve a pedir la primera página sin pasar por la
+  /// pantalla de carga. Si falla, la lista actual se conserva y devuelve
+  /// `false`.
+  Future<bool> refrescar() async {
+    try {
+      final pagina = await ref.read(conversacionesRepositoryProvider).listar();
+      if (!ref.mounted) {
+        return true;
+      }
+      state = AsyncData(
+        BandejaChats(
+          items: pagina.items,
+          totalNoLeidos: pagina.totalNoLeidos,
+          nextCursor: pagina.nextCursor,
+        ),
+      );
+      return true;
+    } on Object {
+      return false;
+    }
+  }
+
   void _alEvento(EventoChat evento) {
     final actual = state.value;
     if (actual == null) {
@@ -105,6 +130,9 @@ class ConversacionesController extends AsyncNotifier<BandejaChats> {
           ),
         );
         state = AsyncData(actual.copiar(items: lista));
+      case ConexionRestablecida():
+        // Los `noLeidos` de la caída pudieron perderse: se pone al día.
+        unawaited(refrescar());
       case MensajeVisitaRecibido():
         break;
     }

@@ -46,15 +46,26 @@ final class MensajeVisitaRecibido extends EventoChat {
   final DateTime enviadoEn;
 }
 
+/// La conexión se restableció tras una caída o un cambio de token. Los
+/// eventos de mejor esfuerzo (`noLeidos`) pudieron perderse: las pantallas
+/// vuelven a pedir lo suyo por REST.
+final class ConexionRestablecida extends EventoChat {
+  const ConexionRestablecida();
+}
+
 /// `ChatResult` de los métodos del hub.
 class ResultadoHub {
   const ResultadoHub({
     required this.ok,
     this.codigo,
+    this.mensajeId,
+    this.enviadoEn,
     this.reintentarEnSegundos,
   });
 
   final bool ok;
+  final String? mensajeId;
+  final DateTime? enviadoEn;
 
   /// `unauthorized`, `conversation_unavailable`, `unavailable`, `not_joined`,
   /// `invalid_message` o `message_limit`.
@@ -80,4 +91,14 @@ abstract interface class ChatHub {
 
   /// `SalirDeConversacion(conversacionId)`.
   Future<ResultadoHub> salirDeConversacion(String conversacionId);
+
+  /// `UnirseAVisita(visitaId)` (chat de visita, spec 026).
+  Future<ResultadoHub> unirseAVisita(String visitaId);
+
+  /// `SalirDeVisita(visitaId)`.
+  Future<ResultadoHub> salirDeVisita(String visitaId);
+
+  /// `EnviarMensaje(visitaId, texto)`: solo existe para el chat de visita; el
+  /// de conversación envía por `POST /conversaciones/{id}/mensajes`.
+  Future<ResultadoHub> enviarMensajeVisita(String visitaId, String texto);
 }
