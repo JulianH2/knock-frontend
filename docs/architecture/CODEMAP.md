@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-22T19:49:10Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-22T23:27:12Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -24,7 +24,7 @@
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
 | `trabajo` | presentation | 1 | 1 | 1 |
-| `visitas` | -, data, domain, presentation | 7 | 21 | 30 |
+| `visitas` | -, data, domain, presentation | 14 | 45 | 86 |
 | `widgets` | core | 2 | 3 | 4 |
 
 ## Índice por módulo
@@ -223,7 +223,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:27, `build()`:40, `Scaffold()`:44
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:34
+  - `redireccionPorRol()`:38
 
 ### sesion
 
@@ -243,28 +243,43 @@
 
 **-**
 
-- `app/lib/features/visitas/visitas_providers.dart` — —
+- `app/lib/features/visitas/visitas_providers.dart` — class `RangoAgendaNotifier`
+  - `build()`:29, `cambiar()`:31
 
 **data**
 
 - `app/lib/features/visitas/data/visitas_mapper.dart` — class `VisitasMapper`
-  - `visita()`:16, `agendaItem()`:52, `agenda()`:65, `propuesta()`:70, `respuesta()`:80, `cancelacion()`:105, `ausencia()`:114
+  - `visita()`:17, `agendaItem()`:53, `agenda()`:66, `propuesta()`:71, `respuesta()`:81, `cancelacion()`:106, `ausencia()`:115, `aviso()`:124, `termino()`:133, `noTerminado()`:142, `cotizacionFinal()`:147, `decision()`:157, `permisoFotos()`:166, `horarios()`:175, `horariosAJson()`:193
 - `app/lib/features/visitas/data/visitas_repository_de_prueba.dart` — class `VisitasRepositoryDePrueba`
-  - `agenda()`:35, `obtener()`:62, `reprogramar()`:68, `responderReprogramacion()`:84, `cancelar()`:100, `noSePresento()`:131
+  - `agenda()`:101, `obtener()`:131, `reprogramar()`:137, `responderReprogramacion()`:153, `cancelar()`:169, `noSePresento()`:186, `llegada()`:198, `avisoConfianza()`:228, `terminar()`:246, `noTerminado()`:270, `enviarCotizacionFinal()`:288, `decidirCotizacionFinal()`:313, `permisoFotos()`:331, `horarios()`:340, `guardarHorarios()`:349
 
 **domain**
 
+- `app/lib/features/visitas/domain/selector_fotos.dart` — class `SelectorFotos`, class `SelectorFotosNoDisponible`
+  - `elegir()`:17
 - `app/lib/features/visitas/domain/visita.dart` — class `VisitaTecnico`, class `VisitaLugar`, class `Visita`, class `AgendaItem`, class `PaginaAgenda`, class `PropuestaReprogramacion`, class `RespuestaReprogramacion`, class `ResultadoCancelacion`, class `ResultadoAusencia`, class `VisitasRepository`
-  - `validarMotivoCancelacion()`:165
+  - `validarMotivoCancelacion()`:166
+- `app/lib/features/visitas/domain/visita_acciones.dart` — class `AvisoConfianza`, class `ResultadoTermino`, class `ResultadoNoTerminado`, class `CotizacionFinal`, class `DecisionCotizacion`, class `PermisoFotos`, class `FranjaHorario`, class `HorarioDia`, class `LimitesVisita`, class `AccionesVisita`
+  - `copiar()`:104, `horarioCerrado()`:124, `errorDeTexto()`:146, `errorMotivoCancelacion()`:165, `errorTextoNoTerminado()`:172, `errorDescripcionTrabajo()`:179, `errorRecomendacion()`:186, `errorCodigoLlegada()`:193, `errorPrecio()`:199, `errorFotos()`:214, `errorFechaReprogramacion()`:220, `errorRangoAgenda()`:226, `minutosDeHora()`:245, `nombreDeDia()`:253, `errorHorarioDia()`:262, `errorHorarios()`:290
 
 **presentation**
 
 - `app/lib/features/visitas/presentation/agenda_screen.dart` — class `AgendaScreen`
-  - `build()`:13, `textoEstadoVisita()`:86
-- `app/lib/features/visitas/presentation/visita_screen.dart` — class `VisitaScreen`, class `_Detalle`, class `_DialogoMotivo`, class `_DialogoMotivoState`
-  - `mensajeDeErrorVisita()`:12, `build()`:26, `build()`:162, `dispose()`:232, `build()`:238
+  - `build()`:39, `textoEstadoVisita()`:145
+- `app/lib/features/visitas/presentation/dialogo_aviso.dart` — class `DialogoAviso`, class `_DialogoAvisoState`
+  - `build()`:33
+- `app/lib/features/visitas/presentation/dialogo_formulario.dart` — class `CampoFormulario`, class `OpcionDialogo`, class `DialogoFormulario`, class `_DialogoFormularioState`
+  - `dispose()`:89, `build()`:167, `OutlinedButton()`:247
+- `app/lib/features/visitas/presentation/horarios_controller.dart` — class `HorariosController`
+  - `build()`:12, `reintentar()`:15, `guardar()`:19
+- `app/lib/features/visitas/presentation/horarios_screen.dart` — class `HorariosScreen`, class `_Editor`, class `_EditorState`, class `_DiaEditor`
+  - `build()`:14, `didUpdateWidget()`:76, `build()`:197, `PopScope()`:199, `build()`:286
+- `app/lib/features/visitas/presentation/mensajes_visita.dart` — —
+  - `mensajeDeErrorVisita()`:22
+- `app/lib/features/visitas/presentation/visita_screen.dart` — class `VisitaScreen`, class `_Detalle`, class `_Boton`, class `_Codigo`
+  - `build()`:22, `showDialog()`:277, `build()`:284, `horaDeLlegada()`:456, `build()`:476, `build()`:503
 - `app/lib/features/visitas/presentation/visitas_controller.dart` — class `EstadoAgenda`, class `AgendaController`, typedef `ResultadoAccion`, class `VisitaController`
-  - `build()`:24, `reintentar()`:29, `cargarMas()`:31, `build()`:79, `reintentar()`:82, `reprogramar()`:96, `responder()`:104, `cancelar()`:114, `noSePresento()`:122
+  - `build()`:26, `reintentar()`:34, `cargarMas()`:36, `build()`:85, `reintentar()`:88, `reprogramar()`:112, `responder()`:124, `cancelar()`:134, `noSePresento()`:142, `llegada()`:149, `terminar()`:171, `noTerminado()`:192, `enviarCotizacionFinal()`:202, `decidirCotizacion()`:221, `permisoFotos()`:234
 
 ### widgets
 
