@@ -1,6 +1,7 @@
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/widgets/pantalla_titulada.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
+import 'package:app/features/chat/presentation/conversaciones_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -17,6 +18,11 @@ class ActividadScreen extends StatelessWidget {
           leading: const InsigniaAvisos(hijo: Icon(Icons.notifications_none)),
           title: const Text('Avisos'),
           onTap: () => context.go(Rutas.avisos),
+        ),
+        ListTile(
+          leading: const InsigniaChat(hijo: Icon(Icons.chat_bubble_outline)),
+          title: const Text('Mensajes'),
+          onTap: () => context.go(Rutas.chats),
         ),
       ],
     ),

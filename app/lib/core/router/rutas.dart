@@ -13,6 +13,10 @@ abstract final class Rutas {
   /// Subrutas de Actividad (KNOCK-105): bandeja de avisos.
   static const avisos = '/actividad/avisos';
 
+  /// Subruta de Actividad (KNOCK-72): lista de conversaciones; el detalle
+  /// cuelga de `chats/:id`.
+  static const chats = '/actividad/chats';
+
   /// Subruta de Mi cuenta (KNOCK-105): preferencias de avisos.
   static const preferenciasAvisos = '/cuenta/preferencias-avisos';
 
