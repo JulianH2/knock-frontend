@@ -17,6 +17,10 @@ abstract final class Rutas {
   /// cuelga de `chats/:id`.
   static const chats = '/actividad/chats';
 
+  /// Subruta de Actividad (KNOCK-119): agenda de visitas; el detalle cuelga
+  /// de `agenda/:id`.
+  static const agenda = '/actividad/agenda';
+
   /// Subruta de Mi cuenta (KNOCK-105): preferencias de avisos.
   static const preferenciasAvisos = '/cuenta/preferencias-avisos';
 

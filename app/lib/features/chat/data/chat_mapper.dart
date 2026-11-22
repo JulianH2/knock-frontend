@@ -89,11 +89,8 @@ abstract final class ChatMapper {
   }
 
   static PaginaMensajes paginaMensajes(Object? json) {
-    final mapa = LecturaJson.objeto(json);
-    return PaginaMensajes(
-      items: [for (final i in LecturaJson.lista(mapa['items'])) mensaje(i)],
-      nextCursor: LecturaJson.textoONulo(mapa['nextCursor']),
-    );
+    final (items, cursor) = LecturaJson.pagina(json, mensaje, 'nextCursor');
+    return PaginaMensajes(items: items, nextCursor: cursor);
   }
 
   /// Convierte un evento del hub (`nombre` y su argumento) a `EventoChat`.

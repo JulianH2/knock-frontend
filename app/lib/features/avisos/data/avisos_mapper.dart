@@ -19,11 +19,8 @@ abstract final class AvisosMapper {
   }
 
   static PaginaAvisos pagina(Object? json) {
-    final mapa = LecturaJson.objeto(json);
-    return PaginaAvisos(
-      items: [for (final i in LecturaJson.lista(mapa['items'])) aviso(i)],
-      siguienteCursor: LecturaJson.textoONulo(mapa['siguienteCursor']),
-    );
+    final (items, cursor) = LecturaJson.pagina(json, aviso, 'siguienteCursor');
+    return PaginaAvisos(items: items, siguienteCursor: cursor);
   }
 
   static ContadorAvisos contador(Object? json) {
