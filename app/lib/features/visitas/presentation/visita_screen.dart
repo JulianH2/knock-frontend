@@ -1,22 +1,18 @@
-import 'package:app/core/errores/failure.dart';
 import 'package:app/core/widgets/estados.dart';
 import 'package:app/features/visitas/domain/visita.dart';
+import 'package:app/features/visitas/domain/visita_acciones.dart';
 import 'package:app/features/visitas/presentation/agenda_screen.dart';
+import 'package:app/features/visitas/presentation/dialogo_aviso.dart';
+import 'package:app/features/visitas/presentation/dialogo_formulario.dart';
+import 'package:app/features/visitas/presentation/mensajes_visita.dart';
 import 'package:app/features/visitas/presentation/visitas_controller.dart';
+import 'package:app/features/visitas/visitas_providers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Texto para el error de una acción de visita. Una regla de negocio (409/422)
-/// dice que la visita ya no permite la acción; una ruta que aún no existe en
-/// el gateway no es un fallo de la app.
-String mensajeDeErrorVisita(Object error) => switch (error) {
-  ReglaDeNegocioFailure() => 'La visita ya no permite esta acción.',
-  DatosInvalidosFailure() => 'Revisa los datos e intenta de nuevo.',
-  _ => mensajeDeError(error, porDefecto: 'No pudimos completar la acción.'),
-};
-
-/// Detalle de la visita con sus acciones: reprogramar, responder a una
-/// propuesta, cancelar y «no se presentó».
+/// Detalle de la visita (KNOCK-119/122). Muestra lo que ve cada rol (el
+/// cliente su código y al técnico; el técnico la colonia y la dirección, sin
+/// código) y solo ofrece las acciones que el estado y el rol permiten.
 class VisitaScreen extends ConsumerWidget {
   const VisitaScreen({required this.visitaId, super.key});
 
@@ -31,7 +27,10 @@ class VisitaScreen extends ConsumerWidget {
     final Widget cuerpo;
     // Con datos previos se sigue mostrando el detalle mientras se refresca.
     if (estado.hasValue) {
-      cuerpo = _Detalle(visita: estado.requireValue, controlador: controlador);
+      cuerpo = RefreshIndicator(
+        onRefresh: () async => controlador.reintentar(),
+        child: _Detalle(visita: estado.requireValue, controlador: controlador),
+      );
     } else if (estado.isLoading) {
       cuerpo = const CargandoCentrado(etiqueta: 'Cargando visita');
     } else if (estado.hasError) {
@@ -53,30 +52,32 @@ class VisitaScreen extends ConsumerWidget {
   }
 }
 
-class _Detalle extends StatelessWidget {
+class _Detalle extends ConsumerWidget {
   const _Detalle({required this.visita, required this.controlador});
 
   final Visita visita;
   final VisitaController controlador;
 
-  Future<void> _mostrar(
-    BuildContext context,
-    Future<ResultadoAccion> Function() accion,
-  ) async {
+  /// Abre el diálogo y, si terminó con éxito, avisa con un mensaje.
+  Future<void> _abrir(BuildContext context, DialogoFormulario dialogo) async {
     final mensajero = ScaffoldMessenger.of(context);
-    final r = await accion();
-    final texto = r.error != null
-        ? mensajeDeErrorVisita(r.error!)
-        : (r.mensaje ?? '');
-    mensajero.showSnackBar(SnackBar(content: Text(texto)));
+    final mensaje = await showDialog<String>(
+      context: context,
+      barrierDismissible: false,
+      builder: (_) => dialogo,
+    );
+    if (mensaje != null && mensaje.isNotEmpty) {
+      mensajero.showSnackBar(SnackBar(content: Text(mensaje)));
+    }
   }
 
-  Future<void> _reprogramar(BuildContext context) async {
-    final ahora = DateTime.now();
+  Future<void> _reprogramar(BuildContext context, WidgetRef ref) async {
+    final ahora = ref.read(relojVisitasProvider)();
+    final mensajero = ScaffoldMessenger.of(context);
     final dia = await showDatePicker(
       context: context,
       initialDate: ahora.add(const Duration(days: 1)),
-      firstDate: ahora,
+      firstDate: DateTime(ahora.year, ahora.month, ahora.day),
       lastDate: ahora.add(const Duration(days: 60)),
     );
     if (dia == null || !context.mounted) {
@@ -96,72 +97,259 @@ class _Detalle extends StatelessWidget {
       hora.hour,
       hora.minute,
     );
-    await _mostrar(context, () => controlador.reprogramar(elegida));
-  }
-
-  Future<void> _responder(BuildContext context) async {
-    final acepta = await showDialog<bool>(
-      context: context,
-      builder: (contexto) => AlertDialog(
-        title: const Text('Nuevo horario propuesto'),
-        content: const Text('¿Aceptas el nuevo horario de la visita?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(contexto, false),
-            child: const Text('Rechazar'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(contexto, true),
-            child: const Text('Aceptar'),
-          ),
-        ],
+    final errorFecha = errorFechaReprogramacion(elegida, ahora);
+    if (errorFecha != null) {
+      mensajero.showSnackBar(SnackBar(content: Text(errorFecha)));
+      return;
+    }
+    final r = await controlador.reprogramar(elegida);
+    mensajero.showSnackBar(
+      SnackBar(
+        content: Text(
+          r.error != null ? mensajeDeErrorVisita(r.error!) : (r.mensaje ?? ''),
+        ),
       ),
     );
-    if (acepta == null || !context.mounted) {
-      return;
-    }
-    await _mostrar(context, () => controlador.responder(acepta: acepta));
   }
 
-  Future<void> _cancelar(BuildContext context) async {
-    final motivo = await showDialog<String>(
-      context: context,
-      builder: (contexto) => const _DialogoMotivo(),
-    );
-    if (motivo == null || !context.mounted) {
-      return;
-    }
-    await _mostrar(context, () => controlador.cancelar(motivo));
-  }
+  Future<void> _responder(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Nuevo horario propuesto',
+      mensaje: '¿Aceptas el nuevo horario de la visita?',
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Rechazar',
+          validar: false,
+          principal: false,
+          enviar: (_, _) => controlador.responder(acepta: false),
+        ),
+        OpcionDialogo(
+          etiqueta: 'Aceptar',
+          validar: false,
+          enviar: (_, _) => controlador.responder(acepta: true),
+        ),
+      ],
+    ),
+  );
 
-  Future<void> _noSePresento(BuildContext context) async {
-    final confirma = await showDialog<bool>(
+  Future<void> _cancelar(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Cancelar la visita',
+      mensaje:
+          'Con menos de 24 horas de anticipación cuenta como cancelación '
+          'tardía.',
+      campos: const [
+        CampoFormulario(
+          clave: 'motivo',
+          etiqueta: 'Motivo',
+          maxLength: LimitesVisita.motivoCancelarMax,
+          lineas: 3,
+          validar: errorMotivoCancelacion,
+        ),
+      ],
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Cancelar visita',
+          enviar: (v, _) => controlador.cancelar(v['motivo']!),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _noSePresento(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'El cliente no se presentó',
+      mensaje:
+          'Se registra en la visita, sin penalizar al cliente. '
+          '¿Continuar?',
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Confirmar',
+          validar: false,
+          enviar: (_, _) => controlador.noSePresento(),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _llegada(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Confirmar llegada',
+      mensaje: 'Pídele al cliente el código de 4 dígitos de la visita.',
+      campos: const [
+        CampoFormulario(
+          clave: 'codigo',
+          etiqueta: 'Código',
+          maxLength: LimitesVisita.codigoDigitos,
+          soloDigitos: true,
+          validar: errorCodigoLlegada,
+        ),
+      ],
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Confirmar llegada',
+          enviar: (v, _) => controlador.llegada(v['codigo']!),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _terminar(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Terminar la visita',
+      mensaje:
+          'El cliente no tiene que confirmar. Cuenta qué hiciste y '
+          'agrega de 1 a 5 fotos.',
+      conFotos: true,
+      campos: const [
+        CampoFormulario(
+          clave: 'descripcion',
+          etiqueta: 'Qué hiciste',
+          maxLength: LimitesVisita.descripcionMax,
+          lineas: 3,
+          validar: errorDescripcionTrabajo,
+        ),
+        CampoFormulario(
+          clave: 'recomendacion',
+          etiqueta: 'Recomendación (opcional)',
+          maxLength: LimitesVisita.recomendacionMax,
+          lineas: 2,
+          validar: errorRecomendacion,
+        ),
+      ],
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Terminar visita',
+          enviar: (v, fotos) => controlador.terminar(
+            descripcion: v['descripcion']!,
+            recomendacion: v['recomendacion']!,
+            fotos: fotos,
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _cotizacionFinal(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Cotización final',
+      mensaje: 'Solo puedes enviar una por visita y el cliente decide.',
+      campos: const [
+        CampoFormulario(
+          clave: 'precio',
+          etiqueta: 'Precio en pesos',
+          soloDigitos: true,
+          maxLength: 9,
+          validar: errorPrecio,
+        ),
+        CampoFormulario(
+          clave: 'descripcion',
+          etiqueta: 'Qué incluye',
+          maxLength: LimitesVisita.descripcionMax,
+          lineas: 3,
+          validar: errorDescripcionTrabajo,
+        ),
+      ],
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Enviar cotización',
+          enviar: (v, _) => controlador.enviarCotizacionFinal(
+            precio: v['precio']!,
+            descripcion: v['descripcion']!,
+          ),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _decidirCotizacion(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Cotización final',
+      mensaje:
+          '¿Apruebas la cotización final del técnico? La decisión es '
+          'definitiva.',
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Rechazar',
+          validar: false,
+          principal: false,
+          enviar: (_, _) => controlador.decidirCotizacion(aprueba: false),
+        ),
+        OpcionDialogo(
+          etiqueta: 'Aprobar',
+          validar: false,
+          enviar: (_, _) => controlador.decidirCotizacion(aprueba: true),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _noTerminado(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Reportar que no se terminó',
+      mensaje:
+          'Puedes reportarlo una sola vez, hasta '
+          '${LimitesVisita.diasParaNoTerminado} días después de la visita.',
+      campos: const [
+        CampoFormulario(
+          clave: 'texto',
+          etiqueta: 'Qué faltó',
+          maxLength: LimitesVisita.noTerminadoMax,
+          lineas: 3,
+          validar: errorTextoNoTerminado,
+        ),
+      ],
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'Enviar reporte',
+          enviar: (v, _) => controlador.noTerminado(v['texto']!),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _permisoFotos(BuildContext context) => _abrir(
+    context,
+    DialogoFormulario(
+      titulo: 'Fotos del trabajo',
+      mensaje: '¿Autorizas que se publiquen las fotos del trabajo?',
+      opciones: [
+        OpcionDialogo(
+          etiqueta: 'No autorizar',
+          validar: false,
+          principal: false,
+          enviar: (_, _) => controlador.permisoFotos(permiso: false),
+        ),
+        OpcionDialogo(
+          etiqueta: 'Autorizar',
+          validar: false,
+          enviar: (_, _) => controlador.permisoFotos(permiso: true),
+        ),
+      ],
+    ),
+  );
+
+  Future<void> _aviso(BuildContext context) async {
+    await showDialog<void>(
       context: context,
-      builder: (contexto) => AlertDialog(
-        title: Text(_textoNoSePresento(visita.rol)),
-        content: const Text('Se registrará en la visita. ¿Continuar?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(contexto, false),
-            child: const Text('Volver'),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(contexto, true),
-            child: const Text('Confirmar'),
-          ),
-        ],
-      ),
+      builder: (_) => DialogoAviso(pedir: controlador.pedirAviso),
     );
-    if (confirma != true || !context.mounted) {
-      return;
-    }
-    await _mostrar(context, controlador.noSePresento);
   }
 
   @override
-  Widget build(BuildContext context) {
-    final cancelada = visita.estado == 'cancelada';
+  Widget build(BuildContext context, WidgetRef ref) {
+    final acciones = AccionesVisita(visita);
+    final esTecnico = visita.rol == 'tecnico';
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: const EdgeInsets.all(16),
       children: [
         Text(
@@ -173,88 +361,166 @@ class _Detalle extends StatelessWidget {
         Text(visita.modalidad == 'taller' ? 'En taller' : 'A domicilio'),
         if (visita.precio != null) Text('Precio: \$${visita.precio}'),
         Text('Tope: \$${visita.tope}'),
-        if (visita.tecnico != null)
+        if (!esTecnico && visita.tecnico != null) ...[
           Text(
             'Técnico: ${visita.tecnico!.nombre}'
             '${visita.tecnico!.verificado ? ' (verificado)' : ''}',
           ),
+          if (visita.tecnico!.telefono != null)
+            Text('Teléfono: ${visita.tecnico!.telefono}'),
+        ],
         if (visita.coloniaCliente != null)
           Text('Colonia: ${visita.coloniaCliente}'),
         if (visita.lugar.direccion != null)
           Text('Lugar: ${visita.lugar.direccion}'),
-        if (visita.codigo != null)
-          Text('Código de la visita: ${visita.codigo}'),
+        if (!esTecnico) _Codigo(visita: visita),
+        if (esTecnico && visita.llegadaEn != null)
+          Text('Llegaste a las ${horaDeLlegada(visita.llegadaEn!)}'),
         if (visita.reglaSeguridad != null) ...[
           const SizedBox(height: 8),
           Text(visita.reglaSeguridad!),
         ],
         const SizedBox(height: 16),
-        if (!cancelada) ...[
-          FilledButton.icon(
-            onPressed: () => _reprogramar(context),
-            icon: const Icon(Icons.edit_calendar_outlined),
-            label: const Text('Reprogramar'),
+        if (!acciones.alguna)
+          const Text(
+            'Por ahora no hay acciones disponibles para esta visita.',
+            key: ValueKey('sin-acciones'),
           ),
-          const SizedBox(height: 8),
-          OutlinedButton(
-            onPressed: () => _responder(context),
-            child: const Text('Responder a un nuevo horario'),
+        if (acciones.llegada)
+          _Boton(
+            principal: true,
+            icono: Icons.where_to_vote_outlined,
+            texto: 'Confirmar llegada',
+            alPulsar: () => _llegada(context),
           ),
-          const SizedBox(height: 8),
-          OutlinedButton(
-            onPressed: () => _noSePresento(context),
-            child: Text(_textoNoSePresento(visita.rol)),
+        if (acciones.terminar)
+          _Boton(
+            principal: true,
+            icono: Icons.task_alt_outlined,
+            texto: 'Terminar visita',
+            alPulsar: () => _terminar(context),
           ),
-          const SizedBox(height: 8),
-          TextButton(
-            onPressed: () => _cancelar(context),
-            child: const Text('Cancelar visita'),
+        if (acciones.cotizacionFinal)
+          _Boton(
+            texto: 'Enviar cotización final',
+            alPulsar: () => _cotizacionFinal(context),
           ),
-        ],
+        if (acciones.decidirCotizacion)
+          _Boton(
+            principal: true,
+            texto: 'Responder a la cotización final',
+            alPulsar: () => _decidirCotizacion(context),
+          ),
+        if (acciones.permisoFotos)
+          _Boton(
+            texto: 'Permiso para publicar las fotos',
+            alPulsar: () => _permisoFotos(context),
+          ),
+        if (acciones.noTerminado)
+          _Boton(
+            texto: 'Reportar que no se terminó',
+            alPulsar: () => _noTerminado(context),
+          ),
+        if (acciones.aviso)
+          _Boton(
+            icono: Icons.shield_outlined,
+            texto: 'Avisar a alguien de confianza',
+            alPulsar: () => _aviso(context),
+          ),
+        if (acciones.reprogramar)
+          _Boton(
+            principal: !acciones.llegada,
+            icono: Icons.edit_calendar_outlined,
+            texto: 'Reprogramar',
+            alPulsar: () => _reprogramar(context, ref),
+          ),
+        if (acciones.responderReprogramacion)
+          _Boton(
+            texto: 'Responder a un nuevo horario',
+            alPulsar: () => _responder(context),
+          ),
+        if (acciones.clienteAusente)
+          _Boton(
+            texto: 'El cliente no se presentó',
+            alPulsar: () => _noSePresento(context),
+          ),
+        if (acciones.cancelar)
+          Padding(
+            padding: const EdgeInsets.only(top: 8),
+            child: TextButton(
+              onPressed: () => _cancelar(context),
+              child: const Text('Cancelar visita'),
+            ),
+          ),
       ],
     );
   }
 }
 
-/// Diálogo con el campo del motivo; el controlador de texto vive en su estado
-/// para liberarse cuando termina la animación de cierre.
-class _DialogoMotivo extends StatefulWidget {
-  const _DialogoMotivo();
-
-  @override
-  State<_DialogoMotivo> createState() => _DialogoMotivoState();
+/// Hora de llegada para mostrar («14:05»).
+String horaDeLlegada(DateTime fecha) {
+  final l = fecha.toLocal();
+  return '${l.hour.toString().padLeft(2, '0')}:'
+      '${l.minute.toString().padLeft(2, '0')}';
 }
 
-class _DialogoMotivoState extends State<_DialogoMotivo> {
-  final _campo = TextEditingController();
+class _Boton extends StatelessWidget {
+  const _Boton({
+    required this.texto,
+    required this.alPulsar,
+    this.principal = false,
+    this.icono,
+  });
+
+  final String texto;
+  final VoidCallback alPulsar;
+  final bool principal;
+  final IconData? icono;
 
   @override
-  void dispose() {
-    _campo.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) => AlertDialog(
-    title: const Text('Cancelar la visita'),
-    content: TextField(
-      controller: _campo,
-      maxLength: 500,
-      decoration: const InputDecoration(labelText: 'Motivo'),
-    ),
-    actions: [
-      TextButton(
-        onPressed: () => Navigator.pop(context),
-        child: const Text('Volver'),
-      ),
-      FilledButton(
-        onPressed: () => Navigator.pop(context, _campo.text),
-        child: const Text('Cancelar visita'),
-      ),
-    ],
+  Widget build(BuildContext context) => Padding(
+    padding: const EdgeInsets.only(bottom: 8),
+    child: principal
+        ? (icono == null
+              ? FilledButton(onPressed: alPulsar, child: Text(texto))
+              : FilledButton.icon(
+                  onPressed: alPulsar,
+                  icon: Icon(icono),
+                  label: Text(texto),
+                ))
+        : (icono == null
+              ? OutlinedButton(onPressed: alPulsar, child: Text(texto))
+              : OutlinedButton.icon(
+                  onPressed: alPulsar,
+                  icon: Icon(icono),
+                  label: Text(texto),
+                )),
   );
 }
 
-String _textoNoSePresento(String rol) => rol == 'tecnico'
-    ? 'El cliente no se presentó'
-    : 'El técnico no se presentó';
+/// Código de la visita para el cliente; sin código, dice por qué.
+class _Codigo extends StatelessWidget {
+  const _Codigo({required this.visita});
+
+  final Visita visita;
+
+  @override
+  Widget build(BuildContext context) {
+    if (visita.codigo != null) {
+      return Padding(
+        padding: const EdgeInsets.only(top: 8),
+        child: Text(
+          'Código de la visita: ${visita.codigo}\n'
+          'Dáselo al técnico cuando llegue; no lo compartas por mensaje.',
+        ),
+      );
+    }
+    final motivo = switch (visita.motivoCodigo) {
+      'usado' => 'El código ya se usó.',
+      'vencido' => 'El código venció.',
+      'bloqueada' => 'La visita está bloqueada por intentos del código.',
+      _ => null,
+    };
+    return motivo == null ? const SizedBox.shrink() : Text(motivo);
+  }
+}
