@@ -4,6 +4,8 @@ import 'package:app/core/sesion/es_tecnico_provider.dart';
 import 'package:app/features/actividad/presentation/actividad_screen.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
 import 'package:app/features/avisos/presentation/preferencias_avisos_screen.dart';
+import 'package:app/features/chat/presentation/chat_screen.dart';
+import 'package:app/features/chat/presentation/conversaciones_screen.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
 import 'package:app/features/dispositivos/presentation/notificaciones_screen.dart';
 import 'package:app/features/explorar/presentation/explorar_screen.dart';
@@ -53,6 +55,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'avisos',
                 builder: (context, state) => const AvisosScreen(),
+              ),
+              GoRoute(
+                path: 'chats',
+                builder: (context, state) => const ConversacionesScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) =>
+                        ChatScreen(conversacionId: state.pathParameters['id']!),
+                  ),
+                ],
               ),
             ],
           ),
