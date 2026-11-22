@@ -24,6 +24,11 @@ class ActividadScreen extends StatelessWidget {
           title: const Text('Mensajes'),
           onTap: () => context.go(Rutas.chats),
         ),
+        ListTile(
+          leading: const Icon(Icons.event_outlined),
+          title: const Text('Agenda de visitas'),
+          onTap: () => context.go(Rutas.agenda),
+        ),
       ],
     ),
   );

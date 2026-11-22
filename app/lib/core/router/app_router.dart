@@ -12,6 +12,8 @@ import 'package:app/features/explorar/presentation/explorar_screen.dart';
 import 'package:app/features/inicio/presentation/inicio_screen.dart';
 import 'package:app/features/oficios/presentation/oficios_screen.dart';
 import 'package:app/features/trabajo/presentation/trabajo_screen.dart';
+import 'package:app/features/visitas/presentation/agenda_screen.dart';
+import 'package:app/features/visitas/presentation/visita_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -55,6 +57,17 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               GoRoute(
                 path: 'avisos',
                 builder: (context, state) => const AvisosScreen(),
+              ),
+              GoRoute(
+                path: 'agenda',
+                builder: (context, state) => const AgendaScreen(),
+                routes: [
+                  GoRoute(
+                    path: ':id',
+                    builder: (context, state) =>
+                        VisitaScreen(visitaId: state.pathParameters['id']!),
+                  ),
+                ],
               ),
               GoRoute(
                 path: 'chats',
