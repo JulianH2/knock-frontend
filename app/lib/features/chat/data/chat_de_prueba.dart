@@ -5,13 +5,16 @@ import 'package:app/features/chat/domain/chat.dart';
 import 'package:app/features/chat/domain/chat_hub.dart';
 
 /// Conversaciones ficticias en memoria con el comportamiento del contrato.
-/// `falla` rompe toda llamada; `fallaAlEnviar` solo el envío.
+/// `falla` rompe toda llamada; `fallaAlEnviar` solo el envío (se puede quitar
+/// para probar el reintento); `esperaAlEnviar` retiene el envío hasta que se
+/// complete.
 class ConversacionesRepositoryDePrueba implements ConversacionesRepository {
   ConversacionesRepositoryDePrueba({
     List<Conversacion>? conversaciones,
     Map<String, List<Mensaje>>? mensajes,
     this.falla,
     this.fallaAlEnviar,
+    this.esperaAlEnviar,
     DateTime Function()? ahora,
   }) : _conversaciones = [...conversaciones ?? _ficticias],
        _mensajes = {
@@ -24,7 +27,10 @@ class ConversacionesRepositoryDePrueba implements ConversacionesRepository {
   final Map<String, List<Mensaje>> _mensajes;
   final DateTime Function() _ahora;
   final Failure? falla;
-  final Failure? fallaAlEnviar;
+  Failure? fallaAlEnviar;
+  Future<void>? esperaAlEnviar;
+  Failure? fallaAlCrear;
+  int enviosIntentados = 0;
   final List<DateTime> marcadosLeidos = [];
   int _siguiente = 1000;
 
@@ -42,6 +48,11 @@ class ConversacionesRepositoryDePrueba implements ConversacionesRepository {
     }
     return _conversaciones[i];
   }
+
+  /// Simula que la otra persona escribió (llega al historial sin pasar por
+  /// `enviar`).
+  void llegaMensaje(String id, Mensaje mensaje) =>
+      _mensajes.putIfAbsent(id, () => []).insert(0, mensaje);
 
   @override
   Future<PaginaConversaciones> listar({String? cursor, int limite = 20}) async {
@@ -114,6 +125,11 @@ class ConversacionesRepositoryDePrueba implements ConversacionesRepository {
   @override
   Future<Mensaje> enviar(String id, String texto) async {
     _revisar();
+    enviosIntentados++;
+    final espera = esperaAlEnviar;
+    if (espera != null) {
+      await espera;
+    }
     final conversacion = _buscar(id);
     final error = fallaAlEnviar;
     if (error != null) {
@@ -135,6 +151,41 @@ class ConversacionesRepositoryDePrueba implements ConversacionesRepository {
   }
 
   @override
+  Future<ConversacionCreada> crear({
+    required String solicitudId,
+    String? tecnicoId,
+  }) async {
+    _revisar();
+    final error = fallaAlCrear;
+    if (error != null) {
+      throw error;
+    }
+    if (solicitudId.trim().isEmpty) {
+      throw const DatosInvalidosFailure();
+    }
+    final i = _conversaciones.indexWhere((c) => c.solicitudId == solicitudId);
+    if (i >= 0) {
+      if (_conversaciones[i].cerrada) {
+        throw const ReglaDeNegocioFailure('conversation_closed');
+      }
+      return ConversacionCreada(conversacion: _conversaciones[i], nueva: false);
+    }
+    final nueva = Conversacion(
+      conversacionId: 'c${_siguiente++}',
+      solicitudId: solicitudId,
+      rol: tecnicoId == null ? 'tecnico' : 'cliente',
+      contraparte: const ContraparteChat(nombre: 'Contraparte de prueba'),
+      servicio: 'Servicio de prueba',
+      estado: 'abierta',
+      contactoVisible: false,
+      avisoSeguridad: avisoSeguridadPorOmision,
+      noLeidos: 0,
+    );
+    _conversaciones.insert(0, nueva);
+    return ConversacionCreada(conversacion: nueva, nueva: true);
+  }
+
+  @override
   Future<void> marcarLeido(String id, {required DateTime hasta}) async {
     _revisar();
     _buscar(id);
@@ -151,8 +202,7 @@ final _ficticias = [
     servicio: 'Plomería',
     estado: 'abierta',
     contactoVisible: false,
-    avisoSeguridad:
-        'Por tu seguridad, no compartas datos personales fuera de Knock.',
+    avisoSeguridad: avisoSeguridadPorOmision,
     noLeidos: 1,
   ),
 ];
@@ -183,6 +233,10 @@ class ChatHubDePrueba implements ChatHub {
       StreamController<EventoChat>.broadcast();
   final List<String> unidas = [];
   final List<String> salidas = [];
+  final List<String> visitasUnidas = [];
+  final List<String> visitasSalidas = [];
+  final List<(String, String)> enviadosAVisita = [];
+  ResultadoHub resultadoEnvioVisita = const ResultadoHub(ok: true);
   bool conectado = false;
 
   void emitir(EventoChat evento) => _controlador.add(evento);
@@ -210,6 +264,27 @@ class ChatHubDePrueba implements ChatHub {
     salidas.add(conversacionId);
     return const ResultadoHub(ok: true);
   }
+
+  @override
+  Future<ResultadoHub> unirseAVisita(String visitaId) async {
+    visitasUnidas.add(visitaId);
+    return const ResultadoHub(ok: true);
+  }
+
+  @override
+  Future<ResultadoHub> salirDeVisita(String visitaId) async {
+    visitasSalidas.add(visitaId);
+    return const ResultadoHub(ok: true);
+  }
+
+  @override
+  Future<ResultadoHub> enviarMensajeVisita(
+    String visitaId,
+    String texto,
+  ) async {
+    enviadosAVisita.add((visitaId, texto));
+    return resultadoEnvioVisita;
+  }
 }
 
 /// Hub sin conexión: no entrega eventos. Es el valor por omisión hasta que se
@@ -233,4 +308,18 @@ class ChatHubInactivo implements ChatHub {
   @override
   Future<ResultadoHub> salirDeConversacion(String conversacionId) async =>
       const ResultadoHub(ok: true);
+
+  @override
+  Future<ResultadoHub> unirseAVisita(String visitaId) async =>
+      const ResultadoHub(ok: false, codigo: 'unavailable');
+
+  @override
+  Future<ResultadoHub> salirDeVisita(String visitaId) async =>
+      const ResultadoHub(ok: true);
+
+  @override
+  Future<ResultadoHub> enviarMensajeVisita(
+    String visitaId,
+    String texto,
+  ) async => const ResultadoHub(ok: false, codigo: 'unavailable');
 }

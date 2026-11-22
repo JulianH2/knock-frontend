@@ -106,6 +106,37 @@ class Conversacion {
 
   /// Cerrada: la API la reporta con motivo de cierre o estado `cerrada`.
   bool get cerrada => motivoCierre != null || estado == 'cerrada';
+
+  /// La misma conversación marcada como cerrada (cuando un envío responde
+  /// `conversation_closed`).
+  Conversacion comoCerrada() => Conversacion(
+    conversacionId: conversacionId,
+    solicitudId: solicitudId,
+    visitaId: visitaId,
+    rol: rol,
+    contraparte: contraparte,
+    servicio: servicio,
+    estado: 'cerrada',
+    motivoCierre: motivoCierre ?? 'cerrada',
+    contactoVisible: contactoVisible,
+    avisoSeguridad: avisoSeguridad,
+    noLeidos: noLeidos,
+  );
+}
+
+/// Aviso que se muestra siempre en el chat si la API no manda uno propio.
+const String avisoSeguridadPorOmision =
+    'Por tu seguridad, no pagues por adelantado ni compartas datos personales '
+    'fuera de Knock.';
+
+/// Resultado de crear o recuperar la conversación del par (solicitud, técnico).
+class ConversacionCreada {
+  const ConversacionCreada({required this.conversacion, required this.nueva});
+
+  final Conversacion conversacion;
+
+  /// `true` si fue 201 (primera vez); `false` si ya existía (200).
+  final bool nueva;
 }
 
 class Mensaje {
@@ -137,6 +168,9 @@ class PaginaMensajes {
 /// Tope del cuerpo de un mensaje (bytes UTF-8), igual que el servidor.
 const int maxBytesMensaje = 4096;
 
+/// Bytes UTF-8 del texto ya recortado (lo que cuenta el servidor).
+int bytesDeMensaje(String texto) => utf8.encode(texto.trim()).length;
+
 /// Valida el texto antes de enviarlo: no vacío y hasta 4096 bytes. Falla con
 /// `DatosInvalidosFailure`; devuelve el texto sin espacios en los extremos.
 String validarTextoMensaje(String texto) {
@@ -167,6 +201,13 @@ abstract interface class ConversacionesRepository {
 
   /// `POST /{id}/mensajes`.
   Future<Mensaje> enviar(String id, String texto);
+
+  /// `POST /` con la solicitud y, si quien llama es el cliente, el técnico:
+  /// 201 primera vez, 200 si ya existía; 409 `conversation_closed`.
+  Future<ConversacionCreada> crear({
+    required String solicitudId,
+    String? tecnicoId,
+  });
 
   /// `POST /{id}/leido` con la fecha del último mensaje visto.
   Future<void> marcarLeido(String id, {required DateTime hasta});
