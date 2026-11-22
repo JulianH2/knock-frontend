@@ -33,8 +33,8 @@ class _RepoControlado extends AvisosRepositoryDePrueba {
   _RepoControlado({super.avisos});
 
   Completer<void>? puerta;
-  Object? errorAlMarcar;
-  Object? errorAlListar;
+  Failure? errorAlMarcar;
+  Failure? errorAlListar;
   int listados = 0;
 
   @override

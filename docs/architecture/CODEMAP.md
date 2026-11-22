@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-22T19:49:10Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-22T23:25:46Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -9,11 +9,11 @@
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
-| `avisos` | -, data, domain, presentation | 9 | 19 | 27 |
+| `avisos` | -, data, domain, presentation | 11 | 25 | 42 |
 | `chat` | -, data, domain, presentation | 9 | 31 | 42 |
 | `cuenta` | presentation | 1 | 1 | 1 |
 | `datos` | core | 2 | 1 | 12 |
-| `dispositivos` | -, data, domain, presentation | 5 | 10 | 8 |
+| `dispositivos` | -, data, domain, presentation | 6 | 15 | 23 |
 | `errores` | core | 1 | 7 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
@@ -56,24 +56,28 @@
 - `app/lib/features/avisos/data/avisos_mapper.dart` — class `AvisosMapper`
   - `aviso()`:7, `pagina()`:21, `contador()`:26, `preferencias()`:34
 - `app/lib/features/avisos/data/avisos_repository_de_prueba.dart` — class `AvisosRepositoryDePrueba`, class `PreferenciasAvisosRepositoryDePrueba`
-  - `contador()`:48, `marcarLeido()`:58, `marcarTodosLeidos()`:67, `obtener()`:104
+  - `contador()`:48, `marcarLeido()`:58, `marcarTodosLeidos()`:70, `obtener()`:119, `guardar()`:134
 
 **domain**
 
 - `app/lib/features/avisos/domain/aviso.dart` — class `Aviso`, class `PaginaAvisos`, class `ContadorAvisos`, class `FiltroAvisos`
   - `copiaLeido()`:26
 - `app/lib/features/avisos/domain/avisos_repository.dart` — class `AvisosRepository`
+- `app/lib/features/avisos/domain/destino_aviso.dart` — class `DestinoAviso`
+  - `ruta()`:13
 - `app/lib/features/avisos/domain/preferencias_avisos.dart` — class `PreferenciaAviso`, class `PreferenciasAvisosRepository`
   - `conActivo()`:15
 
 **presentation**
 
-- `app/lib/features/avisos/presentation/avisos_controller.dart` — class `FiltroAvisosNotifier`, class `BandejaAvisos`, class `AvisosController`
-  - `build()`:14, `cambiar()`:16, `copiar()`:38, `build()`:54, `reintentar()`:65, `cargarMas()`:68, `marcarLeido()`:95, `marcarTodosLeidos()`:107
-- `app/lib/features/avisos/presentation/avisos_screen.dart` — class `AvisosScreen`, class `_Filtros`, class `_Lista`, class `InsigniaAvisos`
-  - `build()`:13, `build()`:70, `cambiar()`:72, `build()`:123, `build()`:179
-- `app/lib/features/avisos/presentation/preferencias_avisos_screen.dart` — class `PreferenciasAvisosController`, class `PreferenciasAvisosScreen`
-  - `build()`:12, `reintentar()`:15, `cambiar()`:18, `build()`:47
+- `app/lib/features/avisos/presentation/avisos_controller.dart` — class `ContadorAvisosNotifier`, class `FiltroAvisosNotifier`, class `BandejaAvisos`, class `AvisosController`
+  - `build()`:11, `bajarUno()`:15, `ponerEnCero()`:25, `restaurar()`:29, `confirmar()`:36, `build()`:55, `cambiar()`:57, `copiar()`:79, `build()`:95, `reintentar()`:106, `cargarMas()`:109, `refrescar()`:137, `marcarLeido()`:157, `marcarTodosLeidos()`:179
+- `app/lib/features/avisos/presentation/avisos_screen.dart` — class `AvisosScreen`, class `_Filtros`, class `_Lista`, class `_ListaState`, class `InsigniaAvisos`
+  - `build()`:72, `build()`:142, `cambiar()`:144, `initState()`:202, `dispose()`:210, `build()`:264, `build()`:334
+- `app/lib/features/avisos/presentation/preferencias_avisos_controller.dart` — class `PendientesPreferencias`, class `PendientesPreferenciasNotifier`, class `PreferenciasAvisosController`
+  - `build()`:27, `poner()`:29, `build()`:42, `reintentar()`:54, `cambiar()`:58, `descartar()`:82, `guardar()`:91
+- `app/lib/features/avisos/presentation/preferencias_avisos_screen.dart` — class `PreferenciasAvisosScreen`, class `_BannerPendiente`
+  - `build()`:20, `build()`:113
 
 ### chat
 
@@ -129,20 +133,21 @@
 
 **data**
 
-- `app/lib/features/dispositivos/data/dispositivos_de_prueba.dart` — class `DispositivosRepositoryDePrueba`, class `ProveedorTokenPushDePrueba`
-  - `registrar()`:14, `darDeBaja()`:34, `obtener()`:51
+- `app/lib/features/dispositivos/data/dispositivos_de_prueba.dart` — class `DispositivosRepositoryDePrueba`, class `ProveedorTokenPushDePrueba`, class `PermisoNotificacionesDePrueba`
+  - `registrar()`:15, `darDeBaja()`:35, `obtener()`:52, `estado()`:69, `solicitar()`:72, `abrirAjustes()`:79
 
 **domain**
 
 - `app/lib/features/dispositivos/domain/dispositivo.dart` — enum `PlataformaDispositivo`, class `RegistroDispositivo`, class `DispositivosRepository`, class `ProveedorTokenPush`
   - `validarIdentificadorDispositivo()`:24
+- `app/lib/features/dispositivos/domain/permiso_notificaciones.dart` — enum `EstadoPermiso`, class `PermisoNotificaciones`
 
 **presentation**
 
-- `app/lib/features/dispositivos/presentation/notificaciones_screen.dart` — class `NotificacionesScreen`
-  - `build()`:14
+- `app/lib/features/dispositivos/presentation/notificaciones_screen.dart` — class `NotificacionesScreen`, class `_NotificacionesScreenState`, class `_Estado`
+  - `initState()`:23, `dispose()`:33, `didChangeAppLifecycleState()`:40, `build()`:47, `build()`:228
 - `app/lib/features/dispositivos/presentation/registro_push_controller.dart` — enum `EstadoPush`, class `RegistroPush`, class `RegistroPushController`
-  - `build()`:31, `registrar()`:33, `darDeBaja()`:61
+  - `con()`:46, `conPermiso()`:49, `build()`:61, `refrescarPermiso()`:69, `registrar()`:82, `aceptarExplicacion()`:91, `rechazarExplicacion()`:100, `abrirAjustes()`:105, `reintentarManual()`:111, `alIniciarSesion()`:121, `darDeBaja()`:176
 
 ### errores
 
@@ -221,7 +226,7 @@
 
 - `app/lib/core/router/app_router.dart` — —
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
-  - `ramasVisibles()`:27, `build()`:40, `Scaffold()`:44
+  - `ramasVisibles()`:31, `build()`:44, `Scaffold()`:48
 - `app/lib/core/router/rutas.dart` — class `Rutas`
   - `redireccionPorRol()`:34
 
