@@ -1,5 +1,6 @@
 import 'package:app/features/dispositivos/data/dispositivos_de_prueba.dart';
 import 'package:app/features/dispositivos/domain/dispositivo.dart';
+import 'package:app/features/dispositivos/domain/permiso_notificaciones.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -17,4 +18,10 @@ final plataformaDispositivoProvider = Provider<PlataformaDispositivo>(
   (ref) => defaultTargetPlatform == TargetPlatform.iOS
       ? PlataformaDispositivo.ios
       : PlataformaDispositivo.android,
+);
+
+/// Permiso de notificaciones del sistema. Datos de prueba hasta que se evalúe
+/// el paquete de push; cambiar solo esta línea.
+final permisoNotificacionesProvider = Provider<PermisoNotificaciones>(
+  (ref) => PermisoNotificacionesDePrueba(),
 );

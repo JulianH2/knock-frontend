@@ -57,6 +57,9 @@ class AvisosRepositoryDePrueba implements AvisosRepository {
   @override
   Future<void> marcarLeido(String id) async {
     _revisar();
+    if (!_avisos.any((a) => a.id == id)) {
+      throw const NoEncontradoFailure();
+    }
     final indice = _avisos.indexWhere((a) => a.id == id);
     if (indice >= 0) {
       _avisos[indice] = _avisos[indice].copiaLeido();
@@ -94,11 +97,23 @@ final _ficticios = [
 ];
 
 /// Preferencias ficticias: todo activo salvo promociones; seguridad fija.
+///
+/// Guardar falla con `RutaNoDisponibleFailure` (el `PUT` no existe todavía)
+/// salvo que se pida `guardaBien`, para probar el flujo futuro. `guardados`
+/// recuerda lo que se guardó.
 class PreferenciasAvisosRepositoryDePrueba
     implements PreferenciasAvisosRepository {
-  const PreferenciasAvisosRepositoryDePrueba({this.falla});
+  PreferenciasAvisosRepositoryDePrueba({
+    this.falla,
+    this.fallaAlGuardar = const RutaNoDisponibleFailure(),
+    this.guardaBien = false,
+  });
 
   final Failure? falla;
+  final Failure? fallaAlGuardar;
+  final bool guardaBien;
+  List<PreferenciaAviso>? guardados;
+  int intentosDeGuardar = 0;
 
   @override
   Future<List<PreferenciaAviso>> obtener() async {
@@ -106,11 +121,22 @@ class PreferenciasAvisosRepositoryDePrueba
     if (error != null) {
       throw error;
     }
-    return const [
-      PreferenciaAviso(tipo: 'seguridad', activo: true, apagable: false),
-      PreferenciaAviso(tipo: 'visita', activo: true, apagable: true),
-      PreferenciaAviso(tipo: 'mensaje', activo: true, apagable: true),
-      PreferenciaAviso(tipo: 'promocion', activo: false, apagable: true),
-    ];
+    return guardados ??
+        const [
+          PreferenciaAviso(tipo: 'seguridad', activo: true, apagable: false),
+          PreferenciaAviso(tipo: 'visita', activo: true, apagable: true),
+          PreferenciaAviso(tipo: 'mensaje', activo: true, apagable: true),
+          PreferenciaAviso(tipo: 'promocion', activo: false, apagable: true),
+        ];
+  }
+
+  @override
+  Future<void> guardar(List<PreferenciaAviso> preferencias) async {
+    intentosDeGuardar++;
+    final error = fallaAlGuardar;
+    if (!guardaBien && error != null) {
+      throw error;
+    }
+    guardados = preferencias;
   }
 }
