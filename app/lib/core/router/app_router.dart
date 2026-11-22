@@ -5,6 +5,7 @@ import 'package:app/features/actividad/presentation/actividad_screen.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
 import 'package:app/features/avisos/presentation/preferencias_avisos_screen.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
+import 'package:app/features/dispositivos/presentation/notificaciones_screen.dart';
 import 'package:app/features/explorar/presentation/explorar_screen.dart';
 import 'package:app/features/inicio/presentation/inicio_screen.dart';
 import 'package:app/features/oficios/presentation/oficios_screen.dart';
@@ -60,6 +61,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
             Rutas.cuenta,
             const CuentaScreen(),
             subrutas: [
+              GoRoute(
+                path: 'notificaciones',
+                builder: (context, state) => const NotificacionesScreen(),
+              ),
               GoRoute(
                 path: 'preferencias-avisos',
                 builder: (context, state) => const PreferenciasAvisosScreen(),

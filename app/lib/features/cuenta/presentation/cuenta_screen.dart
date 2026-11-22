@@ -17,6 +17,11 @@ class CuentaScreen extends ConsumerWidget {
       cuerpo: ListView(
         children: [
           ListTile(
+            leading: const Icon(Icons.notifications_outlined),
+            title: const Text('Notificaciones'),
+            onTap: () => context.go(Rutas.notificaciones),
+          ),
+          ListTile(
             leading: const Icon(Icons.tune),
             title: const Text('Preferencias de avisos'),
             onTap: () => context.go(Rutas.preferenciasAvisos),
