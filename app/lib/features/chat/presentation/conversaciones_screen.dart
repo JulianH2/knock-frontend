@@ -30,13 +30,43 @@ class ConversacionesScreen extends ConsumerWidget {
         alPulsar: controlador.reintentar,
       );
     } else if (estado.requireValue.items.isEmpty) {
-      cuerpo = const MensajeCentrado(texto: 'Todavía no tienes conversaciones');
+      cuerpo = RefreshIndicator(
+        onRefresh: () => _refrescar(context, controlador),
+        child: LayoutBuilder(
+          builder: (context, caja) => ListView(
+            children: [
+              SizedBox(
+                height: caja.maxHeight,
+                child: const MensajeCentrado(
+                  texto: 'Todavía no tienes conversaciones',
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     } else {
-      cuerpo = _Lista(bandeja: estado.requireValue);
+      cuerpo = RefreshIndicator(
+        onRefresh: () => _refrescar(context, controlador),
+        child: _Lista(bandeja: estado.requireValue),
+      );
     }
     return Scaffold(
       appBar: AppBar(title: const Text('Mensajes')),
       body: cuerpo,
+    );
+  }
+}
+
+Future<void> _refrescar(
+  BuildContext context,
+  ConversacionesController controlador,
+) async {
+  final mensajero = ScaffoldMessenger.of(context);
+  final ok = await controlador.refrescar();
+  if (!ok) {
+    mensajero.showSnackBar(
+      const SnackBar(content: Text('No pudimos actualizar. Intenta de nuevo.')),
     );
   }
 }
@@ -50,6 +80,7 @@ class _Lista extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final controlador = ref.read(conversacionesControllerProvider.notifier);
     return ListView(
+      physics: const AlwaysScrollableScrollPhysics(),
       children: [
         if (bandeja.totalNoLeidos > 0)
           Padding(
@@ -99,15 +130,17 @@ class _Fila extends StatelessWidget {
     final sinLeer = conversacion.noLeidos > 0;
     return ListTile(
       key: ValueKey(conversacion.conversacionId),
-      leading: const CircleAvatar(child: Icon(Icons.person_outline)),
+      leading: CircleAvatar(child: Text(_inicial(conversacion))),
       title: Text(
         conversacion.contraparte.nombre,
         style: sinLeer ? const TextStyle(fontWeight: FontWeight.bold) : null,
       ),
       subtitle: Text(
-        ultimo == null
-            ? conversacion.servicio
-            : '${conversacion.servicio} · ${ultimo.texto}',
+        [
+          conversacion.servicio,
+          if (conversacion.estado == 'cerrada') 'Cerrada',
+          if (ultimo != null) ultimo.texto,
+        ].join(' · '),
         maxLines: 2,
         overflow: TextOverflow.ellipsis,
       ),
@@ -121,6 +154,11 @@ class _Fila extends StatelessWidget {
       onTap: () => context.go('${Rutas.chats}/${conversacion.conversacionId}'),
     );
   }
+}
+
+String _inicial(ConversacionItem c) {
+  final nombre = c.contraparte.nombre.trim();
+  return nombre.isEmpty ? '?' : nombre.substring(0, 1).toUpperCase();
 }
 
 /// Insignia con el total de mensajes sin leer.
