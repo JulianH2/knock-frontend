@@ -177,6 +177,7 @@ void main() {
     testWidgets('enviar agrega el mensaje y limpia el campo', (tester) async {
       await _montar(tester, ConversacionesRepositoryDePrueba(), home: _chat);
       await tester.enterText(find.byType(TextField), 'Gracias');
+      await tester.pump();
       await tester.tap(find.byTooltip('Enviar'));
       await tester.pumpAndSettle();
       expect(find.text('Gracias'), findsOneWidget);
@@ -227,8 +228,13 @@ void main() {
         const ServicioNoDisponibleFailure(codigo: 'moderation_unavailable'),
         mensajesDeErrorChat['moderation_unavailable']!,
       ),
+      (
+        'market_unavailable',
+        const ServicioNoDisponibleFailure(codigo: 'market_unavailable'),
+        mensajesDeErrorChat['market_unavailable']!,
+      ),
     ]) {
-      testWidgets('el error ${caso.$1} se explica y conserva el texto', (
+      testWidgets('el error ${caso.$1} se explica bajo el mensaje fallido', (
         tester,
       ) async {
         await _montar(
@@ -237,13 +243,12 @@ void main() {
           home: _chat,
         );
         await tester.enterText(find.byType(TextField), 'Hola de nuevo');
+        await tester.pump();
         await tester.tap(find.byTooltip('Enviar'));
         await tester.pumpAndSettle();
-        expect(find.text(caso.$3), findsOneWidget);
-        expect(
-          tester.widget<TextField>(find.byType(TextField)).controller!.text,
-          'Hola de nuevo',
-        );
+        expect(find.textContaining(caso.$3), findsWidgets);
+        expect(find.text('Hola de nuevo'), findsOneWidget);
+        expect(find.textContaining('No se envió'), findsOneWidget);
       });
     }
 
@@ -266,7 +271,9 @@ void main() {
       expect(find.text('No encontramos lo que buscabas.'), findsOneWidget);
     });
 
-    testWidgets('carga mensajes anteriores con el cursor', (tester) async {
+    testWidgets('carga mensajes anteriores con el cursor al llegar arriba', (
+      tester,
+    ) async {
       final repo = ConversacionesRepositoryDePrueba(
         mensajes: {
           'c1': [for (var i = 40; i >= 1; i--) _mensaje(i)],
@@ -275,17 +282,11 @@ void main() {
       await _montar(tester, repo, home: _chat);
       expect(find.text('Mensaje 1'), findsNothing);
       await tester.scrollUntilVisible(
-        find.text('Cargar mensajes anteriores'),
-        300,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(find.text('Cargar mensajes anteriores'));
-      await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
         find.text('Mensaje 1'),
         300,
         scrollable: find.byType(Scrollable).first,
       );
+      expect(find.text('Mensaje 1'), findsOneWidget);
       expect(find.text('Cargar mensajes anteriores'), findsNothing);
     });
   });
