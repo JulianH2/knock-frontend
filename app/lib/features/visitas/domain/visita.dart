@@ -1,4 +1,5 @@
 import 'package:app/core/errores/failure.dart';
+import 'package:app/features/visitas/domain/visita_acciones.dart';
 
 /// Técnico de la visita (`VisitTechnician`). El teléfono y el WhatsApp solo
 /// llegan cuando el servidor los autoriza.
@@ -160,14 +161,13 @@ class ResultadoAusencia {
   final String quienFalto;
 }
 
-/// Quita espacios y exige un motivo no vacío (hasta 500 caracteres; el límite
-/// exacto no está en el contrato, es una cota prudente de la app).
+/// Quita espacios y exige un motivo de 8 a 300 caracteres (contrato
+/// `CancelVisitBody`).
 String validarMotivoCancelacion(String motivo) {
-  final limpio = motivo.trim();
-  if (limpio.isEmpty || limpio.length > 500) {
+  if (errorMotivoCancelacion(motivo) != null) {
     throw const DatosInvalidosFailure();
   }
-  return limpio;
+  return motivo.trim();
 }
 
 /// Visitas y agenda (Market, `/api/v1`). Muchas rutas aún no existen en el
@@ -203,4 +203,45 @@ abstract interface class VisitasRepository {
 
   /// `POST /visitas/{id}/cliente-ausente` («no se presentó»).
   Future<ResultadoAusencia> noSePresento(String id);
+
+  /// `POST /visitas/{id}/llegada` con el código de cuatro dígitos; devuelve la
+  /// visita actualizada. Código incorrecto: 422 `wrong_code`.
+  Future<Visita> llegada(String id, {required String codigo});
+
+  /// `POST /visitas/{id}/aviso`: texto para compartir con alguien de confianza.
+  Future<AvisoConfianza> avisoConfianza(String id);
+
+  /// `POST /visitas/{id}/terminar` con descripción, recomendación opcional y
+  /// de 1 a 5 fotos.
+  Future<ResultadoTermino> terminar(
+    String id, {
+    required String descripcion,
+    required String recomendacion,
+    required List<String> fotos,
+  });
+
+  /// `POST /visitas/{id}/no-terminado` (cliente, una vez, hasta 7 días).
+  Future<ResultadoNoTerminado> noTerminado(String id, {required String texto});
+
+  /// `POST /visitas/{id}/cotizacion-final` (técnico; precio entero).
+  Future<CotizacionFinal> enviarCotizacionFinal(
+    String id, {
+    required int precio,
+    required String descripcion,
+  });
+
+  /// `POST /visitas/{id}/cotizacion-final/decision` (`aprueba` o `rechaza`).
+  Future<DecisionCotizacion> decidirCotizacionFinal(
+    String id, {
+    required bool aprueba,
+  });
+
+  /// `PUT /visitas/{id}/permiso-fotos`.
+  Future<PermisoFotos> permisoFotos(String id, {required bool permiso});
+
+  /// `GET /tecnicos/me/horarios`: los siete días.
+  Future<List<HorarioDia>> horarios();
+
+  /// `PUT /tecnicos/me/horarios`: reemplaza los siete días.
+  Future<List<HorarioDia>> guardarHorarios(List<HorarioDia> horarios);
 }
