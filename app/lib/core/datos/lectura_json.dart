@@ -22,6 +22,20 @@ abstract final class LecturaJson {
     throw const DatosInvalidosFailure();
   }
 
+  /// Página con cursor: la lista `items` convertida con `item` y el cursor
+  /// siguiente (`claveCursor`, nulo al final).
+  static (List<T>, String?) pagina<T>(
+    Object? json,
+    T Function(Object?) item,
+    String claveCursor,
+  ) {
+    final mapa = objeto(json);
+    return (
+      [for (final i in lista(mapa['items'])) item(i)],
+      textoONulo(mapa[claveCursor]),
+    );
+  }
+
   /// Texto obligatorio y no vacío.
   static String texto(Object? valor) {
     if (valor is String && valor.isNotEmpty) {

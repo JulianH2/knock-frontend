@@ -1,7 +1,11 @@
 graph LR
   actividad["actividad"]
   app["app"]
+  avisos["avisos"]
+  chat["chat"]
   cuenta["cuenta"]
+  datos["datos"]
+  dispositivos["dispositivos"]
   errores["errores"]
   explorar["explorar"]
   home["home"]
@@ -12,11 +16,18 @@ graph LR
   router["router"]
   sesion["sesion"]
   trabajo["trabajo"]
+  visitas["visitas"]
   widgets["widgets"]
+  actividad -->|1| avisos
+  actividad -->|1| chat
   panel -->|1| home
   router -->|1| actividad
+  router -->|2| avisos
+  router -->|2| chat
   router -->|1| cuenta
+  router -->|1| dispositivos
   router -->|1| explorar
   router -->|1| inicio
   router -->|1| oficios
   router -->|1| trabajo
+  router -->|2| visitas

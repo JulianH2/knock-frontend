@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-10-26T05:16:56Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-22T19:49:10Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -9,8 +9,12 @@
 |---|---|---|---|---|
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
+| `avisos` | -, data, domain, presentation | 9 | 19 | 27 |
+| `chat` | -, data, domain, presentation | 9 | 31 | 42 |
 | `cuenta` | presentation | 1 | 1 | 1 |
-| `errores` | core | 1 | 3 | 1 |
+| `datos` | core | 2 | 1 | 12 |
+| `dispositivos` | -, data, domain, presentation | 5 | 10 | 8 |
+| `errores` | core | 1 | 7 | 1 |
 | `explorar` | presentation | 1 | 1 | 1 |
 | `home` | components, pages | 2 | 2 | 0 |
 | `inicio` | presentation | 1 | 1 | 1 |
@@ -20,7 +24,8 @@
 | `router` | core | 3 | 3 | 4 |
 | `sesion` | core | 1 | 1 | 2 |
 | `trabajo` | presentation | 1 | 1 | 1 |
-| `widgets` | core | 1 | 1 | 1 |
+| `visitas` | -, data, domain, presentation | 7 | 21 | 30 |
+| `widgets` | core | 2 | 3 | 4 |
 
 ## Índice por módulo
 
@@ -29,7 +34,7 @@
 **presentation**
 
 - `app/lib/features/actividad/presentation/actividad_screen.dart` — class `ActividadScreen`
-  - `build()`:10
+  - `build()`:13
 
 ### app
 
@@ -40,18 +45,110 @@
 - `app/lib/main.dart` — —
   - `main()`:5
 
+### avisos
+
+**-**
+
+- `app/lib/features/avisos/avisos_providers.dart` — —
+
+**data**
+
+- `app/lib/features/avisos/data/avisos_mapper.dart` — class `AvisosMapper`
+  - `aviso()`:7, `pagina()`:21, `contador()`:26, `preferencias()`:34
+- `app/lib/features/avisos/data/avisos_repository_de_prueba.dart` — class `AvisosRepositoryDePrueba`, class `PreferenciasAvisosRepositoryDePrueba`
+  - `contador()`:48, `marcarLeido()`:58, `marcarTodosLeidos()`:67, `obtener()`:104
+
+**domain**
+
+- `app/lib/features/avisos/domain/aviso.dart` — class `Aviso`, class `PaginaAvisos`, class `ContadorAvisos`, class `FiltroAvisos`
+  - `copiaLeido()`:26
+- `app/lib/features/avisos/domain/avisos_repository.dart` — class `AvisosRepository`
+- `app/lib/features/avisos/domain/preferencias_avisos.dart` — class `PreferenciaAviso`, class `PreferenciasAvisosRepository`
+  - `conActivo()`:15
+
+**presentation**
+
+- `app/lib/features/avisos/presentation/avisos_controller.dart` — class `FiltroAvisosNotifier`, class `BandejaAvisos`, class `AvisosController`
+  - `build()`:14, `cambiar()`:16, `copiar()`:38, `build()`:54, `reintentar()`:65, `cargarMas()`:68, `marcarLeido()`:95, `marcarTodosLeidos()`:107
+- `app/lib/features/avisos/presentation/avisos_screen.dart` — class `AvisosScreen`, class `_Filtros`, class `_Lista`, class `InsigniaAvisos`
+  - `build()`:13, `build()`:70, `cambiar()`:72, `build()`:123, `build()`:179
+- `app/lib/features/avisos/presentation/preferencias_avisos_screen.dart` — class `PreferenciasAvisosController`, class `PreferenciasAvisosScreen`
+  - `build()`:12, `reintentar()`:15, `cambiar()`:18, `build()`:47
+
+### chat
+
+**-**
+
+- `app/lib/features/chat/chat_providers.dart` — —
+
+**data**
+
+- `app/lib/features/chat/data/chat_de_prueba.dart` — class `ConversacionesRepositoryDePrueba`, class `ChatHubDePrueba`, class `ChatHubInactivo`
+  - `listar()`:47, `noLeidas()`:86, `obtener()`:92, `mensajes()`:98, `enviar()`:115, `marcarLeido()`:138, `emitir()`:188, `conectar()`:194, `desconectar()`:197, `unirseAConversacion()`:203, `salirDeConversacion()`:209, `conectar()`:224, `desconectar()`:227, `unirseAConversacion()`:230, `salirDeConversacion()`:234
+- `app/lib/features/chat/data/chat_mapper.dart` — class `ChatMapper`
+  - `item()`:27, `pagina()`:42, `conversacion()`:63, `mensaje()`:80, `paginaMensajes()`:91, `evento()`:98
+
+**domain**
+
+- `app/lib/features/chat/domain/chat.dart` — class `ContraparteChat`, class `UltimoMensaje`, class `ConversacionItem`, class `PaginaConversaciones`, class `Conversacion`, class `Mensaje`, class `PaginaMensajes`, class `ConversacionesRepository`
+  - `copiar()`:49, `validarTextoMensaje()`:142
+- `app/lib/features/chat/domain/chat_hub.dart` — class `EventoChat`, class `MensajeConversacionRecibido`, class `NoLeidosActualizados`, class `MensajeVisitaRecibido`, class `ResultadoHub`, class `ChatHub`
+
+**presentation**
+
+- `app/lib/features/chat/presentation/chat_controller.dart` — class `EstadoChat`, class `ChatController`
+  - `esMio()`:28, `copiar()`:30, `build()`:59, `reintentar()`:84, `enviar()`:117, `cargarAnteriores()`:142
+- `app/lib/features/chat/presentation/chat_screen.dart` — class `ChatScreen`, class `_Mensajes`, class `_Burbuja`, class `_Redaccion`, class `_RedaccionState`
+  - `build()`:29, `build()`:95, `build()`:141, `dispose()`:189, `build()`:216
+- `app/lib/features/chat/presentation/conversaciones_controller.dart` — class `BandejaChats`, class `ConversacionesController`
+  - `copiar()`:32, `build()`:50, `reintentar()`:65, `cargarMas()`:113
+- `app/lib/features/chat/presentation/conversaciones_screen.dart` — class `ConversacionesScreen`, class `_Lista`, class `_Fila`, class `InsigniaChat`
+  - `build()`:16, `build()`:50, `build()`:97, `build()`:133
+
 ### cuenta
 
 **presentation**
 
 - `app/lib/features/cuenta/presentation/cuenta_screen.dart` — class `CuentaScreen`
-  - `build()`:11
+  - `build()`:14
+
+### datos
+
+**core**
+
+- `app/lib/core/datos/formato_fecha.dart` — —
+  - `horaCorta()`:4, `fechaHoraCorta()`:10
+- `app/lib/core/datos/lectura_json.dart` — class `LecturaJson`
+  - `objeto()`:8, `objetoONulo()`:15, `lista()`:18, `texto()`:40, `textoONulo()`:47, `booleano()`:57, `booleanoONulo()`:64, `entero()`:68, `enteroONulo()`:81, `fecha()`:84
+
+### dispositivos
+
+**-**
+
+- `app/lib/features/dispositivos/dispositivos_providers.dart` — —
+
+**data**
+
+- `app/lib/features/dispositivos/data/dispositivos_de_prueba.dart` — class `DispositivosRepositoryDePrueba`, class `ProveedorTokenPushDePrueba`
+  - `registrar()`:14, `darDeBaja()`:34, `obtener()`:51
+
+**domain**
+
+- `app/lib/features/dispositivos/domain/dispositivo.dart` — enum `PlataformaDispositivo`, class `RegistroDispositivo`, class `DispositivosRepository`, class `ProveedorTokenPush`
+  - `validarIdentificadorDispositivo()`:24
+
+**presentation**
+
+- `app/lib/features/dispositivos/presentation/notificaciones_screen.dart` — class `NotificacionesScreen`
+  - `build()`:14
+- `app/lib/features/dispositivos/presentation/registro_push_controller.dart` — enum `EstadoPush`, class `RegistroPush`, class `RegistroPushController`
+  - `build()`:31, `registrar()`:33, `darDeBaja()`:61
 
 ### errores
 
 **core**
 
-- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`
+- `app/lib/core/errores/failure.dart` — class `Failure`, class `DatosInvalidosFailure`, class `ServicioNoDisponibleFailure`, class `RutaNoDisponibleFailure`, class `NoEncontradoFailure`, class `LimiteDePeticionesFailure`, class `ReglaDeNegocioFailure`
   - `toString()`:10
 
 ### explorar
@@ -126,7 +223,7 @@
 - `app/lib/core/router/app_shell.dart` — class `_Destino`, class `AppShell`
   - `ramasVisibles()`:27, `build()`:40, `Scaffold()`:44
 - `app/lib/core/router/rutas.dart` — class `Rutas`
-  - `redireccionPorRol()`:17
+  - `redireccionPorRol()`:34
 
 ### sesion
 
@@ -142,9 +239,38 @@
 - `app/lib/features/trabajo/presentation/trabajo_screen.dart` — class `TrabajoScreen`
   - `build()`:10
 
+### visitas
+
+**-**
+
+- `app/lib/features/visitas/visitas_providers.dart` — —
+
+**data**
+
+- `app/lib/features/visitas/data/visitas_mapper.dart` — class `VisitasMapper`
+  - `visita()`:16, `agendaItem()`:52, `agenda()`:65, `propuesta()`:70, `respuesta()`:80, `cancelacion()`:105, `ausencia()`:114
+- `app/lib/features/visitas/data/visitas_repository_de_prueba.dart` — class `VisitasRepositoryDePrueba`
+  - `agenda()`:35, `obtener()`:62, `reprogramar()`:68, `responderReprogramacion()`:84, `cancelar()`:100, `noSePresento()`:131
+
+**domain**
+
+- `app/lib/features/visitas/domain/visita.dart` — class `VisitaTecnico`, class `VisitaLugar`, class `Visita`, class `AgendaItem`, class `PaginaAgenda`, class `PropuestaReprogramacion`, class `RespuestaReprogramacion`, class `ResultadoCancelacion`, class `ResultadoAusencia`, class `VisitasRepository`
+  - `validarMotivoCancelacion()`:165
+
+**presentation**
+
+- `app/lib/features/visitas/presentation/agenda_screen.dart` — class `AgendaScreen`
+  - `build()`:13, `textoEstadoVisita()`:86
+- `app/lib/features/visitas/presentation/visita_screen.dart` — class `VisitaScreen`, class `_Detalle`, class `_DialogoMotivo`, class `_DialogoMotivoState`
+  - `mensajeDeErrorVisita()`:12, `build()`:26, `build()`:162, `dispose()`:232, `build()`:238
+- `app/lib/features/visitas/presentation/visitas_controller.dart` — class `EstadoAgenda`, class `AgendaController`, typedef `ResultadoAccion`, class `VisitaController`
+  - `build()`:24, `reintentar()`:29, `cargarMas()`:31, `build()`:79, `reintentar()`:82, `reprogramar()`:96, `responder()`:104, `cancelar()`:114, `noSePresento()`:122
+
 ### widgets
 
 **core**
 
+- `app/lib/core/widgets/estados.dart` — class `CargandoCentrado`, class `MensajeCentrado`
+  - `build()`:11, `build()`:29, `mensajeDeError()`:54
 - `app/lib/core/widgets/pantalla_titulada.dart` — class `PantallaTitulada`
   - `build()`:14

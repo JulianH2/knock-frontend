@@ -63,11 +63,8 @@ abstract final class VisitasMapper {
   }
 
   static PaginaAgenda agenda(Object? json) {
-    final mapa = LecturaJson.objeto(json);
-    return PaginaAgenda(
-      items: [for (final i in LecturaJson.lista(mapa['items'])) agendaItem(i)],
-      nextCursor: LecturaJson.textoONulo(mapa['nextCursor']),
-    );
+    final (items, cursor) = LecturaJson.pagina(json, agendaItem, 'nextCursor');
+    return PaginaAgenda(items: items, nextCursor: cursor);
   }
 
   static PropuestaReprogramacion propuesta(Object? json) {
@@ -82,29 +79,44 @@ abstract final class VisitasMapper {
 
   static RespuestaReprogramacion respuesta(Object? json) {
     final mapa = LecturaJson.objeto(json);
+    final reprogramaciones = LecturaJson.entero(mapa['reprogramaciones']);
+    final aceptada = LecturaJson.booleano(mapa['aceptada']);
     return RespuestaReprogramacion(
       visitaId: LecturaJson.texto(mapa['visitaId']),
-      aceptada: LecturaJson.booleano(mapa['aceptada']),
+      aceptada: aceptada,
       fechaHora: LecturaJson.fecha(mapa['fechaHora']),
-      reprogramaciones: LecturaJson.entero(mapa['reprogramaciones']),
+      reprogramaciones: reprogramaciones,
     );
   }
 
-  static ResultadoCancelacion cancelacion(Object? json) {
+  /// Lectura común de las respuestas que traen `visitaId` y `estado`.
+  static T _conEstado<T>(
+    Object? json,
+    T Function(String visitaId, String estado, Map<String, Object?> mapa) crear,
+  ) {
     final mapa = LecturaJson.objeto(json);
-    return ResultadoCancelacion(
-      visitaId: LecturaJson.texto(mapa['visitaId']),
-      estado: LecturaJson.texto(mapa['estado']),
-      tardia: LecturaJson.booleano(mapa['tardia']),
+    return crear(
+      LecturaJson.texto(mapa['visitaId']),
+      LecturaJson.texto(mapa['estado']),
+      mapa,
     );
   }
 
-  static ResultadoAusencia ausencia(Object? json) {
-    final mapa = LecturaJson.objeto(json);
-    return ResultadoAusencia(
-      visitaId: LecturaJson.texto(mapa['visitaId']),
-      estado: LecturaJson.texto(mapa['estado']),
-      quienFalto: LecturaJson.texto(mapa['quienFalto']),
-    );
-  }
+  static ResultadoCancelacion cancelacion(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => ResultadoCancelacion(
+      visitaId: id,
+      estado: estado,
+      tardia: LecturaJson.booleano(m['tardia']),
+    ),
+  );
+
+  static ResultadoAusencia ausencia(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => ResultadoAusencia(
+      visitaId: id,
+      estado: estado,
+      quienFalto: LecturaJson.texto(m['quienFalto']),
+    ),
+  );
 }
