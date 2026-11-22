@@ -112,47 +112,52 @@ class _Detalle extends ConsumerWidget {
     );
   }
 
-  Future<void> _responder(BuildContext context) => _abrir(
+  /// Pregunta de dos respuestas (rechazar o aceptar) sin campos.
+  Future<void> _siNo(
+    BuildContext context, {
+    required String titulo,
+    required String mensaje,
+    required (String, Future<ResultadoAccion> Function()) no,
+    required (String, Future<ResultadoAccion> Function()) si,
+  }) => _abrir(
     context,
     DialogoFormulario(
-      titulo: 'Nuevo horario propuesto',
-      mensaje: '¿Aceptas el nuevo horario de la visita?',
+      titulo: titulo,
+      mensaje: mensaje,
       opciones: [
         OpcionDialogo(
-          etiqueta: 'Rechazar',
+          etiqueta: no.$1,
           validar: false,
           principal: false,
-          enviar: (_, _) => controlador.responder(acepta: false),
+          enviar: (_, _) => no.$2(),
         ),
         OpcionDialogo(
-          etiqueta: 'Aceptar',
+          etiqueta: si.$1,
           validar: false,
-          enviar: (_, _) => controlador.responder(acepta: true),
+          enviar: (_, _) => si.$2(),
         ),
       ],
     ),
   );
 
-  Future<void> _cancelar(BuildContext context) => _abrir(
+  /// Formulario de un solo texto con su validación del contrato.
+  Future<void> _conTexto(
+    BuildContext context, {
+    required String titulo,
+    required String mensaje,
+    required CampoFormulario campo,
+    required String envio,
+    required Future<ResultadoAccion> Function(String texto) enviar,
+  }) => _abrir(
     context,
     DialogoFormulario(
-      titulo: 'Cancelar la visita',
-      mensaje:
-          'Con menos de 24 horas de anticipación cuenta como cancelación '
-          'tardía.',
-      campos: const [
-        CampoFormulario(
-          clave: 'motivo',
-          etiqueta: 'Motivo',
-          maxLength: LimitesVisita.motivoCancelarMax,
-          lineas: 3,
-          validar: errorMotivoCancelacion,
-        ),
-      ],
+      titulo: titulo,
+      mensaje: mensaje,
+      campos: [campo],
       opciones: [
         OpcionDialogo(
-          etiqueta: 'Cancelar visita',
-          enviar: (v, _) => controlador.cancelar(v['motivo']!),
+          etiqueta: envio,
+          enviar: (v, _) => enviar(v[campo.clave]!),
         ),
       ],
     ),
@@ -268,75 +273,6 @@ class _Detalle extends ConsumerWidget {
     ),
   );
 
-  Future<void> _decidirCotizacion(BuildContext context) => _abrir(
-    context,
-    DialogoFormulario(
-      titulo: 'Cotización final',
-      mensaje:
-          '¿Apruebas la cotización final del técnico? La decisión es '
-          'definitiva.',
-      opciones: [
-        OpcionDialogo(
-          etiqueta: 'Rechazar',
-          validar: false,
-          principal: false,
-          enviar: (_, _) => controlador.decidirCotizacion(aprueba: false),
-        ),
-        OpcionDialogo(
-          etiqueta: 'Aprobar',
-          validar: false,
-          enviar: (_, _) => controlador.decidirCotizacion(aprueba: true),
-        ),
-      ],
-    ),
-  );
-
-  Future<void> _noTerminado(BuildContext context) => _abrir(
-    context,
-    DialogoFormulario(
-      titulo: 'Reportar que no se terminó',
-      mensaje:
-          'Puedes reportarlo una sola vez, hasta '
-          '${LimitesVisita.diasParaNoTerminado} días después de la visita.',
-      campos: const [
-        CampoFormulario(
-          clave: 'texto',
-          etiqueta: 'Qué faltó',
-          maxLength: LimitesVisita.noTerminadoMax,
-          lineas: 3,
-          validar: errorTextoNoTerminado,
-        ),
-      ],
-      opciones: [
-        OpcionDialogo(
-          etiqueta: 'Enviar reporte',
-          enviar: (v, _) => controlador.noTerminado(v['texto']!),
-        ),
-      ],
-    ),
-  );
-
-  Future<void> _permisoFotos(BuildContext context) => _abrir(
-    context,
-    DialogoFormulario(
-      titulo: 'Fotos del trabajo',
-      mensaje: '¿Autorizas que se publiquen las fotos del trabajo?',
-      opciones: [
-        OpcionDialogo(
-          etiqueta: 'No autorizar',
-          validar: false,
-          principal: false,
-          enviar: (_, _) => controlador.permisoFotos(permiso: false),
-        ),
-        OpcionDialogo(
-          etiqueta: 'Autorizar',
-          validar: false,
-          enviar: (_, _) => controlador.permisoFotos(permiso: true),
-        ),
-      ],
-    ),
-  );
-
   Future<void> _aviso(BuildContext context) async {
     await showDialog<void>(
       context: context,
@@ -409,17 +345,55 @@ class _Detalle extends ConsumerWidget {
           _Boton(
             principal: true,
             texto: 'Responder a la cotización final',
-            alPulsar: () => _decidirCotizacion(context),
+            alPulsar: () => _siNo(
+              context,
+              titulo: 'Cotización final',
+              mensaje:
+                  '¿Apruebas la cotización final del técnico? La decisión es '
+                  'definitiva.',
+              no: (
+                'Rechazar',
+                () => controlador.decidirCotizacion(aprueba: false),
+              ),
+              si: (
+                'Aprobar',
+                () => controlador.decidirCotizacion(aprueba: true),
+              ),
+            ),
           ),
         if (acciones.permisoFotos)
           _Boton(
             texto: 'Permiso para publicar las fotos',
-            alPulsar: () => _permisoFotos(context),
+            alPulsar: () => _siNo(
+              context,
+              titulo: 'Fotos del trabajo',
+              mensaje: '¿Autorizas que se publiquen las fotos del trabajo?',
+              no: (
+                'No autorizar',
+                () => controlador.permisoFotos(permiso: false),
+              ),
+              si: ('Autorizar', () => controlador.permisoFotos(permiso: true)),
+            ),
           ),
         if (acciones.noTerminado)
           _Boton(
             texto: 'Reportar que no se terminó',
-            alPulsar: () => _noTerminado(context),
+            alPulsar: () => _conTexto(
+              context,
+              titulo: 'Reportar que no se terminó',
+              mensaje:
+                  'Puedes reportarlo una sola vez, hasta '
+                  '${LimitesVisita.diasParaNoTerminado} días después de la visita.',
+              campo: const CampoFormulario(
+                clave: 'texto',
+                etiqueta: 'Qué faltó',
+                maxLength: LimitesVisita.noTerminadoMax,
+                lineas: 3,
+                validar: errorTextoNoTerminado,
+              ),
+              envio: 'Enviar reporte',
+              enviar: controlador.noTerminado,
+            ),
           ),
         if (acciones.aviso)
           _Boton(
@@ -437,7 +411,13 @@ class _Detalle extends ConsumerWidget {
         if (acciones.responderReprogramacion)
           _Boton(
             texto: 'Responder a un nuevo horario',
-            alPulsar: () => _responder(context),
+            alPulsar: () => _siNo(
+              context,
+              titulo: 'Nuevo horario propuesto',
+              mensaje: '¿Aceptas el nuevo horario de la visita?',
+              no: ('Rechazar', () => controlador.responder(acepta: false)),
+              si: ('Aceptar', () => controlador.responder(acepta: true)),
+            ),
           ),
         if (acciones.clienteAusente)
           _Boton(
@@ -448,7 +428,22 @@ class _Detalle extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.only(top: 8),
             child: TextButton(
-              onPressed: () => _cancelar(context),
+              onPressed: () => _conTexto(
+                context,
+                titulo: 'Cancelar la visita',
+                mensaje:
+                    'Con menos de 24 horas de anticipación cuenta como '
+                    'cancelación tardía.',
+                campo: const CampoFormulario(
+                  clave: 'motivo',
+                  etiqueta: 'Motivo',
+                  maxLength: LimitesVisita.motivoCancelarMax,
+                  lineas: 3,
+                  validar: errorMotivoCancelacion,
+                ),
+                envio: 'Cancelar visita',
+                enviar: controlador.cancelar,
+              ),
               child: const Text('Cancelar visita'),
             ),
           ),

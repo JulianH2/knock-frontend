@@ -130,29 +130,29 @@ abstract final class VisitasMapper {
     );
   }
 
-  static ResultadoTermino termino(Object? json) {
-    final m = LecturaJson.objeto(json);
-    return ResultadoTermino(
-      visitaId: LecturaJson.texto(m['visitaId']),
-      estado: LecturaJson.texto(m['estado']),
+  static ResultadoTermino termino(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => ResultadoTermino(
+      visitaId: id,
+      estado: estado,
       terminadaEn: LecturaJson.fecha(m['terminadaEn']),
-    );
-  }
+    ),
+  );
 
   static ResultadoNoTerminado noTerminado(Object? json) => _conEstado(
     json,
     (id, estado, _) => ResultadoNoTerminado(visitaId: id, estado: estado),
   );
 
-  static CotizacionFinal cotizacionFinal(Object? json) {
-    final m = LecturaJson.objeto(json);
-    return CotizacionFinal(
-      visitaId: LecturaJson.texto(m['visitaId']),
+  static CotizacionFinal cotizacionFinal(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => CotizacionFinal(
+      visitaId: id,
       precio: LecturaJson.entero(m['precio']),
-      estado: LecturaJson.texto(m['estado']),
+      estado: estado,
       venceEn: LecturaJson.fecha(m['venceEn']),
-    );
-  }
+    ),
+  );
 
   static DecisionCotizacion decision(Object? json) => _conEstado(
     json,
@@ -172,13 +172,10 @@ abstract final class VisitasMapper {
   }
 
   /// `ScheduleBody`: `{ horarios: [{ dia, abierto, franjas: [{inicio, fin}] }] }`.
-  static List<HorarioDia> horarios(Object? json) {
-    final m = LecturaJson.objeto(json);
-    return [
-      for (final d in LecturaJson.lista(m['horarios']))
-        _horarioDia(LecturaJson.objeto(d)),
-    ];
-  }
+  static List<HorarioDia> horarios(Object? json) =>
+      LecturaJson.lista(LecturaJson.objeto(json)['horarios'])
+          .map((d) => _horarioDia(LecturaJson.objeto(d)))
+          .toList();
 
   static HorarioDia _horarioDia(Map<String, Object?> m) => HorarioDia(
     dia: LecturaJson.texto(m['dia']),
