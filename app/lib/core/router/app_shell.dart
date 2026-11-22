@@ -1,4 +1,5 @@
 import 'package:app/core/sesion/es_tecnico_provider.dart';
+import 'package:app/features/avisos/presentation/avisos_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -14,6 +15,9 @@ class _Destino {
   final IconData icono;
   final IconData iconoSeleccionado;
 }
+
+/// Índice de la rama Actividad (lleva la insignia de avisos no leídos).
+const int ramaActividad = 2;
 
 const List<_Destino> _destinos = [
   _Destino('Inicio', Icons.home_outlined, Icons.home),
@@ -55,8 +59,8 @@ class AppShell extends ConsumerWidget {
         destinations: [
           for (final rama in ramas)
             NavigationDestination(
-              icon: Icon(_destinos[rama].icono),
-              selectedIcon: Icon(_destinos[rama].iconoSeleccionado),
+              icon: _icono(rama, _destinos[rama].icono),
+              selectedIcon: _icono(rama, _destinos[rama].iconoSeleccionado),
               label: _destinos[rama].etiqueta,
             ),
         ],
@@ -64,3 +68,7 @@ class AppShell extends ConsumerWidget {
     );
   }
 }
+
+/// Icono de la barra; Actividad lleva la insignia de avisos no leídos.
+Widget _icono(int rama, IconData icono) =>
+    rama == ramaActividad ? InsigniaAvisos(hijo: Icon(icono)) : Icon(icono);

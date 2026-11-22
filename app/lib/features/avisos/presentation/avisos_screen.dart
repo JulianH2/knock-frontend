@@ -1,23 +1,85 @@
 import 'package:app/core/widgets/estados.dart';
 import 'package:app/features/avisos/domain/aviso.dart';
+import 'package:app/features/avisos/domain/destino_aviso.dart';
 import 'package:app/features/avisos/presentation/avisos_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 
-/// Bandeja de avisos dentro de la app (KNOCK-105): cargando, lista, vacío y
-/// error con Reintentar; filtros por leído y por rol; marcar uno o todos.
+void _avisar(BuildContext context, String texto) =>
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(texto)));
+
+/// Bandeja de avisos dentro de la app (KNOCK-105): cargando, lista con
+/// cursor infinito, pull to refresh, vacío, error (503, 429) con Reintentar;
+/// filtros que duran la sesión; marcar uno al abrirlo o todos con
+/// confirmación; el contador se ajusta al instante y se deshace si falla.
 class AvisosScreen extends ConsumerWidget {
   const AvisosScreen({super.key});
+
+  Future<void> _marcarTodos(BuildContext context, WidgetRef ref) async {
+    final confirmado = await showDialog<bool>(
+      context: context,
+      builder: (contexto) => AlertDialog(
+        title: const Text('Marcar todos como leídos'),
+        content: const Text('Todos tus avisos quedarán como leídos.'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(contexto).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          FilledButton(
+            onPressed: () => Navigator.of(contexto).pop(true),
+            child: const Text('Marcar todos'),
+          ),
+        ],
+      ),
+    );
+    if (confirmado != true || !context.mounted) {
+      return;
+    }
+    final mensajero = ScaffoldMessenger.of(context);
+    final error = await ref
+        .read(avisosControllerProvider.notifier)
+        .marcarTodosLeidos();
+    if (error != null) {
+      mensajero.showSnackBar(
+        SnackBar(
+          content: Text(
+            mensajeDeError(
+              error,
+              porDefecto: 'No pudimos marcar los avisos como leídos',
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  Future<void> _refrescar(
+    BuildContext context,
+    AvisosController controlador,
+  ) async {
+    final error = await controlador.refrescar();
+    if (error != null && context.mounted) {
+      _avisar(
+        context,
+        mensajeDeError(error, porDefecto: 'No pudimos actualizar tus avisos'),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final estado = ref.watch(avisosControllerProvider);
+    final filtro = ref.watch(filtroAvisosProvider);
+    // Mantiene vivo el contador mientras la bandeja está abierta.
+    ref.watch(contadorAvisosProvider);
     final controlador = ref.read(avisosControllerProvider.notifier);
 
     final Widget cuerpo;
-    if (estado.isLoading) {
+    if (estado.isLoading && !estado.hasValue) {
       cuerpo = const CargandoCentrado(etiqueta: 'Cargando avisos');
-    } else if (estado.hasError) {
+    } else if (estado.hasError && !estado.hasValue) {
       cuerpo = MensajeCentrado(
         texto: mensajeDeError(
           estado.error!,
@@ -27,9 +89,29 @@ class AvisosScreen extends ConsumerWidget {
         alPulsar: controlador.reintentar,
       );
     } else if (estado.requireValue.items.isEmpty) {
-      cuerpo = const MensajeCentrado(texto: 'No tienes avisos');
+      cuerpo = RefreshIndicator(
+        onRefresh: () => _refrescar(context, controlador),
+        child: LayoutBuilder(
+          builder: (_, restricciones) => ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: [
+              SizedBox(
+                height: restricciones.maxHeight,
+                child: MensajeCentrado(
+                  texto: filtro.leido == false || filtro.comoRol != null
+                      ? 'No hay avisos con estos filtros'
+                      : 'No tienes avisos',
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
     } else {
-      cuerpo = _Lista(bandeja: estado.requireValue);
+      cuerpo = RefreshIndicator(
+        onRefresh: () => _refrescar(context, controlador),
+        child: _Lista(bandeja: estado.requireValue),
+      );
     }
 
     return Scaffold(
@@ -39,17 +121,7 @@ class AvisosScreen extends ConsumerWidget {
           IconButton(
             tooltip: 'Marcar todos como leídos',
             icon: const Icon(Icons.done_all),
-            onPressed: () async {
-              final mensajero = ScaffoldMessenger.of(context);
-              final bien = await controlador.marcarTodosLeidos();
-              if (!bien) {
-                mensajero.showSnackBar(
-                  const SnackBar(
-                    content: Text('No pudimos marcar los avisos como leídos'),
-                  ),
-                );
-              }
-            },
+            onPressed: () => _marcarTodos(context, ref),
           ),
         ],
       ),
@@ -114,57 +186,140 @@ class _Filtros extends ConsumerWidget {
   }
 }
 
-class _Lista extends ConsumerWidget {
+class _Lista extends ConsumerStatefulWidget {
   const _Lista({required this.bandeja});
 
   final BandejaAvisos bandeja;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_Lista> createState() => _ListaState();
+}
+
+class _ListaState extends ConsumerState<_Lista> {
+  final _scroll = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scroll.addListener(_alDesplazar);
+    // Si la primera página no llena la pantalla, no hay con qué desplazar.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _alDesplazar());
+  }
+
+  @override
+  void dispose() {
+    _scroll.dispose();
+    super.dispose();
+  }
+
+  /// Pide la página siguiente al acercarse al final. Si la última carga
+  /// falló, no insiste: la persona toca Reintentar.
+  void _alDesplazar() {
+    final b = widget.bandeja;
+    if (!mounted || !_scroll.hasClients) {
+      return;
+    }
+    if (_scroll.position.extentAfter < 200 &&
+        !b.huboErrorAlCargarMas &&
+        !b.cargandoMas &&
+        b.siguienteCursor != null) {
+      ref.read(avisosControllerProvider.notifier).cargarMas();
+    }
+  }
+
+  Future<void> _abrir(Aviso aviso) async {
+    final ruta = DestinoAviso.ruta(aviso.destino);
+    final enrutador = GoRouter.maybeOf(context);
+    final mensajero = ScaffoldMessenger.of(context);
+    final futuro = ref
+        .read(avisosControllerProvider.notifier)
+        .marcarLeido(aviso.id);
+    if (aviso.destino != null) {
+      if (ruta != null && enrutador != null) {
+        enrutador.go(ruta);
+      } else {
+        mensajero.showSnackBar(
+          const SnackBar(
+            content: Text('No pudimos abrir lo que indica el aviso'),
+          ),
+        );
+      }
+    }
+    final error = await futuro;
+    if (error != null) {
+      mensajero.showSnackBar(
+        SnackBar(
+          content: Text(
+            mensajeDeError(
+              error,
+              porDefecto: 'No pudimos marcar el aviso como leído',
+            ),
+          ),
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final bandeja = widget.bandeja;
     final controlador = ref.read(avisosControllerProvider.notifier);
-    return ListView(
-      children: [
-        for (final aviso in bandeja.items)
-          ListTile(
-            key: ValueKey(aviso.id),
-            leading: Icon(
-              aviso.leido
-                  ? Icons.notifications_none
-                  : Icons.notifications_active,
-              semanticLabel: aviso.leido ? 'Leído' : 'No leído',
-            ),
-            title: Text(
-              aviso.titulo,
-              style: aviso.leido
-                  ? null
-                  : const TextStyle(fontWeight: FontWeight.bold),
-            ),
-            subtitle: Text(aviso.texto),
-            onTap: aviso.leido ? null : () => controlador.marcarLeido(aviso.id),
-          ),
-        if (bandeja.huboErrorAlCargarMas)
-          const Padding(
-            padding: EdgeInsets.all(12),
-            child: Text(
-              'No pudimos cargar más avisos',
-              textAlign: TextAlign.center,
-            ),
-          ),
-        if (bandeja.siguienteCursor != null)
-          Padding(
-            padding: const EdgeInsets.all(12),
-            child: bandeja.cargandoMas
-                ? const Center(
-                    child: CircularProgressIndicator(
-                      semanticsLabel: 'Cargando más avisos',
-                    ),
-                  )
-                : OutlinedButton(
-                    onPressed: controlador.cargarMas,
-                    child: const Text('Cargar más'),
+    final hayPie = bandeja.siguienteCursor != null;
+    // Tras cada reconstrucción (p. ej. llegó una página) se revisa si falta
+    // llenar la pantalla.
+    WidgetsBinding.instance.addPostFrameCallback((_) => _alDesplazar());
+    return ListView.builder(
+      controller: _scroll,
+      physics: const AlwaysScrollableScrollPhysics(),
+      itemCount: bandeja.items.length + (hayPie ? 1 : 0),
+      itemBuilder: (context, indice) {
+        if (indice == bandeja.items.length) {
+          if (bandeja.huboErrorAlCargarMas) {
+            return Padding(
+              padding: const EdgeInsets.all(12),
+              child: Column(
+                children: [
+                  const Text(
+                    'No pudimos cargar más avisos',
+                    textAlign: TextAlign.center,
                   ),
+                  TextButton(
+                    onPressed: controlador.cargarMas,
+                    child: const Text('Reintentar'),
+                  ),
+                ],
+              ),
+            );
+          }
+          return const Padding(
+            padding: EdgeInsets.all(12),
+            child: Center(
+              child: CircularProgressIndicator(
+                semanticsLabel: 'Cargando más avisos',
+              ),
+            ),
+          );
+        }
+        final aviso = bandeja.items[indice];
+        return ListTile(
+          key: ValueKey(aviso.id),
+          leading: Icon(
+            aviso.leido ? Icons.notifications_none : Icons.notifications_active,
+            semanticLabel: aviso.leido ? 'Leído' : 'No leído',
           ),
-      ],
+          title: Text(
+            aviso.titulo,
+            style: aviso.leido
+                ? null
+                : const TextStyle(fontWeight: FontWeight.bold),
+          ),
+          subtitle: Text(aviso.texto),
+          trailing: aviso.destino == null
+              ? null
+              : const Icon(Icons.chevron_right),
+          onTap: () => _abrir(aviso),
+        );
+      },
     );
   }
 }
