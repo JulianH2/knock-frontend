@@ -10,6 +10,7 @@ import 'package:app/features/visitas/presentation/horarios_screen.dart';
 import 'package:app/features/visitas/presentation/visita_screen.dart';
 import 'package:app/features/visitas/visitas_providers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;
 import 'package:flutter_test/flutter_test.dart';
@@ -226,6 +227,16 @@ void main() {
   group('aviso de confianza', () {
     testWidgets('muestra el texto para copiar', (tester) async {
       final repo = VisitasRepositoryDePrueba();
+      tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+        SystemChannels.platform,
+        (llamada) async => null,
+      );
+      addTearDown(
+        () => tester.binding.defaultBinaryMessenger.setMockMethodCallHandler(
+          SystemChannels.platform,
+          null,
+        ),
+      );
       await _montar(tester, repo, _pantalla('v1'));
       await _tocar(tester, 'Avisar a alguien de confianza');
       expect(find.textContaining('Hoy un técnico de Knock'), findsOneWidget);
