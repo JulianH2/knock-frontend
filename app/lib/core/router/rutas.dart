@@ -9,6 +9,12 @@ abstract final class Rutas {
   /// Subruta de Explorar (TT-PRU-02): la pantalla cuelga de la rama Explorar y
   /// conserva la barra inferior.
   static const oficios = '/explorar/oficios';
+
+  /// Subrutas de Actividad (KNOCK-105): bandeja de avisos.
+  static const avisos = '/actividad/avisos';
+
+  /// Subruta de Mi cuenta (KNOCK-105): preferencias de avisos.
+  static const preferenciasAvisos = '/cuenta/preferencias-avisos';
 }
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.

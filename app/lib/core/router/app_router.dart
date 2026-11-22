@@ -2,6 +2,8 @@ import 'package:app/core/router/app_shell.dart';
 import 'package:app/core/router/rutas.dart';
 import 'package:app/core/sesion/es_tecnico_provider.dart';
 import 'package:app/features/actividad/presentation/actividad_screen.dart';
+import 'package:app/features/avisos/presentation/avisos_screen.dart';
+import 'package:app/features/avisos/presentation/preferencias_avisos_screen.dart';
 import 'package:app/features/cuenta/presentation/cuenta_screen.dart';
 import 'package:app/features/explorar/presentation/explorar_screen.dart';
 import 'package:app/features/inicio/presentation/inicio_screen.dart';
@@ -43,9 +45,27 @@ final appRouterProvider = Provider<GoRouter>((ref) {
               ),
             ],
           ),
-          _rama(Rutas.actividad, const ActividadScreen()),
+          _rama(
+            Rutas.actividad,
+            const ActividadScreen(),
+            subrutas: [
+              GoRoute(
+                path: 'avisos',
+                builder: (context, state) => const AvisosScreen(),
+              ),
+            ],
+          ),
           _rama(Rutas.trabajo, const TrabajoScreen()),
-          _rama(Rutas.cuenta, const CuentaScreen()),
+          _rama(
+            Rutas.cuenta,
+            const CuentaScreen(),
+            subrutas: [
+              GoRoute(
+                path: 'preferencias-avisos',
+                builder: (context, state) => const PreferenciasAvisosScreen(),
+              ),
+            ],
+          ),
         ],
       ),
     ],
