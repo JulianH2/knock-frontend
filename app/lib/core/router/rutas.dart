@@ -15,6 +15,9 @@ abstract final class Rutas {
 
   /// Subruta de Mi cuenta (KNOCK-105): preferencias de avisos.
   static const preferenciasAvisos = '/cuenta/preferencias-avisos';
+
+  /// Subruta de Mi cuenta (KNOCK-60): notificaciones push del dispositivo.
+  static const notificaciones = '/cuenta/notificaciones';
 }
 
 /// Devuelve a dónde redirigir, o `null` si la ubicación está permitida.
