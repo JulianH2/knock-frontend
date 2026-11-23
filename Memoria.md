@@ -236,3 +236,9 @@
 - **Descartado:** `permission_handler` 13.0.2 (MIT): duplica lo que hace `firebase_messaging` y amplía los permisos nativos.
 - **Riesgos al agregarlos:** (1) `pubspec.lock` ya falla en el CI con `--enforce-lockfile` por Flutter 3.50.1 vs 3.47.7: regenerar el lock con 3.50.1 antes de sumar paquetes; (2) cada paquete debe pasar SCA y licencias; (3) ninguno se probó contra el servidor (no hay dev).
 - **A evitar:** agregar los paquetes sin antes resolver el lockfile y sin la configuración de Firebase.
+
+## 2026-11-22 · Alineación con el OpenAPI de Mensajería (KNOCK-73)
+- **Estado:** el backend fusionó en `sprint-05` el `PUT /me/preferencias-avisos` (PR #274), las rutas de gateway de visitas (PR #273) y `docs/openapi.messaging.v1.json`. La app sigue contra repositorios en memoria: sin cliente HTTP no se puede cablear el `PUT` real.
+- **Cambios:** el repositorio de prueba de preferencias imita al `PUT` (guarda y rechaza apagar seguridad con 422 → `DatosInvalidosFailure`) en vez de fallar siempre con «ruta no disponible»; se quitaron los comentarios que decían que la ruta no existe; el chat explica el `motivoCierre` (`request_cancelled`, `request_expired`, `other_quote_chosen`, `dismissed`, `service_finished`).
+- **Sigue abierto:** `destino` de un aviso no tiene esquema en el OpenAPI (`"destino": {}`); la app asume `{ tipo, id }`. Los `code` de 503 y 429 no están en el esquema.
+- **A evitar:** dejar en comentarios o en el valor por omisión de un repositorio de prueba una limitación del servidor que ya se resolvió.

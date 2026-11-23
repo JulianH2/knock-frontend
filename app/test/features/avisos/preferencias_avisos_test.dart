@@ -1,6 +1,7 @@
 import 'package:app/core/errores/failure.dart';
 import 'package:app/features/avisos/avisos_providers.dart';
 import 'package:app/features/avisos/data/avisos_repository_de_prueba.dart';
+import 'package:app/features/avisos/domain/preferencias_avisos.dart';
 import 'package:app/features/avisos/presentation/preferencias_avisos_controller.dart';
 import 'package:app/features/avisos/presentation/preferencias_avisos_screen.dart';
 import 'package:material_ui/material_ui.dart';
@@ -68,7 +69,9 @@ void main() {
   testWidgets('sin ruta de guardado, el cambio sigue pendiente y es honesto', (
     tester,
   ) async {
-    final repo = PreferenciasAvisosRepositoryDePrueba();
+    final repo = PreferenciasAvisosRepositoryDePrueba(
+      fallaAlGuardar: const RutaNoDisponibleFailure(),
+    );
     await _montar(tester, repo);
     await tester.tap(find.widgetWithText(SwitchListTile, 'Visitas'));
     await tester.pumpAndSettle();
@@ -87,10 +90,8 @@ void main() {
     expect(find.text('Guardar cambios'), findsOneWidget);
   });
 
-  testWidgets('con ruta de guardado (futuro) se guarda y se limpia', (
-    tester,
-  ) async {
-    final repo = PreferenciasAvisosRepositoryDePrueba(guardaBien: true);
+  testWidgets('al guardar con éxito se limpian los pendientes', (tester) async {
+    final repo = PreferenciasAvisosRepositoryDePrueba();
     final c = await _montar(tester, repo);
     await tester.tap(find.widgetWithText(SwitchListTile, 'Mensajes'));
     await tester.pumpAndSettle();
@@ -168,5 +169,16 @@ void main() {
       find.text('El servicio no está disponible por ahora. Intenta más tarde.'),
       findsOneWidget,
     );
+  });
+
+  test('el repositorio de prueba rechaza apagar la seguridad (422)', () async {
+    final repo = PreferenciasAvisosRepositoryDePrueba();
+    await expectLater(
+      repo.guardar(const [
+        PreferenciaAviso(tipo: 'seguridad', activo: false, apagable: false),
+      ]),
+      throwsA(isA<DatosInvalidosFailure>()),
+    );
+    expect(repo.guardados, isNull);
   });
 }

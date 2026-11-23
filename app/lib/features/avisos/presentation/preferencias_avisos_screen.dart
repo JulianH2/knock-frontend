@@ -11,8 +11,8 @@ const _nombres = {
 };
 
 /// Preferencias de avisos (KNOCK-105). Los interruptores cambian al instante
-/// y quedan «pendientes de guardar»; guardar (`PUT`, spec 037) aún no tiene
-/// ruta, y la pantalla lo dice sin simular que se guardó.
+/// y quedan «pendientes de guardar» hasta que `PUT /me/preferencias-avisos`
+/// responde bien; si falla, la pantalla lo dice sin simular que se guardó.
 class PreferenciasAvisosScreen extends ConsumerWidget {
   const PreferenciasAvisosScreen({super.key});
 
