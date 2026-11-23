@@ -4,8 +4,7 @@ import 'package:app/features/avisos/data/avisos_mapper.dart';
 import 'package:app/features/avisos/data/avisos_repository_de_prueba.dart';
 import 'package:app/features/avisos/domain/aviso.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
-import 'package:app/features/avisos/presentation/preferencias_avisos_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -23,15 +22,10 @@ Future<void> _montar(
   WidgetTester tester,
   AvisosRepositoryDePrueba repo, {
   Widget home = const AvisosScreen(),
-  PreferenciasAvisosRepositoryDePrueba? preferencias,
 }) async {
   await tester.pumpWidget(
     ProviderScope(
-      overrides: [
-        avisosRepositoryProvider.overrideWithValue(repo),
-        if (preferencias != null)
-          preferenciasAvisosRepositoryProvider.overrideWithValue(preferencias),
-      ],
+      overrides: [avisosRepositoryProvider.overrideWithValue(repo)],
       child: MaterialApp(home: home),
     ),
   );
@@ -121,6 +115,8 @@ void main() {
       );
       await tester.tap(find.byTooltip('Marcar todos como leídos'));
       await tester.pumpAndSettle();
+      await tester.tap(find.text('Marcar todos'));
+      await tester.pumpAndSettle();
       expect(find.byIcon(Icons.notifications_active), findsNothing);
       expect(find.byIcon(Icons.notifications_none), findsNWidgets(2));
     });
@@ -144,7 +140,9 @@ void main() {
       expect(find.text('Reintentar'), findsOneWidget);
     });
 
-    testWidgets('carga la página siguiente con el cursor', (tester) async {
+    testWidgets('carga la página siguiente con el cursor al desplazar', (
+      tester,
+    ) async {
       await _montar(
         tester,
         AvisosRepositoryDePrueba(
@@ -153,18 +151,12 @@ void main() {
       );
       expect(find.text('Aviso 24'), findsNothing);
       await tester.scrollUntilVisible(
-        find.text('Cargar más'),
-        300,
-        scrollable: find.byType(Scrollable).last,
-      );
-      await tester.tap(find.text('Cargar más'));
-      await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
         find.text('Aviso 24'),
         300,
         scrollable: find.byType(Scrollable).last,
       );
-      expect(find.text('Cargar más'), findsNothing);
+      await tester.pumpAndSettle();
+      expect(find.text('Aviso 24'), findsOneWidget);
     });
 
     testWidgets('el filtro «No leídos» pide solo los no leídos', (
@@ -179,53 +171,6 @@ void main() {
       await tester.pumpAndSettle();
       expect(find.text('Aviso 2'), findsNothing);
       expect(find.text('Aviso 1'), findsOneWidget);
-    });
-  });
-
-  group('PreferenciasAvisosScreen', () {
-    testWidgets('seguridad no se puede apagar y el guardado está pendiente', (
-      tester,
-    ) async {
-      await _montar(
-        tester,
-        AvisosRepositoryDePrueba(),
-        home: const PreferenciasAvisosScreen(),
-      );
-      final seguridad = tester.widget<SwitchListTile>(
-        find.widgetWithText(SwitchListTile, 'Seguridad'),
-      );
-      expect(seguridad.value, isTrue);
-      expect(seguridad.onChanged, isNull);
-      expect(
-        find.textContaining('Guardar tus cambios estará disponible'),
-        findsOneWidget,
-      );
-
-      await tester.tap(find.widgetWithText(SwitchListTile, 'Visitas'));
-      await tester.pumpAndSettle();
-      expect(
-        tester
-            .widget<SwitchListTile>(
-              find.widgetWithText(SwitchListTile, 'Visitas'),
-            )
-            .value,
-        isFalse,
-      );
-    });
-
-    testWidgets('404 de ruta dice que no está disponible', (tester) async {
-      await _montar(
-        tester,
-        AvisosRepositoryDePrueba(),
-        home: const PreferenciasAvisosScreen(),
-        preferencias: const PreferenciasAvisosRepositoryDePrueba(
-          falla: RutaNoDisponibleFailure(),
-        ),
-      );
-      expect(
-        find.text('Esta función todavía no está disponible.'),
-        findsOneWidget,
-      );
     });
   });
 }

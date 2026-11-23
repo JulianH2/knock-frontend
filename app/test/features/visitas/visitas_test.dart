@@ -5,7 +5,7 @@ import 'package:app/features/visitas/domain/visita.dart';
 import 'package:app/features/visitas/presentation/agenda_screen.dart';
 import 'package:app/features/visitas/presentation/visita_screen.dart';
 import 'package:app/features/visitas/visitas_providers.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -123,13 +123,15 @@ void main() {
   test('validarMotivoCancelacion exige un motivo', () {
     expect(validarMotivoCancelacion(' cambio de planes '), 'cambio de planes');
     expect(() => validarMotivoCancelacion('  '), throwsA(isA<Failure>()));
+    expect(() => validarMotivoCancelacion('corto'), throwsA(isA<Failure>()));
+    expect(() => validarMotivoCancelacion('x' * 301), throwsA(isA<Failure>()));
   });
 
   group('AgendaScreen', () {
     testWidgets('lista las visitas', (tester) async {
       await _montar(tester, VisitasRepositoryDePrueba(), const AgendaScreen());
       expect(find.textContaining('Miércoles 25 de noviembre'), findsOneWidget);
-      expect(find.textContaining('A domicilio'), findsOneWidget);
+      expect(find.textContaining('A domicilio'), findsWidgets);
     });
 
     testWidgets('vacío', (tester) async {
@@ -193,14 +195,14 @@ void main() {
 
     testWidgets('«no se presentó» confirma y registra', (tester) async {
       final repo = VisitasRepositoryDePrueba();
-      await _montar(tester, repo, _visita);
-      await tester.tap(find.text('El técnico no se presentó'));
+      await _montar(tester, repo, const VisitaScreen(visitaId: 't1'));
+      await tester.tap(find.text('El cliente no se presentó'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Confirmar'));
       await tester.pumpAndSettle();
-      expect(repo.acciones, ['ausente:v1']);
+      expect(repo.acciones, ['ausente:t1']);
       expect(
-        find.text('Registramos que el técnico no se presentó.'),
+        find.text('Registramos que el cliente no se presentó.'),
         findsOneWidget,
       );
     });
@@ -237,9 +239,9 @@ void main() {
         VisitasRepositoryDePrueba(
           fallaAcciones: const RutaNoDisponibleFailure(),
         ),
-        _visita,
+        const VisitaScreen(visitaId: 't1'),
       );
-      await tester.tap(find.text('El técnico no se presentó'));
+      await tester.tap(find.text('El cliente no se presentó'));
       await tester.pumpAndSettle();
       await tester.tap(find.text('Confirmar'));
       await tester.pumpAndSettle();

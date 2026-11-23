@@ -39,10 +39,13 @@ final class NoEncontradoFailure extends Failure {
 }
 
 /// Demasiadas peticiones (429).
+///
+/// `reintentarEnSegundos` viene cuando la API (o el hub) dice cuánto esperar.
 final class LimiteDePeticionesFailure extends Failure {
-  const LimiteDePeticionesFailure({this.codigo});
+  const LimiteDePeticionesFailure({this.codigo, this.reintentarEnSegundos});
 
   final String? codigo;
+  final int? reintentarEnSegundos;
 }
 
 /// Regla de negocio rechazada por la API (409 o 422) con su `code` de dominio,

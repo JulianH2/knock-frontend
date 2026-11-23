@@ -1,37 +1,7 @@
 import 'package:app/core/widgets/estados.dart';
-import 'package:app/features/avisos/avisos_providers.dart';
-import 'package:app/features/avisos/domain/preferencias_avisos.dart';
-import 'package:flutter/material.dart';
+import 'package:app/features/avisos/presentation/preferencias_avisos_controller.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
-/// Preferencias de avisos. Los cambios viven solo en pantalla: guardar (`PUT`,
-/// spec 037) todavía no tiene ruta, y la pantalla lo dice.
-class PreferenciasAvisosController
-    extends AsyncNotifier<List<PreferenciaAviso>> {
-  @override
-  Future<List<PreferenciaAviso>> build() =>
-      ref.watch(preferenciasAvisosRepositoryProvider).obtener();
-
-  void reintentar() => ref.invalidateSelf();
-
-  /// Cambia un interruptor en pantalla. La seguridad no se apaga.
-  void cambiar(String tipo, {required bool activo}) {
-    final actual = state.value;
-    if (actual == null) {
-      return;
-    }
-    state = AsyncData([
-      for (final p in actual)
-        if (p.tipo == tipo) p.conActivo(activo: activo) else p,
-    ]);
-  }
-}
-
-final preferenciasAvisosControllerProvider =
-    AsyncNotifierProvider<PreferenciasAvisosController, List<PreferenciaAviso>>(
-      PreferenciasAvisosController.new,
-      retry: (_, _) => null,
-    );
 
 const _nombres = {
   'seguridad': 'Seguridad',
@@ -40,18 +10,22 @@ const _nombres = {
   'promocion': 'Promociones',
 };
 
+/// Preferencias de avisos (KNOCK-105). Los interruptores cambian al instante
+/// y quedan «pendientes de guardar»; guardar (`PUT`, spec 037) aún no tiene
+/// ruta, y la pantalla lo dice sin simular que se guardó.
 class PreferenciasAvisosScreen extends ConsumerWidget {
   const PreferenciasAvisosScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final estado = ref.watch(preferenciasAvisosControllerProvider);
+    final pendientes = ref.watch(pendientesPreferenciasProvider);
     final controlador = ref.read(preferenciasAvisosControllerProvider.notifier);
 
     final Widget cuerpo;
-    if (estado.isLoading) {
+    if (estado.isLoading && !estado.hasValue) {
       cuerpo = const CargandoCentrado(etiqueta: 'Cargando preferencias');
-    } else if (estado.hasError) {
+    } else if (estado.hasError && !estado.hasValue) {
       cuerpo = MensajeCentrado(
         texto: mensajeDeError(
           estado.error!,
@@ -65,13 +39,13 @@ class PreferenciasAvisosScreen extends ConsumerWidget {
     } else {
       cuerpo = ListView(
         children: [
-          const ListTile(
-            leading: Icon(Icons.info_outline),
-            title: Text(
-              'Guardar tus cambios estará disponible pronto. Por ahora los '
-              'cambios no se conservan al salir.',
+          if (pendientes.hayPendientes)
+            _BannerPendiente(pendientes: pendientes)
+          else
+            const ListTile(
+              leading: Icon(Icons.info_outline),
+              title: Text('Elige qué avisos quieres recibir.'),
             ),
-          ),
           for (final p in estado.requireValue)
             SwitchListTile(
               key: ValueKey(p.tipo),
@@ -80,9 +54,32 @@ class PreferenciasAvisosScreen extends ConsumerWidget {
                   ? null
                   : const Text('Los avisos de seguridad no se pueden apagar'),
               value: p.activo,
-              onChanged: p.apagable
+              onChanged: p.apagable && !pendientes.guardando
                   ? (valor) => controlador.cambiar(p.tipo, activo: valor)
                   : null,
+            ),
+          if (pendientes.hayPendientes)
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                spacing: 12,
+                children: [
+                  OutlinedButton(
+                    onPressed: pendientes.guardando
+                        ? null
+                        : controlador.descartar,
+                    child: const Text('Descartar cambios'),
+                  ),
+                  FilledButton(
+                    onPressed: pendientes.guardando
+                        ? null
+                        : () => _guardar(context, controlador),
+                    child: Text(
+                      pendientes.guardando ? 'Guardando...' : 'Guardar cambios',
+                    ),
+                  ),
+                ],
+              ),
             ),
         ],
       );
@@ -90,6 +87,38 @@ class PreferenciasAvisosScreen extends ConsumerWidget {
     return Scaffold(
       appBar: AppBar(title: const Text('Preferencias de avisos')),
       body: cuerpo,
+    );
+  }
+
+  Future<void> _guardar(
+    BuildContext context,
+    PreferenciasAvisosController controlador,
+  ) async {
+    final mensajero = ScaffoldMessenger.of(context);
+    final bien = await controlador.guardar();
+    if (bien) {
+      mensajero.showSnackBar(
+        const SnackBar(content: Text('Preferencias guardadas')),
+      );
+    }
+  }
+}
+
+class _BannerPendiente extends StatelessWidget {
+  const _BannerPendiente({required this.pendientes});
+
+  final PendientesPreferencias pendientes;
+
+  @override
+  Widget build(BuildContext context) {
+    final error = pendientes.errorAlGuardar;
+    final texto = error == null
+        ? 'Tienes cambios pendientes de guardar.'
+        : '${mensajeDeError(error, porDefecto: 'No pudimos guardar tus cambios.')} '
+              'Tus cambios siguen pendientes y se pierden si cierras la app.';
+    return ListTile(
+      leading: const Icon(Icons.pending_outlined),
+      title: Text(texto),
     );
   }
 }

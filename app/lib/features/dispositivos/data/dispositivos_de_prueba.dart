@@ -1,5 +1,6 @@
 import 'package:app/core/errores/failure.dart';
 import 'package:app/features/dispositivos/domain/dispositivo.dart';
+import 'package:app/features/dispositivos/domain/permiso_notificaciones.dart';
 
 /// Dispositivos en memoria. `falla` simula el 503 del push deshabilitado u
 /// otro error; cuenta las llamadas para comprobar que no hay reintentos.
@@ -49,4 +50,34 @@ class ProveedorTokenPushDePrueba implements ProveedorTokenPush {
 
   @override
   Future<String?> obtener() async => token;
+}
+
+/// Permiso ficticio en memoria. `alSolicitar` es lo que responde el «sistema»
+/// al pedir permiso; `ajustesAbiertos` cuenta las veces que se abrió Ajustes.
+class PermisoNotificacionesDePrueba implements PermisoNotificaciones {
+  PermisoNotificacionesDePrueba({
+    this.actual = EstadoPermiso.noPreguntado,
+    this.alSolicitar = EstadoPermiso.concedido,
+  });
+
+  EstadoPermiso actual;
+  final EstadoPermiso alSolicitar;
+  int solicitudes = 0;
+  int ajustesAbiertos = 0;
+
+  @override
+  Future<EstadoPermiso> estado() async => actual;
+
+  @override
+  Future<EstadoPermiso> solicitar() async {
+    solicitudes++;
+    actual = alSolicitar;
+    return actual;
+  }
+
+  @override
+  Future<bool> abrirAjustes() async {
+    ajustesAbiertos++;
+    return true;
+  }
 }

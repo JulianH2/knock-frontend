@@ -6,7 +6,7 @@ import 'package:app/features/oficios/domain/oficio.dart';
 import 'package:app/features/oficios/domain/oficios_repository.dart';
 import 'package:app/features/oficios/oficios_providers.dart';
 import 'package:app/features/oficios/presentation/oficios_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 

@@ -6,7 +6,7 @@ import 'package:app/features/chat/domain/chat.dart';
 import 'package:app/features/chat/domain/chat_hub.dart';
 import 'package:app/features/chat/presentation/chat_screen.dart';
 import 'package:app/features/chat/presentation/conversaciones_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -100,12 +100,27 @@ void main() {
   });
 
   group('validarTextoMensaje', () {
-    test('quita espacios y rechaza vacío o más de 4096 bytes', () {
+    test('quita espacios y rechaza vacío', () {
       expect(validarTextoMensaje('  hola '), 'hola');
       expect(() => validarTextoMensaje('  '), throwsA(isA<Failure>()));
-      // 2049 caracteres de 2 bytes = 4098 bytes.
-      expect(() => validarTextoMensaje('ñ' * 2049), throwsA(isA<Failure>()));
-      expect(validarTextoMensaje('ñ' * 2048), isNotEmpty);
+    });
+
+    test('acepta 1000 caracteres y rechaza 1001', () {
+      expect(validarTextoMensaje('a' * 1000), isNotEmpty);
+      expect(() => validarTextoMensaje('a' * 1001), throwsA(isA<Failure>()));
+    });
+
+    test('también cuenta el tope de 4096 bytes', () {
+      // 1000 caracteres de 3 bytes = 3000 bytes: caben.
+      expect(validarTextoMensaje('€' * 1000), isNotEmpty);
+      // Cada emoji ocupa 2 unidades UTF-16: 501 superan los 1000 caracteres.
+      expect(() => validarTextoMensaje('😀' * 501), throwsA(isA<Failure>()));
+    });
+
+    test('rechaza caracteres de control salvo el salto de línea', () {
+      expect(validarTextoMensaje('hola\nmundo'), 'hola\nmundo');
+      expect(() => validarTextoMensaje('ho\u0000la'), throwsA(isA<Failure>()));
+      expect(() => validarTextoMensaje('ho\tla'), throwsA(isA<Failure>()));
     });
   });
 
@@ -177,6 +192,7 @@ void main() {
     testWidgets('enviar agrega el mensaje y limpia el campo', (tester) async {
       await _montar(tester, ConversacionesRepositoryDePrueba(), home: _chat);
       await tester.enterText(find.byType(TextField), 'Gracias');
+      await tester.pump();
       await tester.tap(find.byTooltip('Enviar'));
       await tester.pumpAndSettle();
       expect(find.text('Gracias'), findsOneWidget);
@@ -227,8 +243,13 @@ void main() {
         const ServicioNoDisponibleFailure(codigo: 'moderation_unavailable'),
         mensajesDeErrorChat['moderation_unavailable']!,
       ),
+      (
+        'market_unavailable',
+        const ServicioNoDisponibleFailure(codigo: 'market_unavailable'),
+        mensajesDeErrorChat['market_unavailable']!,
+      ),
     ]) {
-      testWidgets('el error ${caso.$1} se explica y conserva el texto', (
+      testWidgets('el error ${caso.$1} se explica bajo el mensaje fallido', (
         tester,
       ) async {
         await _montar(
@@ -237,13 +258,12 @@ void main() {
           home: _chat,
         );
         await tester.enterText(find.byType(TextField), 'Hola de nuevo');
+        await tester.pump();
         await tester.tap(find.byTooltip('Enviar'));
         await tester.pumpAndSettle();
-        expect(find.text(caso.$3), findsOneWidget);
-        expect(
-          tester.widget<TextField>(find.byType(TextField)).controller!.text,
-          'Hola de nuevo',
-        );
+        expect(find.textContaining(caso.$3), findsWidgets);
+        expect(find.text('Hola de nuevo'), findsOneWidget);
+        expect(find.textContaining('No se envió'), findsOneWidget);
       });
     }
 
@@ -266,7 +286,9 @@ void main() {
       expect(find.text('No encontramos lo que buscabas.'), findsOneWidget);
     });
 
-    testWidgets('carga mensajes anteriores con el cursor', (tester) async {
+    testWidgets('carga mensajes anteriores con el cursor al llegar arriba', (
+      tester,
+    ) async {
       final repo = ConversacionesRepositoryDePrueba(
         mensajes: {
           'c1': [for (var i = 40; i >= 1; i--) _mensaje(i)],
@@ -275,17 +297,11 @@ void main() {
       await _montar(tester, repo, home: _chat);
       expect(find.text('Mensaje 1'), findsNothing);
       await tester.scrollUntilVisible(
-        find.text('Cargar mensajes anteriores'),
-        300,
-        scrollable: find.byType(Scrollable).first,
-      );
-      await tester.tap(find.text('Cargar mensajes anteriores'));
-      await tester.pumpAndSettle();
-      await tester.scrollUntilVisible(
         find.text('Mensaje 1'),
         300,
         scrollable: find.byType(Scrollable).first,
       );
+      expect(find.text('Mensaje 1'), findsOneWidget);
       expect(find.text('Cargar mensajes anteriores'), findsNothing);
     });
   });

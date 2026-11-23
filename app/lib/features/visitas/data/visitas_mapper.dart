@@ -1,5 +1,6 @@
 import 'package:app/core/datos/lectura_json.dart';
 import 'package:app/features/visitas/domain/visita.dart';
+import 'package:app/features/visitas/domain/visita_acciones.dart';
 
 /// Traduce el JSON de Market (`docs/openapi.v1.json`) a los modelos de visitas.
 /// Los enteros pueden llegar como número o como cadena de dígitos.
@@ -119,4 +120,86 @@ abstract final class VisitasMapper {
       quienFalto: LecturaJson.texto(m['quienFalto']),
     ),
   );
+
+  static AvisoConfianza aviso(Object? json) {
+    final m = LecturaJson.objeto(json);
+    return AvisoConfianza(
+      texto: LecturaJson.texto(m['texto']),
+      incluyeCodigo: LecturaJson.booleano(m['incluyeCodigo']),
+      incluyeDireccion: LecturaJson.booleano(m['incluyeDireccion']),
+    );
+  }
+
+  static ResultadoTermino termino(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => ResultadoTermino(
+      visitaId: id,
+      estado: estado,
+      terminadaEn: LecturaJson.fecha(m['terminadaEn']),
+    ),
+  );
+
+  static ResultadoNoTerminado noTerminado(Object? json) => _conEstado(
+    json,
+    (id, estado, _) => ResultadoNoTerminado(visitaId: id, estado: estado),
+  );
+
+  static CotizacionFinal cotizacionFinal(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => CotizacionFinal(
+      visitaId: id,
+      precio: LecturaJson.entero(m['precio']),
+      estado: estado,
+      venceEn: LecturaJson.fecha(m['venceEn']),
+    ),
+  );
+
+  static DecisionCotizacion decision(Object? json) => _conEstado(
+    json,
+    (id, estado, m) => DecisionCotizacion(
+      visitaId: id,
+      estado: estado,
+      resultado: LecturaJson.textoONulo(m['resultado']),
+    ),
+  );
+
+  static PermisoFotos permisoFotos(Object? json) {
+    final m = LecturaJson.objeto(json);
+    return PermisoFotos(
+      visitaId: LecturaJson.texto(m['visitaId']),
+      permiso: LecturaJson.booleano(m['permiso']),
+    );
+  }
+
+  /// `ScheduleBody`: `{ horarios: [{ dia, abierto, franjas: [{inicio, fin}] }] }`.
+  static List<HorarioDia> horarios(Object? json) =>
+      LecturaJson.lista(LecturaJson.objeto(json)['horarios'])
+          .map((d) => _horarioDia(LecturaJson.objeto(d)))
+          .toList();
+
+  static HorarioDia _horarioDia(Map<String, Object?> m) => HorarioDia(
+    dia: LecturaJson.texto(m['dia']),
+    abierto: LecturaJson.booleano(m['abierto']),
+    franjas: [
+      for (final f in LecturaJson.lista(m['franjas']))
+        FranjaHorario(
+          inicio: LecturaJson.texto(LecturaJson.objeto(f)['inicio']),
+          fin: LecturaJson.texto(LecturaJson.objeto(f)['fin']),
+        ),
+    ],
+  );
+
+  /// Cuerpo de `PUT /tecnicos/me/horarios`.
+  static Map<String, Object?> horariosAJson(List<HorarioDia> horarios) => {
+    'horarios': [
+      for (final d in horarios)
+        {
+          'dia': d.dia,
+          'abierto': d.abierto,
+          'franjas': [
+            for (final f in d.franjas) {'inicio': f.inicio, 'fin': f.fin},
+          ],
+        },
+    ],
+  };
 }

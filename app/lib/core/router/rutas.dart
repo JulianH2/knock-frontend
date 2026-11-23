@@ -21,6 +21,10 @@ abstract final class Rutas {
   /// de `agenda/:id`.
   static const agenda = '/actividad/agenda';
 
+  /// Horarios del técnico (TEC-10/11); cuelga de la agenda, antes de
+  /// `agenda/:id`.
+  static const horarios = '/actividad/agenda/horarios';
+
   /// Subruta de Mi cuenta (KNOCK-105): preferencias de avisos.
   static const preferenciasAvisos = '/cuenta/preferencias-avisos';
 

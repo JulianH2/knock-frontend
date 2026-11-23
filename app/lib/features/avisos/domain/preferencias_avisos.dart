@@ -19,9 +19,11 @@ class PreferenciaAviso {
   );
 }
 
-/// Fuente de las preferencias. Guardar (`PUT`, spec 037) aún no tiene ruta:
-/// cuando exista se agrega `guardar` aquí y la pantalla ya tiene los
-/// interruptores listos.
+/// Fuente de las preferencias.
 abstract interface class PreferenciasAvisosRepository {
   Future<List<PreferenciaAviso>> obtener();
+
+  /// `PUT /me/preferencias-avisos` (spec 037). La ruta aún no existe: mientras
+  /// tanto falla con `RutaNoDisponibleFailure` y los cambios quedan pendientes.
+  Future<void> guardar(List<PreferenciaAviso> preferencias);
 }

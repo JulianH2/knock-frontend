@@ -1,12 +1,53 @@
+import 'dart:async';
+
 import 'package:app/features/avisos/avisos_providers.dart';
 import 'package:app/features/avisos/domain/aviso.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-/// Contador de no leídos para la insignia («99+» según `masDe99`).
-final contadorAvisosProvider = FutureProvider.autoDispose<ContadorAvisos>(
-  (ref) => ref.watch(avisosRepositoryProvider).contador(),
-  retry: (_, _) => null,
-);
+/// Contador de no leídos para la insignia («99+» según `masDe99`). Se ajusta
+/// de forma optimista al marcar avisos y la API lo confirma al recargar.
+class ContadorAvisosNotifier extends AsyncNotifier<ContadorAvisos> {
+  @override
+  Future<ContadorAvisos> build() =>
+      ref.watch(avisosRepositoryProvider).contador();
+
+  /// Baja uno. Con «99+» no se sabe el total real: se mantiene hasta recargar.
+  void bajarUno() {
+    final actual = state.value;
+    if (actual == null || actual.masDe99 || actual.cantidad == 0) {
+      return;
+    }
+    state = AsyncData(
+      ContadorAvisos(cantidad: actual.cantidad - 1, masDe99: false),
+    );
+  }
+
+  void ponerEnCero() =>
+      state = const AsyncData(ContadorAvisos(cantidad: 0, masDe99: false));
+
+  /// Vuelve al valor anterior si la API rechazó el cambio.
+  void restaurar(ContadorAvisos? anterior) {
+    if (anterior != null) {
+      state = AsyncData(anterior);
+    }
+  }
+
+  /// Pide el valor real a la API sin pasar por «cargando».
+  Future<void> confirmar() async {
+    try {
+      final real = await ref.read(avisosRepositoryProvider).contador();
+      state = AsyncData(real);
+    } on Object {
+      // Se queda el valor optimista; la insignia no es crítica.
+    }
+  }
+}
+
+final contadorAvisosProvider =
+    AsyncNotifierProvider.autoDispose<ContadorAvisosNotifier, ContadorAvisos>(
+      ContadorAvisosNotifier.new,
+      retry: (_, _) => null,
+    );
 
 /// Filtros activos de la bandeja.
 class FiltroAvisosNotifier extends Notifier<FiltroAvisos> {
@@ -91,28 +132,74 @@ class AvisosController extends AsyncNotifier<BandejaAvisos> {
     }
   }
 
-  /// Marca uno como leído; devuelve `false` si la API falló.
-  Future<bool> marcarLeido(String id) async {
+  /// Vuelve a pedir la primera página sin pasar por «cargando» (pull to
+  /// refresh). Si falla, conserva lo que ya había y devuelve el error.
+  Future<Object?> refrescar() async {
     try {
-      await ref.read(avisosRepositoryProvider).marcarLeido(id);
-    } on Object {
-      return false;
+      final pagina = await ref
+          .read(avisosRepositoryProvider)
+          .listar(filtro: ref.read(filtroAvisosProvider));
+      state = AsyncData(
+        BandejaAvisos(
+          items: pagina.items,
+          siguienteCursor: pagina.siguienteCursor,
+        ),
+      );
+      unawaited(ref.read(contadorAvisosProvider.notifier).confirmar());
+      return null;
+    } on Object catch (error) {
+      return error;
     }
-    _actualizar((a) => a.id == id ? a.copiaLeido() : a);
-    ref.invalidate(contadorAvisosProvider);
-    return true;
   }
 
-  /// Marca todos como leídos; devuelve `false` si la API falló.
-  Future<bool> marcarTodosLeidos() async {
+  /// Marca uno como leído al instante (también el contador); si la API
+  /// falla, deshace el cambio. Devuelve el error o `null` si salió bien.
+  Future<Object?> marcarLeido(String id) async {
+    final antes = state.value?.items;
+    final aviso = antes?.where((a) => a.id == id).firstOrNull;
+    if (aviso == null || aviso.leido) {
+      return null;
+    }
+    final contador = ref.read(contadorAvisosProvider.notifier);
+    final contadorAntes = ref.read(contadorAvisosProvider).value;
+    _actualizar((a) => a.id == id ? a.copiaLeido() : a);
+    contador.bajarUno();
+    try {
+      await ref.read(avisosRepositoryProvider).marcarLeido(id);
+    } on Object catch (error) {
+      _restaurar(antes!);
+      contador.restaurar(contadorAntes);
+      return error;
+    }
+    unawaited(contador.confirmar());
+    return null;
+  }
+
+  /// Marca todos como leídos al instante; si la API falla, deshace el cambio.
+  Future<Object?> marcarTodosLeidos() async {
+    final antes = state.value?.items;
+    final contador = ref.read(contadorAvisosProvider.notifier);
+    final contadorAntes = ref.read(contadorAvisosProvider).value;
+    _actualizar((a) => a.copiaLeido());
+    contador.ponerEnCero();
     try {
       await ref.read(avisosRepositoryProvider).marcarTodosLeidos();
-    } on Object {
-      return false;
+    } on Object catch (error) {
+      if (antes != null) {
+        _restaurar(antes);
+      }
+      contador.restaurar(contadorAntes);
+      return error;
     }
-    _actualizar((a) => a.copiaLeido());
-    ref.invalidate(contadorAvisosProvider);
-    return true;
+    unawaited(contador.confirmar());
+    return null;
+  }
+
+  void _restaurar(List<Aviso> items) {
+    final actual = state.value;
+    if (actual != null) {
+      state = AsyncData(actual.copiar(items: items));
+    }
   }
 
   void _actualizar(Aviso Function(Aviso) cambio) {

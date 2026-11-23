@@ -13,6 +13,7 @@ import 'package:app/features/inicio/presentation/inicio_screen.dart';
 import 'package:app/features/oficios/presentation/oficios_screen.dart';
 import 'package:app/features/trabajo/presentation/trabajo_screen.dart';
 import 'package:app/features/visitas/presentation/agenda_screen.dart';
+import 'package:app/features/visitas/presentation/horarios_screen.dart';
 import 'package:app/features/visitas/presentation/visita_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -62,6 +63,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
                 path: 'agenda',
                 builder: (context, state) => const AgendaScreen(),
                 routes: [
+                  GoRoute(
+                    path: 'horarios',
+                    builder: (context, state) => const HorariosScreen(),
+                  ),
                   GoRoute(
                     path: ':id',
                     builder: (context, state) =>

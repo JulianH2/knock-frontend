@@ -11,5 +11,5 @@ final avisosRepositoryProvider = Provider<AvisosRepository>(
 
 final preferenciasAvisosRepositoryProvider =
     Provider<PreferenciasAvisosRepository>(
-      (ref) => const PreferenciasAvisosRepositoryDePrueba(),
+      (ref) => PreferenciasAvisosRepositoryDePrueba(),
     );
