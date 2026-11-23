@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Pantalla base de una pestaña: barra superior con el título y un cuerpo.
 ///

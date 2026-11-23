@@ -2,7 +2,7 @@ import 'package:app/core/widgets/pantalla_titulada.dart';
 import 'package:app/features/oficios/domain/modalidad.dart';
 import 'package:app/features/oficios/domain/oficio.dart';
 import 'package:app/features/oficios/presentation/oficios_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Lista de oficios con sus cuatro estados: cargando, datos, vacío y error con
