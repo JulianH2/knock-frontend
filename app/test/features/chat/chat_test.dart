@@ -99,6 +99,28 @@ void main() {
     });
   });
 
+  group('textoDeConversacionCerrada', () {
+    test('explica cada motivo de cierre del contrato', () {
+      for (final motivo in const [
+        'request_cancelled',
+        'request_expired',
+        'other_quote_chosen',
+        'dismissed',
+        'service_finished',
+      ]) {
+        expect(motivosDeCierreChat, contains(motivo));
+        expect(textoDeConversacionCerrada(motivo), contains('se cerró porque'));
+      }
+    });
+
+    test('sin motivo o con uno desconocido usa el texto genérico', () {
+      const generico = 'Esta conversación ya está cerrada.';
+      expect(textoDeConversacionCerrada(null), generico);
+      expect(textoDeConversacionCerrada('cerrada'), generico);
+      expect(textoDeConversacionCerrada('otro'), generico);
+    });
+  });
+
   group('validarTextoMensaje', () {
     test('quita espacios y rechaza vacío', () {
       expect(validarTextoMensaje('  hola '), 'hola');

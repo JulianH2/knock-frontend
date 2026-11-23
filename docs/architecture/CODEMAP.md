@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-23T01:48:26Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-23T03:46:34Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,7 +10,7 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
 | `avisos` | -, data, domain, presentation | 11 | 25 | 42 |
-| `chat` | -, data, domain, presentation | 11 | 47 | 84 |
+| `chat` | -, data, domain, presentation | 11 | 47 | 85 |
 | `cuenta` | presentation | 1 | 1 | 1 |
 | `datos` | core | 2 | 1 | 12 |
 | `dispositivos` | -, data, domain, presentation | 6 | 15 | 23 |
@@ -56,7 +56,7 @@
 - `app/lib/features/avisos/data/avisos_mapper.dart` — class `AvisosMapper`
   - `aviso()`:7, `pagina()`:21, `contador()`:26, `preferencias()`:34
 - `app/lib/features/avisos/data/avisos_repository_de_prueba.dart` — class `AvisosRepositoryDePrueba`, class `PreferenciasAvisosRepositoryDePrueba`
-  - `contador()`:48, `marcarLeido()`:58, `marcarTodosLeidos()`:70, `obtener()`:119, `guardar()`:134
+  - `contador()`:48, `marcarLeido()`:58, `marcarTodosLeidos()`:70, `obtener()`:114, `guardar()`:129
 
 **domain**
 
@@ -107,7 +107,7 @@
 - `app/lib/features/chat/presentation/chat_controller.dart` — enum `EstadoEnvio`, class `MensajePendiente`, class `EstadoChat`, class `ChatController`
   - `con()`:40, `esMio()`:77, `copiar()`:79, `build()`:123, `reintentar()`:153, `visible()`:157, `validar()`:261, `enviar()`:281, `reintentarEnvio()`:297, `descartar()`:316, `cargarAnteriores()`:396
 - `app/lib/features/chat/presentation/chat_screen.dart` — class `ChatScreen`, class `_ChatScreenState`, class `_AvisoDeSeguridad`, class `_Mensajes`, class `_MensajesState`, class `_Globo`, class `_Burbuja`, class `_BurbujaPendiente`, class `_Redaccion`, class `_RedaccionState`
-  - `textoDeFalloDeEnvio()`:23, `initState()`:44, `dispose()`:50, `didChangeAppLifecycleState()`:56, `build()`:63, `build()`:126, `initState()`:158, `dispose()`:164, `didUpdateWidget()`:187, `build()`:219, `build()`:302, `build()`:336, `build()`:371, `dispose()`:425, `build()`:442
+  - `textoDeConversacionCerrada()`:34, `textoDeFalloDeEnvio()`:38, `initState()`:59, `dispose()`:65, `didChangeAppLifecycleState()`:71, `build()`:78, `build()`:143, `initState()`:175, `dispose()`:181, `didUpdateWidget()`:204, `build()`:236, `build()`:319, `build()`:353, `build()`:388, `dispose()`:442, `build()`:459
 - `app/lib/features/chat/presentation/conversaciones_controller.dart` — class `BandejaChats`, class `ConversacionesController`
   - `copiar()`:35, `build()`:53, `reintentar()`:68, `refrescar()`:73, `cargarMas()`:141
 - `app/lib/features/chat/presentation/conversaciones_screen.dart` — class `ConversacionesScreen`, class `_Lista`, class `_Fila`, class `InsigniaChat`

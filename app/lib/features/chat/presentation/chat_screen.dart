@@ -19,6 +19,21 @@ const Map<String, String> mensajesDeErrorChat = {
       'No pudimos enviar el mensaje por ahora. Intenta de nuevo en un momento.',
 };
 
+/// Por qué se cerró una conversación (`motivoCierre` del contrato de Mensajería).
+const Map<String, String> motivosDeCierreChat = {
+  'request_cancelled':
+      'Esta conversación se cerró porque se canceló la solicitud.',
+  'request_expired': 'Esta conversación se cerró porque la solicitud venció.',
+  'other_quote_chosen':
+      'Esta conversación se cerró porque se eligió otra cotización.',
+  'dismissed': 'Esta conversación se cerró porque se descartó la solicitud.',
+  'service_finished': 'Esta conversación se cerró porque el servicio terminó.',
+};
+
+/// Texto de una conversación cerrada: el motivo si se conoce, o el genérico.
+String textoDeConversacionCerrada(String? motivoCierre) =>
+    motivosDeCierreChat[motivoCierre] ?? 'Esta conversación ya está cerrada.';
+
 /// Texto bajo un mensaje que no salió.
 String textoDeFalloDeEnvio(Object? error) => mensajeDeError(
   error ?? const DatosInvalidosFailure(),
@@ -105,9 +120,11 @@ class _ChatScreenState extends ConsumerState<ChatScreen>
             child: _Mensajes(chat: chat, controlador: controlador),
           ),
           if (chat.conversacion.cerrada)
-            const Padding(
-              padding: EdgeInsets.all(16),
-              child: Text('Esta conversación ya está cerrada.'),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: Text(
+                textoDeConversacionCerrada(chat.conversacion.motivoCierre),
+              ),
             )
           else
             _Redaccion(controlador: controlador, chat: chat),

@@ -23,7 +23,8 @@ class PreferenciaAviso {
 abstract interface class PreferenciasAvisosRepository {
   Future<List<PreferenciaAviso>> obtener();
 
-  /// `PUT /me/preferencias-avisos` (spec 037). La ruta aún no existe: mientras
-  /// tanto falla con `RutaNoDisponibleFailure` y los cambios quedan pendientes.
+  /// `PUT /me/preferencias-avisos` con `{ tipos: [{ tipo, activo }] }`, solo los
+  /// tipos que cambian. Falla con `DatosInvalidosFailure` (422) si se intenta
+  /// apagar un tipo no apagable. Si falla, los cambios quedan pendientes.
   Future<void> guardar(List<PreferenciaAviso> preferencias);
 }
