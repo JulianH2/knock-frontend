@@ -1,6 +1,6 @@
 # Mapa de código
 
-> Generado por `scripts/codemap.py` el 2026-11-22T23:28:59Z. No editar a mano.
+> Generado por `scripts/codemap.py` el 2026-11-23T01:48:26Z. No editar a mano.
 > **Antes de crear una clase, método o archivo, busca aquí o corre `python scripts/codemap.py --query "<qué necesitas>"`.**
 
 ## Resumen
@@ -10,7 +10,7 @@
 | `actividad` | presentation | 1 | 1 | 1 |
 | `app` | - | 2 | 1 | 2 |
 | `avisos` | -, data, domain, presentation | 11 | 25 | 42 |
-| `chat` | -, data, domain, presentation | 11 | 47 | 83 |
+| `chat` | -, data, domain, presentation | 11 | 47 | 84 |
 | `cuenta` | presentation | 1 | 1 | 1 |
 | `datos` | core | 2 | 1 | 12 |
 | `dispositivos` | -, data, domain, presentation | 6 | 15 | 23 |
@@ -97,7 +97,7 @@
 **domain**
 
 - `app/lib/features/chat/domain/chat.dart` — class `ContraparteChat`, class `UltimoMensaje`, class `ConversacionItem`, class `PaginaConversaciones`, class `Conversacion`, class `ConversacionCreada`, class `Mensaje`, class `PaginaMensajes`, class `ConversacionesRepository`
-  - `copiar()`:49, `comoCerrada()`:112, `bytesDeMensaje()`:172, `validarTextoMensaje()`:176
+  - `copiar()`:49, `comoCerrada()`:112, `bytesDeMensaje()`:176, `mensajeDemasiadoLargo()`:179, `validarTextoMensaje()`:191
 - `app/lib/features/chat/domain/chat_hub.dart` — class `EventoChat`, class `MensajeConversacionRecibido`, class `NoLeidosActualizados`, class `MensajeVisitaRecibido`, class `ConexionRestablecida`, class `ResultadoHub`, class `ChatHub`
 
 **presentation**

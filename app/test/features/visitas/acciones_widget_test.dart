@@ -9,7 +9,7 @@ import 'package:app/features/visitas/presentation/agenda_screen.dart';
 import 'package:app/features/visitas/presentation/horarios_screen.dart';
 import 'package:app/features/visitas/presentation/visita_screen.dart';
 import 'package:app/features/visitas/visitas_providers.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_riverpod/misc.dart' show Override;

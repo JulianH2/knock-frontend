@@ -3,7 +3,7 @@ import 'package:app/core/errores/failure.dart';
 import 'package:app/core/widgets/estados.dart';
 import 'package:app/features/chat/domain/chat.dart';
 import 'package:app/features/chat/presentation/chat_controller.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Textos por código de dominio del chat (contrato de Mensajería).

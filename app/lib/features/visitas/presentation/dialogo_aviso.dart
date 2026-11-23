@@ -1,6 +1,6 @@
 import 'package:app/features/visitas/domain/visita_acciones.dart';
 import 'package:app/features/visitas/presentation/mensajes_visita.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 
 /// Texto para compartir con alguien de confianza (`POST /visitas/{id}/aviso`).

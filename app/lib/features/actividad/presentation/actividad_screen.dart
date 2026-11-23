@@ -2,7 +2,7 @@ import 'package:app/core/router/rutas.dart';
 import 'package:app/core/widgets/pantalla_titulada.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
 import 'package:app/features/chat/presentation/conversaciones_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:go_router/go_router.dart';
 
 /// Pestaña Actividad: accesos a avisos, mensajes y agenda de visitas.

@@ -2,7 +2,7 @@ import 'package:app/core/widgets/estados.dart';
 import 'package:app/features/visitas/domain/visita_acciones.dart';
 import 'package:app/features/visitas/presentation/horarios_controller.dart';
 import 'package:app/features/visitas/presentation/mensajes_visita.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Horarios del técnico: ver y editar los siete días (TEC-10/11). Cada día

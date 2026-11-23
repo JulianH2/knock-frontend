@@ -2,7 +2,7 @@ import 'package:app/features/visitas/domain/visita_acciones.dart';
 import 'package:app/features/visitas/presentation/mensajes_visita.dart';
 import 'package:app/features/visitas/presentation/visitas_controller.dart';
 import 'package:app/features/visitas/visitas_providers.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 

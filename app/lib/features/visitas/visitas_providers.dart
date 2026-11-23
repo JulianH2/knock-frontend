@@ -1,7 +1,7 @@
 import 'package:app/features/visitas/data/visitas_repository_de_prueba.dart';
 import 'package:app/features/visitas/domain/selector_fotos.dart';
 import 'package:app/features/visitas/domain/visita.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 /// Raíz de composición de visitas y agenda (KNOCK-119/122). Datos de prueba

@@ -1,5 +1,5 @@
 import 'package:app/core/errores/failure.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Indicador de carga centrado con su etiqueta de accesibilidad.
 class CargandoCentrado extends StatelessWidget {

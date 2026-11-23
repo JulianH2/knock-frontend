@@ -4,7 +4,7 @@ import 'package:app/features/avisos/data/avisos_mapper.dart';
 import 'package:app/features/avisos/data/avisos_repository_de_prueba.dart';
 import 'package:app/features/avisos/domain/aviso.dart';
 import 'package:app/features/avisos/presentation/avisos_screen.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 
