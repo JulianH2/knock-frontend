@@ -168,14 +168,31 @@ class PaginaMensajes {
 /// Tope del cuerpo de un mensaje (bytes UTF-8), igual que el servidor.
 const int maxBytesMensaje = 4096;
 
+/// Tope de caracteres de un mensaje ya recortado (`ReglasDeMensaje.MaxCaracteres`
+/// del servidor, contados como unidades UTF-16 igual que `String.Length`).
+const int maxCaracteresMensaje = 1000;
+
 /// Bytes UTF-8 del texto ya recortado (lo que cuenta el servidor).
 int bytesDeMensaje(String texto) => utf8.encode(texto.trim()).length;
 
-/// Valida el texto antes de enviarlo: no vacío y hasta 4096 bytes. Falla con
-/// `DatosInvalidosFailure`; devuelve el texto sin espacios en los extremos.
+/// `true` si el texto, ya recortado, supera 1000 caracteres o 4096 bytes.
+bool mensajeDemasiadoLargo(String texto) =>
+    texto.trim().length > maxCaracteresMensaje ||
+    bytesDeMensaje(texto) > maxBytesMensaje;
+
+bool _tieneControl(String texto) => texto.codeUnits.any(
+  (c) => (c < 0x20 && c != 0x0A) || (c >= 0x7F && c <= 0x9F),
+);
+
+/// Valida el texto antes de enviarlo con la regla del servidor: de 1 a 1000
+/// caracteres, hasta 4096 bytes y sin caracteres de control salvo el salto de
+/// línea. Falla con `DatosInvalidosFailure`; devuelve el texto sin espacios en
+/// los extremos.
 String validarTextoMensaje(String texto) {
   final limpio = texto.trim();
-  if (limpio.isEmpty || utf8.encode(limpio).length > maxBytesMensaje) {
+  if (limpio.isEmpty ||
+      mensajeDemasiadoLargo(limpio) ||
+      _tieneControl(limpio)) {
     throw const DatosInvalidosFailure();
   }
   return limpio;

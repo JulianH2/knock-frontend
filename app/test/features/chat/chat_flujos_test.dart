@@ -189,18 +189,18 @@ void main() {
       expect(_botonEnviarActivo(tester), isFalse);
     });
 
-    testWidgets('más de 4096 bytes muestra el error y bloquea el envío', (
+    testWidgets('más de 1000 caracteres muestra el error y bloquea el envío', (
       tester,
     ) async {
       final repo = ConversacionesRepositoryDePrueba();
       await _montar(tester, repo);
-      await tester.enterText(find.byType(TextField), 'ñ' * 2049);
+      await tester.enterText(find.byType(TextField), 'ñ' * 1001);
       await tester.pump();
       expect(find.textContaining('demasiado largo'), findsOneWidget);
       expect(_botonEnviarActivo(tester), isFalse);
       expect(repo.enviosIntentados, 0);
 
-      await tester.enterText(find.byType(TextField), 'ñ' * 2048);
+      await tester.enterText(find.byType(TextField), 'ñ' * 1000);
       await tester.pump();
       expect(find.textContaining('demasiado largo'), findsNothing);
       expect(_botonEnviarActivo(tester), isTrue);
@@ -459,7 +459,7 @@ void main() {
       await c.read(chatControllerProvider('c1').future);
       final notificador = c.read(chatControllerProvider('c1').notifier);
       expect(notificador.enviar('  '), isFalse);
-      expect(notificador.enviar('ñ' * 2049), isFalse);
+      expect(notificador.enviar('ñ' * 1001), isFalse);
       expect(notificador.validar('x'), isNull);
       expect(repo.enviosIntentados, 0);
     });

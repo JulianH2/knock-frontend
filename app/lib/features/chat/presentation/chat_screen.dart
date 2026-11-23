@@ -427,7 +427,7 @@ class _RedaccionState extends State<_Redaccion> {
     super.dispose();
   }
 
-  bool get _demasiadoLargo => bytesDeMensaje(_texto.text) > maxBytesMensaje;
+  bool get _demasiadoLargo => mensajeDemasiadoLargo(_texto.text);
 
   bool get _vacio => _texto.text.trim().isEmpty;
 
@@ -471,7 +471,7 @@ class _RedaccionState extends State<_Redaccion> {
                       border: const OutlineInputBorder(),
                       errorText: _demasiadoLargo
                           ? 'El mensaje es demasiado largo (máximo '
-                                '$maxBytesMensaje bytes).'
+                                '$maxCaracteresMensaje caracteres).'
                           : null,
                     ),
                   ),

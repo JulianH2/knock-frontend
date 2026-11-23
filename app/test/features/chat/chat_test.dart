@@ -100,12 +100,27 @@ void main() {
   });
 
   group('validarTextoMensaje', () {
-    test('quita espacios y rechaza vacío o más de 4096 bytes', () {
+    test('quita espacios y rechaza vacío', () {
       expect(validarTextoMensaje('  hola '), 'hola');
       expect(() => validarTextoMensaje('  '), throwsA(isA<Failure>()));
-      // 2049 caracteres de 2 bytes = 4098 bytes.
-      expect(() => validarTextoMensaje('ñ' * 2049), throwsA(isA<Failure>()));
-      expect(validarTextoMensaje('ñ' * 2048), isNotEmpty);
+    });
+
+    test('acepta 1000 caracteres y rechaza 1001', () {
+      expect(validarTextoMensaje('a' * 1000), isNotEmpty);
+      expect(() => validarTextoMensaje('a' * 1001), throwsA(isA<Failure>()));
+    });
+
+    test('también cuenta el tope de 4096 bytes', () {
+      // 1000 caracteres de 3 bytes = 3000 bytes: caben.
+      expect(validarTextoMensaje('€' * 1000), isNotEmpty);
+      // Cada emoji ocupa 2 unidades UTF-16: 501 superan los 1000 caracteres.
+      expect(() => validarTextoMensaje('😀' * 501), throwsA(isA<Failure>()));
+    });
+
+    test('rechaza caracteres de control salvo el salto de línea', () {
+      expect(validarTextoMensaje('hola\nmundo'), 'hola\nmundo');
+      expect(() => validarTextoMensaje('ho\u0000la'), throwsA(isA<Failure>()));
+      expect(() => validarTextoMensaje('ho\tla'), throwsA(isA<Failure>()));
     });
   });
 

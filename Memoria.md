@@ -219,3 +219,9 @@
 - Decisión: guardar preferencias (`PUT`, spec 037) no existe; la cola vive solo en memoria, el guardado falla con `RutaNoDisponibleFailure` y la pantalla dice que los cambios siguen pendientes (no se simula éxito). Sin paquete de persistencia no sobreviven al cerrar la app.
 - Decisión: el permiso de notificaciones va detrás de `PermisoNotificaciones` (hoy de prueba). `alIniciarSesion()` registra solo si ya hay permiso y `darDeBaja()` es el gancho de cerrar sesión; aún no hay sesión real que los llame.
 - A evitar: leer un provider `autoDispose` del contador tras salir de la pantalla; reintentar solo ante 503/409/429 (solo la persona reintenta).
+
+## 2026-11-22 · Chat: tope real del mensaje (KNOCK-72)
+- **Estado:** la app validaba solo 4096 bytes; el servidor (`ReglasDeMensaje`) exige de 1 a 1000 caracteres, hasta 4096 bytes y sin caracteres de control salvo el salto de línea. `validarTextoMensaje` y la pantalla ya usan esa regla.
+- **Decisión:** el envío del chat de conversación va por `POST /conversaciones/{id}/mensajes` y el hub solo recibe; `enviarMensajeVisita` existe en el hub pero ninguna pantalla lo usa. Confirmado por el líder.
+- **Error a evitar:** copiar un tope de la spec sin leer el validador del servidor. `message_limit` lleva espera; `rate_limited` es el código genérico del limitador y no la trae.
+- Cuerpo de `PUT /me/preferencias-avisos` (PR #274 del backend): `{ "tipos": [{ "tipo", "activo" }] }`, solo los tipos que cambian.
